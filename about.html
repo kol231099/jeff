@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>關於 PourMatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="social.css" />
+<link rel="stylesheet" href="about.css" />
+</head>
+<body>
+  <canvas id="particles"></canvas>
+  <div class="grid-bg"></div>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="glow glow-3"></div>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo" style="text-decoration:none;">
+      <div class="logo-mark">
+        <svg viewBox="0 0 40 40" width="32" height="32">
+          <defs>
+            <linearGradient id="lgA" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFB547"/>
+              <stop offset="50%" stop-color="#FF4D8D"/>
+              <stop offset="100%" stop-color="#7B5CFF"/>
+            </linearGradient>
+          </defs>
+          <path d="M10 6h20l-3 14a7 7 0 0 1-7 6 7 7 0 0 1-7-6L10 6z" fill="url(#lgA)" opacity="0.9"/>
+          <line x1="20" y1="26" x2="20" y2="34" stroke="url(#lgA)" stroke-width="2"/>
+          <line x1="14" y1="34" x2="26" y2="34" stroke="url(#lgA)" stroke-width="2"/>
+        </svg>
+      </div>
+      <span class="logo-text">PourMatch</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">首頁</a></li>
+      <li><a href="quiz.html">品味測驗</a></li>
+      <li><a href="cocktail.html">調酒生成器</a></li>
+      <li><a href="community.html">社群</a></li>
+      <li><a href="match.html">AI 配對</a></li>
+      <li><a href="about.html">關於</a></li>
+    </ul>
+    <button class="btn-login">
+      <svg width="18" height="18" viewBox="0 0 48 48">
+        <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+        <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+        <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+        <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+      </svg>
+      <span>使用 Google 登入</span>
+    </button>
+  </nav>
+
+  <main class="about-main">
+    <section class="about-hero">
+      <div class="badge">
+        <span class="dot"></span>
+        <span>新世代飲酒社交平台 · 由 AI 親自為你倒酒</span>
+      </div>
+      <h1 class="about-title">
+        <span class="gradient-text">這不是另一個交友 App。</span><br/>
+        <span>這是一場用味蕾辨識靈魂的革命。</span>
+      </h1>
+      <p class="about-lead">
+        全球第一個用 <strong>AI 風味 DNA</strong> 為你配對酒友的科幻平台。<br/>
+        不再透過自拍滑左滑右；在 PourMatch，你的<strong>下一杯酒</strong>，會帶你遇見<strong>下一個對的人</strong>。
+      </p>
+      <div class="about-cta">
+        <a href="quiz.html" class="btn-primary" style="text-decoration:none;">立即解鎖我的風味 DNA →</a>
+        <a href="cocktail.html" class="btn-ghost" style="text-decoration:none;">🍹 用 AI 為我調一杯</a>
+      </div>
+    </section>
+
+    <section class="about-stats">
+      <div class="about-stat"><div class="num gradient-text">12K+</div><div class="label">活躍酒友</div></div>
+      <div class="about-stat"><div class="num gradient-text">480+</div><div class="label">精選酒款</div></div>
+      <div class="about-stat"><div class="num gradient-text">97%</div><div class="label">配對滿意度</div></div>
+      <div class="about-stat"><div class="num gradient-text">24/7</div><div class="label">AI 不打烊</div></div>
+    </section>
+
+    <section class="about-section">
+      <h2 class="section-title gradient-text">為什麼 PourMatch 不一樣？</h2>
+      <div class="about-grid">
+        <div class="about-feat">
+          <div class="feat-num">01</div>
+          <h3>🧠 AI 風味 DNA 分析</h3>
+          <p>5 道精心設計的問題，AI 解析你 6 個味覺維度，生成全世界獨一無二的<strong>風味基因圖譜</strong>。準到令人發毛。</p>
+        </div>
+        <div class="about-feat">
+          <div class="feat-num">02</div>
+          <h3>💞 味蕾頻率配對</h3>
+          <p>不靠照片，不靠標籤。我們相信能喝到一塊去的人，靈魂也合得來。AI 替你找出最對味的 3 位酒友，附上一句詩意的配對註解。</p>
+        </div>
+        <div class="about-feat">
+          <div class="feat-num">03</div>
+          <h3>🍹 專屬 AI 調酒師</h3>
+          <p>輸入心情、場合、想要的味道，AI 會即興為你<strong>創造一杯地球上不存在的調酒</strong>，附上故事、配方、步驟與裝飾。在家就能開酒吧。</p>
+        </div>
+        <div class="about-feat">
+          <div class="feat-num">04</div>
+          <h3>🌐 全球酒友社群</h3>
+          <p>把你的測驗結果、AI 調酒、心情筆記一鍵發布到社群。讓世界看見你的味蕾故事，也許下一個按讚的，就是你的命定酒友。</p>
+        </div>
+        <div class="about-feat">
+          <div class="feat-num">05</div>
+          <h3>🆔 6 碼識別代碼</h3>
+          <p>每個用戶都有一組獨一無二的代碼，像派對裡只有自己人才看得懂的暗號。簡單分享，朋友秒加，不用名片，不用 Line ID。</p>
+        </div>
+        <div class="about-feat">
+          <div class="feat-num">06</div>
+          <h3>🔗 公開分享連結</h3>
+          <p>把你的風味 DNA 或 AI 調酒一鍵生成公開連結。貼到 IG、Threads、Discord，朋友不用註冊也能欣賞你的酒品。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <h2 class="section-title gradient-text">PourMatch 帶你去哪裡？</h2>
+      <div class="about-journey">
+        <div class="journey-step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>解鎖你的風味 DNA</h4>
+            <p>5 題快問快答，AI 立刻為你建立永久檔案。再也不用為「今晚喝什麼」糾結。</p>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>遇見對的酒友</h4>
+            <p>AI 從成千上萬的味覺指紋中，挑出與你頻率最接近的 3 個人。也許下一場深夜長談，從這裡開始。</p>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>創造屬於你們的儀式</h4>
+            <p>用 AI 調酒生成器為彼此調一杯獨家飲品，互換代碼成為朋友。每一次乾杯都是新故事的開頭。</p>
+          </div>
+        </div>
+        <div class="journey-step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h4>把味蕾故事留下</h4>
+            <p>每次測驗、每杯調酒都會寫進你的歷史。回顧時，那是一本只屬於你的、用酒精浸泡過的詩集。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-quote">
+      <blockquote class="gradient-text">
+        「在 PourMatch，我們不販售酒精，我們釀造緣分。」
+      </blockquote>
+      <div class="about-quote-sub">— PourMatch 信條</div>
+    </section>
+
+    <section class="about-cta-band">
+      <h2>準備好遇見<span class="gradient-text">下一杯</span>對的人了嗎？</h2>
+      <p>免費註冊 · Google 一鍵登入 · 60 秒完成你的風味 DNA</p>
+      <div class="about-cta">
+        <a href="quiz.html" class="btn-primary" style="text-decoration:none;">立即開始 →</a>
+        <a href="match.html" class="btn-ghost" style="text-decoration:none;">💞 看 AI 為我配對誰</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="particles.js?v=10"></script>
+  <script src="auth.js?v=10"></script>
+</body>
+</html>

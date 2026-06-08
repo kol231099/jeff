@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>調酒生成器 · PourMatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="quiz.css" />
+<link rel="stylesheet" href="cocktail.css" />
+<link rel="stylesheet" href="social.css" />
+</head>
+<body>
+  <canvas id="particles"></canvas>
+  <div class="grid-bg"></div>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+  <div class="glow glow-3"></div>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo" style="text-decoration:none;">
+      <div class="logo-mark">
+        <svg viewBox="0 0 40 40" width="32" height="32">
+          <defs>
+            <linearGradient id="lg3" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFB547"/>
+              <stop offset="50%" stop-color="#FF4D8D"/>
+              <stop offset="100%" stop-color="#7B5CFF"/>
+            </linearGradient>
+          </defs>
+          <path d="M10 6h20l-3 14a7 7 0 0 1-7 6 7 7 0 0 1-7-6L10 6z" fill="url(#lg3)" opacity="0.9"/>
+          <line x1="20" y1="26" x2="20" y2="34" stroke="url(#lg3)" stroke-width="2"/>
+          <line x1="14" y1="34" x2="26" y2="34" stroke="url(#lg3)" stroke-width="2"/>
+        </svg>
+      </div>
+      <span class="logo-text">PourMatch</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">首頁</a></li>
+      <li><a href="quiz.html">品味測驗</a></li>
+      <li><a href="cocktail.html">調酒生成器</a></li>
+      <li><a href="community.html">社群</a></li>
+      <li><a href="match.html">AI 配對</a></li>
+      <li><a href="about.html">關於</a></li>
+    </ul>
+    <button class="btn-login">
+      <svg width="18" height="18" viewBox="0 0 48 48">
+        <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+        <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+        <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+        <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+      </svg>
+      <span>使用 Google 登入</span>
+    </button>
+  </nav>
+
+  <main class="cocktail-main">
+    <!-- 輸入表單 -->
+    <div class="cocktail-input" id="inputScreen">
+      <div class="cocktail-header">
+        <div class="cocktail-badge">
+          <span class="dot"></span>
+          <span>AI 客製調酒 · 獨一無二</span>
+        </div>
+        <h1 class="cocktail-title">
+          <span class="gradient-text">為你</span>
+          <span style="color:var(--text);">調一杯只屬於你的酒</span>
+        </h1>
+        <p class="cocktail-sub">告訴 AI 你此刻的心情與偏好，生成世界唯一的專屬配方。</p>
+      </div>
+
+      <div class="form-card">
+        <!-- 基酒 -->
+        <div class="form-group">
+          <label class="form-label">偏好基酒</label>
+          <div class="chip-group" data-field="base_spirit" data-multi="true">
+            <button class="chip" data-value="gin">🌲 琴酒</button>
+            <button class="chip" data-value="whiskey">🥃 威士忌</button>
+            <button class="chip" data-value="vodka">🧊 伏特加</button>
+            <button class="chip" data-value="rum">🏝️ 蘭姆酒</button>
+            <button class="chip" data-value="tequila">🌵 龍舌蘭</button>
+            <button class="chip" data-value="brandy">🍇 白蘭地</button>
+            <button class="chip" data-value="sake">🎋 清酒</button>
+            <button class="chip" data-value="surprise">🎁 驚喜我</button>
+          </div>
+        </div>
+
+        <!-- 風味 -->
+        <div class="form-group">
+          <label class="form-label">想要的風味</label>
+          <div class="chip-group" data-field="flavors" data-multi="true">
+            <button class="chip" data-value="fruity">🍑 果香</button>
+            <button class="chip" data-value="floral">🌸 花香</button>
+            <button class="chip" data-value="spicy">🌶️ 辛香</button>
+            <button class="chip" data-value="herbal">🌿 草本</button>
+            <button class="chip" data-value="creamy">🥛 奶香</button>
+            <button class="chip" data-value="citrus">🍋 柑橘</button>
+            <button class="chip" data-value="smoky">🔥 煙燻</button>
+            <button class="chip" data-value="chocolate">🍫 可可</button>
+          </div>
+        </div>
+
+        <!-- 甜度 / 酒精 雙滑桿 -->
+        <div class="form-group two-col">
+          <div>
+            <label class="form-label">甜度 <span class="val-badge" id="sweetVal">3</span></label>
+            <input type="range" class="custom-slider" min="1" max="5" value="3" id="sweetSlider" />
+            <div class="slider-hint"><span>乾爽</span><span>甜膩</span></div>
+          </div>
+          <div>
+            <label class="form-label">酒精強度 <span class="val-badge" id="strongVal">3</span></label>
+            <input type="range" class="custom-slider" min="1" max="5" value="3" id="strongSlider" />
+            <div class="slider-hint"><span>微醺</span><span>強勁</span></div>
+          </div>
+        </div>
+
+        <!-- 心情 -->
+        <div class="form-group">
+          <label class="form-label">此刻的心情</label>
+          <div class="chip-group" data-field="mood" data-multi="false">
+            <button class="chip" data-value="happy">😄 開心</button>
+            <button class="chip" data-value="chill">😌 放鬆</button>
+            <button class="chip" data-value="romantic">💗 浪漫</button>
+            <button class="chip" data-value="sad">🥲 失落</button>
+            <button class="chip" data-value="wild">🤘 狂野</button>
+            <button class="chip" data-value="focused">🎯 專注</button>
+          </div>
+        </div>
+
+        <!-- 自由文字 -->
+        <div class="form-group">
+          <label class="form-label">想告訴調酒師的話（可選）</label>
+          <textarea class="form-textarea" id="freeText" placeholder="例：今晚失眠，想來一杯像星空一樣的酒..." maxlength="200"></textarea>
+        </div>
+
+        <button class="btn-primary btn-generate" id="generateBtn">
+          <span>⚡ 生成我的專屬調酒</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 載入動畫 -->
+    <div class="loading-screen" id="loadingScreen" style="display:none;">
+      <div class="ai-core">
+        <div class="core-ring r1"></div>
+        <div class="core-ring r2"></div>
+        <div class="core-ring r3"></div>
+        <div class="core-center">🍹</div>
+      </div>
+      <h2 class="loading-title gradient-text">調配中</h2>
+      <p class="loading-sub" id="loadingSub">融合風味的分子...</p>
+    </div>
+
+    <!-- 結果：調酒卡 -->
+    <div class="cocktail-result" id="resultScreen" style="display:none;">
+      <div class="result-hero">
+        <div class="cocktail-visual">
+          <svg viewBox="0 0 240 340" width="220">
+            <defs>
+              <linearGradient id="liqCock" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#FFB547" stop-opacity="0.95" id="liqStop1"/>
+                <stop offset="100%" stop-color="#FF4D8D" stop-opacity="0.95" id="liqStop2"/>
+              </linearGradient>
+              <linearGradient id="glassCock" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0.35"/>
+              </linearGradient>
+              <filter id="glowCock"><feGaussianBlur stdDeviation="5" /></filter>
+            </defs>
+            <path d="M50 30 L190 30 L160 170 Q120 210 80 170 Z"
+                  fill="url(#glassCock)" stroke="#fff" stroke-width="1.5" opacity="0.85"/>
+            <path class="liquid-cock" d="M65 75 L175 75 L152 160 Q120 195 88 160 Z" fill="url(#liqCock)" />
+            <ellipse cx="120" cy="75" rx="55" ry="6" fill="#FFB547" opacity="0.7"/>
+            <line x1="120" y1="210" x2="120" y2="290" stroke="#fff" stroke-width="2" opacity="0.6"/>
+            <ellipse cx="120" cy="295" rx="55" ry="6" fill="url(#glassCock)" stroke="#fff" stroke-width="1.5" opacity="0.7"/>
+            <circle cx="105" cy="140" r="3" fill="#fff" opacity="0.7" class="bubble b1"/>
+            <circle cx="130" cy="150" r="2" fill="#fff" opacity="0.6" class="bubble b2"/>
+            <circle cx="120" cy="125" r="2.5" fill="#fff" opacity="0.7" class="bubble b3"/>
+          </svg>
+        </div>
+        <div class="result-info">
+          <div class="result-tagline" id="cockTagline"></div>
+          <h1 class="result-name" id="cockName"></h1>
+          <div class="result-meta">
+            <span id="cockGlass"></span>
+            <span class="meta-dot"></span>
+            <span id="cockColor"></span>
+          </div>
+          <div class="flavor-bars" id="flavorBars"></div>
+        </div>
+      </div>
+
+      <div class="result-story-card">
+        <div class="story-label">故事</div>
+        <div class="story-text" id="cockStory"></div>
+      </div>
+
+      <div class="recipe-grid">
+        <div class="recipe-card">
+          <div class="recipe-header">📋 材料</div>
+          <ul class="ingredients" id="ingredientList"></ul>
+        </div>
+        <div class="recipe-card">
+          <div class="recipe-header">🥄 調製步驟</div>
+          <ol class="steps-list" id="stepsList"></ol>
+          <div class="garnish-row">
+            <span class="garnish-label">裝飾</span>
+            <span id="garnishText"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn-primary" onclick="location.reload()">再生成一杯</button>
+        <a href="quiz.html" class="btn-ghost">做品味測驗 →</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="particles.js?v=10"></script>
+  <script src="auth.js?v=10"></script>
+  <script src="cocktail.js?v=10"></script>
+</body>
+</html>
