@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>THE POUR · PourMatch 3D 展示</title>
+<title>THE POUR · 一杯酒的解構</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="showcase.css?v=2" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@200;300;400;500;700&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="showcase.css?v=5" />
 </head>
 <body>
 
@@ -23,81 +23,128 @@
     </div>
   </div>
 
-  <!-- 3D 畫布：固定不動，由捲動驅動 -->
+  <!-- 圖層順序：底色 → 巨型字體 → 3D 畫布 → 標籤 → 暗角 → 文字 -->
+  <div class="bg-layer" id="bgLayer"></div>
+
+  <div class="type-layer" id="typeLayer">
+    <div class="type-row tr-1">THE POUR</div>
+    <div class="type-row tr-2">DECONSTRUCTED</div>
+    <div class="type-row tr-3">45ml</div>
+  </div>
+
   <canvas id="scene"></canvas>
-  <!-- 暗角：壓住畫面邊緣與亮部，讓文字在玻璃前仍讀得到 -->
+  <div class="label-layer" id="labelLayer"></div>
   <div class="scrim"></div>
 
-  <!-- 頂部列 -->
   <header class="sc-top">
     <a class="sc-back" href="index.html">← 回到 PourMatch</a>
     <div class="sc-mark">THE POUR</div>
-    <div class="sc-meta">03 · DEMO</div>
+    <div class="sc-meta">DEMO · 01</div>
   </header>
 
-  <!-- 捲動進度軌 -->
   <div class="rail"><div class="rail-fill" id="railFill"></div></div>
 
-  <!-- 捲動內容：每一節對應一個鏡位 -->
   <main class="scroller" id="scroller">
 
+    <!-- 00 · 開場 -->
     <section class="act act-hero in">
       <div class="act-inner center">
-        <div class="eyebrow">程式化生成 · 即時運算 · 無貼圖素材</div>
+        <div class="eyebrow">程式化生成 · 即時運算 · 零貼圖素材</div>
         <h1 class="title">
-          <span class="t-line">一杯酒的</span>
-          <span class="t-line grad">每一個細節</span>
+          <span class="t-line">一杯酒</span>
+          <span class="t-line grad">被拆開來看</span>
         </h1>
         <p class="lede">
-          這不是一張圖，也不是影片。<br />
-          整杯酒在你的裝置上即時運算，玻璃的折射是真的。
+          不是圖片，也不是影片。<br />
+          玻璃的折射、酒液的漸層、零件的位置，全部在你的裝置上即時運算。
         </p>
         <div class="scroll-cue"><span>向下捲動</span><i></i></div>
       </div>
     </section>
 
+    <!-- 01 · 注入 -->
     <section class="act">
       <div class="act-inner left">
-        <div class="num">01</div>
-        <h2>倒入</h2>
+        <div class="num">01 — 注入</div>
+        <h2>液面是算出來的</h2>
         <p>
-          酒液沿著杯壁上升，顏色由底部的深紫過渡到液面的琥珀金。
-          這個漸層寫在每一個頂點上，隨著液面高度重新計算，而不是一張預先畫好的貼圖。
+          酒液不是一張貼在杯子裡的圖。它的幾何隨著液面高度重新生成，
+          顏色寫在每一個頂點上，由底部的紫過渡到液面的琥珀金。
+        </p>
+        <div class="spec-grid">
+          <div class="spec"><span>容量</span><b>210 ml</b></div>
+          <div class="spec"><span>液面</span><b>即時重建</b></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 · 材質（明亮攝影棚） -->
+    <section class="act act-light">
+      <div class="act-inner cols">
+        <div class="col">
+          <div class="col-title">玻璃與折射</div>
+          <p>
+            杯體使用 1.52 的折射率，也就是鈉鈣玻璃的真實數值。
+            光線穿過杯壁時被彎折、被壓縮，背後的景物因此扭曲 ——
+            這是實際計算的透射，不是把透明度調低。
+          </p>
+        </div>
+        <div class="col">
+          <div class="col-title">壁厚從何而來</div>
+          <p>
+            輪廓線沿外壁上行、越過杯口、再沿內壁下行，繞軸旋轉後
+            自然形成中空且有厚度的容器。沒有厚度，折射就無從發生。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 · 解構 -->
+    <section class="act act-light">
+      <div class="act-inner right">
+        <div class="num">02 — 解構</div>
+        <h2>七個零件</h2>
+        <p>
+          杯體、酒液、冰、柑橘、裝飾、杯腳、底座沿著中軸攤開。
+          每個標籤的位置都是把該零件的 3D 座標即時投影回畫面算出來的，
+          所以視角轉動時標籤會跟著跑。
         </p>
       </div>
     </section>
 
+    <!-- 04 · 核心（粒子場） -->
+    <section class="act act-core">
+      <div class="act-inner left">
+        <div class="num">03 — 核心</div>
+        <h2>風味的<br/>流動</h2>
+        <p>
+          七千顆粒子沿著封閉曲線分布，每一顆在 shader 裡各自漂移。
+          這是每一格重新計算的流場，不是預先渲染好的影片。
+        </p>
+        <div class="spec-grid">
+          <div class="spec"><span>粒子數</span><b>7,000</b></div>
+          <div class="spec"><span>更新</span><b>逐格 GPU</b></div>
+        </div>
+      </div>
+      <div class="big-figure">38<span>°</span></div>
+    </section>
+
+    <!-- 05 · 復原 -->
     <section class="act">
       <div class="act-inner right">
-        <div class="num">02</div>
-        <h2>折射</h2>
+        <div class="num">04 — 復原</div>
+        <h2>回到一杯酒</h2>
         <p>
-          玻璃使用 1.52 的折射率 —— 鈉鈣玻璃的真實數值。
-          你看到杯壁後方的景物被彎折、被壓縮，那是光線真的穿過了玻璃厚度，
-          不是把透明度調低的假象。
+          零件歸位。你剛才拆開看過的每一個部分，
+          都會出現在 AI 為你調製的那份配方裡。
         </p>
       </div>
     </section>
 
-    <section class="act">
-      <div class="act-inner left">
-        <div class="num">03</div>
-        <h2>接地</h2>
-        <p>
-          杯底有兩層陰影：緊貼杯腳的接觸陰影，以及擴散開的柔邊落影。
-          再加上酒液透光後灑在地面的彩色光池 —— 深色場景裡，
-          真正讓物件「站在」平面上的是光，不是暗。
-        </p>
-      </div>
-    </section>
-
+    <!-- 06 · 結尾 -->
     <section class="act act-end">
       <div class="act-inner center">
-        <div class="num">04</div>
-        <h2>你的那一杯</h2>
-        <p>
-          這杯是程式生成的。下一杯，由 AI 依你的品味調製。
-        </p>
+        <h2 class="end-title">你的那一杯<br/><span class="grad">還沒被調出來</span></h2>
         <div class="end-cta">
           <a href="quiz.html" class="sc-btn primary">開始品味測驗</a>
           <a href="cocktail.html" class="sc-btn">調酒生成器</a>
@@ -107,10 +154,7 @@
 
   </main>
 
-  <noscript>
-    <div class="fallback">這個展示需要 JavaScript 與 WebGL 才能運作。</div>
-  </noscript>
-
-  <script type="module" src="showcase.js?v=4"></script>
+  <noscript><div class="fallback">這個展示需要 JavaScript 與 WebGL。</div></noscript>
+  <script type="module" src="showcase.js?v=5"></script>
 </body>
 </html>
