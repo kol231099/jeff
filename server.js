@@ -10,8 +10,10 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const JWT_SECRET = process.env.JWT_SECRET;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const OPENAI_EXAM_MODEL = process.env.OPENAI_EXAM_MODEL || 'gpt-4o-mini';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = OPENAI_API_KEY ? new OpenAI({ apiKey: OPENAI_API_KEY }) : null;
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 app.use(express.json({ limit: '1mb' }));
@@ -41,6 +43,11 @@ function publicUser(u) {
     unique_code: u.unique_code,
     bio: u.bio || '',
   };
+}
+function requireOpenAIClient(res) {
+  if (openai) return openai;
+  res.status(503).json({ error: 'OPENAI_API_KEY 尚未設定，請先檢查後端環境變數' });
+  return null;
 }
 
 // ===== Auth =====
@@ -111,6 +118,9 @@ app.get('/api/users/:code', (req, res) => {
 // ===== Taste quiz =====
 app.post('/api/taste-quiz', async (req, res) => {
   try {
+    const ai = requireOpenAIClient(res);
+    if (!ai) return;
+
     const { answers } = req.body;
     const prompt = `你是一位專業的調酒師與品酒顧問。根據用戶的品味測驗，分析他的飲酒人格並推薦 3 款酒。
 
@@ -124,7 +134,7 @@ app.post('/api/taste-quiz', async (req, res) => {
       "flavor_tags": ["標籤1","標籤2","標籤3"], "reason": "1-2 句", "serving_tip": "品飲建議" }
   ]
 }`;
-    const completion = await openai.chat.completions.create({
+    const completion = await ai.chat.completions.create({
       model: 'gpt-4o-mini',
       response_format: { type: 'json_object' },
       messages: [{ role: 'user', content: prompt }],
@@ -148,6 +158,9 @@ app.post('/api/taste-quiz', async (req, res) => {
 // ===== Cocktail generator =====
 app.post('/api/cocktail-generator', async (req, res) => {
   try {
+    const ai = requireOpenAIClient(res);
+    if (!ai) return;
+
     const { preferences } = req.body;
     const prompt = `你是世界級的創意調酒師。根據用戶的偏好，創造一款獨一無二的調酒。
 
@@ -161,7 +174,7 @@ app.post('/api/cocktail-generator', async (req, res) => {
   "ingredients": [{"name":"材料","amount":"份量"}],
   "steps": ["步驟1","步驟2"], "garnish": "裝飾"
 }`;
-    const completion = await openai.chat.completions.create({
+    const completion = await ai.chat.completions.create({
       model: 'gpt-4o-mini',
       response_format: { type: 'json_object' },
       messages: [{ role: 'user', content: prompt }],
@@ -178,6 +191,194 @@ app.post('/api/cocktail-generator', async (req, res) => {
     res.json({ ...result, history_id });
   } catch (err) {
     console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ===== AI exam window test =====
+app.get('/api/ai-exam-health', (req, res) => {
+  res.json({
+    ok: true,
+    openai_ready: Boolean(openai),
+    model: OPENAI_EXAM_MODEL,
+    server_time: new Date().toISOString(),
+  });
+});
+
+app.post('/api/ai-exam-predict', async (req, res) => {
+  try {
+    const ai = requireOpenAIClient(res);
+    if (!ai) return;
+
+    const {
+      source_url = '',
+      page_title = '',
+      visible_text = '',
+      question = '',
+      question_type = '',
+      answer_format = '',
+      options = [],
+      questions = [],
+      captured_at = new Date().toISOString(),
+    } = req.body || {};
+
+    const cleanQuestions = Array.isArray(questions)
+      ? questions
+          .map((item, index) => ({
+            number: Number(item?.number || index + 1),
+            question: String(item?.question || '').slice(0, 800),
+            options: Array.isArray(item?.options)
+              ? item.options
+                  .map((opt, optionIndex) => ({
+                    label: String(opt?.label || String.fromCharCode(65 + optionIndex)).slice(0, 12),
+                    text: String(opt?.text || '').slice(0, 500),
+                  }))
+                  .filter(opt => opt.text)
+              : [],
+          }))
+          .filter(item => item.question || item.options.length > 0)
+      : [];
+
+    const cleanOptions = Array.isArray(options)
+      ? options
+          .map((opt, index) => ({
+            label: String(opt?.label || String.fromCharCode(65 + index)).slice(0, 12),
+            text: String(opt?.text || '').slice(0, 500),
+          }))
+          .filter(opt => opt.text)
+      : [];
+
+    if (!visible_text && !question && cleanOptions.length === 0 && cleanQuestions.length === 0) {
+      return res.status(400).json({ error: '沒有收到可分析的視窗內容' });
+    }
+
+    if (cleanQuestions.length > 0) {
+      const answers = [];
+
+      for (const item of cleanQuestions) {
+        const optionsText = item.options.map(opt => `${opt.label}. ${opt.text}`).join('\n');
+        const singleQuestionPrompt = `你是授權測試網站中的 AI 題目分析器。請分析以下題目，可能是單選題、數字填空題、圖片選擇題或計算題。請只回傳 JSON。
+
+第 ${item.number} 題：
+${item.question}
+
+選項：
+${optionsText}
+
+請回傳：
+{
+  "question_number": ${item.number},
+  "question_text": "題目內容",
+  "recommended_answer": "A 或數字答案，例如 20 V",
+  "confidence": 0.0,
+  "explanation": "簡短理由或計算過程"
+}`;
+
+        try {
+          const completion = await ai.chat.completions.create({
+            model: OPENAI_EXAM_MODEL,
+            response_format: { type: 'json_object' },
+            messages: [{ role: 'user', content: singleQuestionPrompt }],
+            temperature: 0.1,
+          });
+          const parsed = JSON.parse(completion.choices[0].message.content);
+          answers.push({
+            question_number: item.number,
+            question_text: parsed.question_text || item.question,
+            recommended_answer: parsed.recommended_answer || null,
+            confidence: typeof parsed.confidence === 'number' ? parsed.confidence : null,
+            explanation: parsed.explanation || '',
+          });
+        } catch (questionErr) {
+          console.error(`ai exam question ${item.number} error:`, questionErr.message);
+          answers.push({
+            question_number: item.number,
+            question_text: item.question,
+            recommended_answer: null,
+            confidence: null,
+            explanation: '此題分析失敗',
+          });
+        }
+      }
+
+      return res.json({
+        ok: true,
+        result: {
+          question_text: null,
+          options: [],
+          recommended_answer: null,
+          confidence: null,
+          explanation: `已分析 ${answers.length} 題`,
+          answers,
+          detected_from: 'structured',
+        },
+      });
+    }
+
+    const prompt = `你是授權測試網站中的 AI 題目分析器。請根據擷取到的作答視窗內容，判斷題目與選項，提供建議答案。
+
+限制：
+- 只回傳 JSON。
+- 不要要求提交答案。
+- 如果資訊不足，recommended_answer 請填 null，並在 explanation 說明缺少什麼。
+
+擷取時間：${captured_at}
+來源網址：${source_url}
+頁面標題：${page_title}
+
+結構化題目：
+${question || '(未提供)'}
+
+題型：
+${question_type || '(未提供)'}
+
+答案格式：
+${answer_format || '(依題目判斷)'}
+
+結構化選項：
+${cleanOptions.map(opt => `${opt.label}. ${opt.text}`).join('\n') || '(未提供)'}
+
+多題結構化內容：
+${cleanQuestions.length > 0
+  ? cleanQuestions.map(item => {
+      const optionsText = item.options.map(opt => `${opt.label}. ${opt.text}`).join('\n');
+      return `第 ${item.number} 題：${item.question}\n${optionsText}`;
+    }).join('\n\n')
+  : '(未提供)'}
+
+視窗可見文字：
+${String(visible_text).slice(0, 8000)}
+
+請回傳：
+{
+  "question_text": "題目內容",
+  "options": [{"label":"A","text":"選項文字"}],
+  "recommended_answer": "A 或數字答案，例如 20 V",
+  "confidence": 0.0,
+  "explanation": "簡短理由或計算過程",
+  "answers": [
+    {
+      "question_number": 1,
+      "question_text": "題目內容",
+      "recommended_answer": "A",
+      "confidence": 0.0,
+      "explanation": "簡短理由"
+    }
+  ],
+  "detected_from": "structured|visible_text|mixed"
+}`;
+
+    const completion = await ai.chat.completions.create({
+      model: OPENAI_EXAM_MODEL,
+      response_format: { type: 'json_object' },
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.1,
+    });
+
+    const result = JSON.parse(completion.choices[0].message.content);
+    res.json({ ok: true, result });
+  } catch (err) {
+    console.error('ai exam predict error:', err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -450,14 +651,16 @@ ${scored.map((s, i) => `${i + 1}. ${s.name}（答案：${s.latest_ans}）`).join
 回覆 JSON：{ "comments": ["第一位的評語", "第二位的評語", "..."] }`;
 
     let comments = [];
-    try {
-      const completion = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
-        response_format: { type: 'json_object' },
-        messages: [{ role: 'user', content: prompt }],
-      });
-      comments = JSON.parse(completion.choices[0].message.content).comments || [];
-    } catch (e) { console.error('match AI error', e.message); }
+    if (openai) {
+      try {
+        const completion = await openai.chat.completions.create({
+          model: 'gpt-4o-mini',
+          response_format: { type: 'json_object' },
+          messages: [{ role: 'user', content: prompt }],
+        });
+        comments = JSON.parse(completion.choices[0].message.content).comments || [];
+      } catch (e) { console.error('match AI error', e.message); }
+    }
 
     const matches = scored.map((s, i) => ({
       user: { id: s.id, name: s.name, picture: s.picture, unique_code: s.unique_code, bio: s.bio || '' },

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>獨立作答視窗</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ai-exam-window.css?v=10" />
+</head>
+<body>
+  <main class="exam">
+    <div class="status" id="status">視窗已開啟，正在擷取題目內容...</div>
+    <section class="question-box" data-ai-question data-question-type="single_choice" data-expected-answer="A">
+      <div class="exam-label">期末測試題 · 單選題</div>
+      <h1>在直流電路中，若電阻固定，電壓增加時電流會如何變化？</h1>
+      <div class="options" data-ai-options>
+        <label class="option"><input type="radio" name="answer" value="A"> <span data-label="A">A</span> 電流會依比例增加</label>
+        <label class="option"><input type="radio" name="answer" value="B"> <span data-label="B">B</span> 電流會依比例減少</label>
+        <label class="option"><input type="radio" name="answer" value="C"> <span data-label="C">C</span> 電流保持不變</label>
+        <label class="option"><input type="radio" name="answer" value="D"> <span data-label="D">D</span> 電流會先增加再歸零</label>
+      </div>
+    </section>
+    <section class="question-box" data-ai-question data-question-type="numeric" data-answer-format="number_with_unit" data-expected-answer="20 V">
+      <div class="exam-label">期末測試題 · 數字填空</div>
+      <h1>一個 10 歐姆電阻通過 2 安培電流時，電阻兩端電壓是多少？</h1>
+      <div class="calc-hint">請用歐姆定律計算，答案填入數字與單位。</div>
+      <div class="numeric-row">
+        <input class="numeric-answer" type="text" placeholder="請輸入答案，例如 20 V" autocomplete="off">
+      </div>
+    </section>
+    <section class="question-box" data-ai-question data-question-type="single_choice" data-expected-answer="B">
+      <div class="exam-label">期末測試題 · 單選題</div>
+      <h1>理想電壓表在量測電路時，應該如何連接？</h1>
+      <div class="options" data-ai-options>
+        <label class="option"><input type="radio" name="answer3" value="A"> <span data-label="A">A</span> 與被測元件串聯</label>
+        <label class="option"><input type="radio" name="answer3" value="B"> <span data-label="B">B</span> 與被測元件並聯</label>
+        <label class="option"><input type="radio" name="answer3" value="C"> <span data-label="C">C</span> 接在電源內部</label>
+        <label class="option"><input type="radio" name="answer3" value="D"> <span data-label="D">D</span> 不需要接入電路</label>
+      </div>
+    </section>
+    <section class="question-box" data-ai-question data-question-type="calculation_choice" data-expected-answer="C">
+      <div class="exam-label">期末測試題 · 單選題</div>
+      <h1>電阻並聯後的等效電阻，與其中任一個分支電阻相比通常會如何？</h1>
+      <div class="options" data-ai-options>
+        <label class="option"><input type="radio" name="answer4" value="A"> <span data-label="A">A</span> 一定更大</label>
+        <label class="option"><input type="radio" name="answer4" value="B"> <span data-label="B">B</span> 等於最大分支電阻</label>
+        <label class="option"><input type="radio" name="answer4" value="C"> <span data-label="C">C</span> 小於任一分支電阻</label>
+        <label class="option"><input type="radio" name="answer4" value="D"> <span data-label="D">D</span> 無法判斷</label>
+      </div>
+    </section>
+    <section class="question-box" data-ai-question data-question-type="single_choice" data-expected-answer="B">
+      <div class="exam-label">期末測試題 · 單選題</div>
+      <h1>在交流電路中，電容的容抗會隨頻率增加而如何變化？</h1>
+      <div class="options" data-ai-options>
+        <label class="option"><input type="radio" name="answer5" value="A"> <span data-label="A">A</span> 增加</label>
+        <label class="option"><input type="radio" name="answer5" value="B"> <span data-label="B">B</span> 減少</label>
+        <label class="option"><input type="radio" name="answer5" value="C"> <span data-label="C">C</span> 保持不變</label>
+        <label class="option"><input type="radio" name="answer5" value="D"> <span data-label="D">D</span> 變成無限大</label>
+      </div>
+    </section>
+    <section class="question-box" data-ai-question data-question-type="numeric" data-answer-format="number_with_unit" data-expected-answer="2 A">
+      <div class="exam-label">期末測試題 · 計算填空</div>
+      <h1>兩個電阻 4 歐姆與 6 歐姆串聯後接上 20 V 電源，電路電流是多少？</h1>
+      <div class="calc-hint">請先求等效電阻，再用 I = V / R。</div>
+      <div class="numeric-row">
+        <input class="numeric-answer" type="text" placeholder="請輸入答案，例如 2 A" autocomplete="off">
+      </div>
+    </section>
+    <section class="question-box" data-ai-question data-question-type="image_choice" data-expected-answer="B">
+      <div class="exam-label">期末測試題 · 圖片選擇題</div>
+      <h1>下列哪一張圖表示「電壓表與被測電阻並聯」的正確接法？</h1>
+      <div class="image-options" data-ai-options>
+        <button class="image-option" data-label="A" data-ai-desc="電壓表 V 與電阻 R 串聯在主迴路中，這是錯誤接法。">
+          <svg viewBox="0 0 220 120" aria-label="A 串聯電壓表">
+            <path d="M30 60 H70 M130 60 H170 M170 60 V30 H30 V60 M170 60 V90 H30 V60" />
+            <rect x="70" y="45" width="60" height="30" rx="4" />
+            <text x="100" y="65">R</text>
+            <circle cx="150" cy="60" r="18" />
+            <text x="150" y="66">V</text>
+          </svg>
+          <strong>A</strong>
+        </button>
+        <button class="image-option" data-label="B" data-ai-desc="電壓表 V 接在電阻 R 兩端，與電阻並聯，這是正確接法。">
+          <svg viewBox="0 0 220 120" aria-label="B 並聯電壓表">
+            <path d="M30 60 H70 M130 60 H190 M190 60 V30 H30 V60 M190 60 V90 H30 V60" />
+            <rect x="70" y="45" width="60" height="30" rx="4" />
+            <text x="100" y="65">R</text>
+            <path d="M70 45 V20 H130 V45" />
+            <circle cx="100" cy="20" r="16" />
+            <text x="100" y="26">V</text>
+          </svg>
+          <strong>B</strong>
+        </button>
+        <button class="image-option" data-label="C" data-ai-desc="電壓表 V 並聯在電源兩端，不是被測電阻兩端。">
+          <svg viewBox="0 0 220 120" aria-label="C 電源兩端電壓表">
+            <path d="M30 60 H70 M130 60 H190 M190 60 V30 H30 V60 M190 60 V90 H30 V60" />
+            <rect x="70" y="45" width="60" height="30" rx="4" />
+            <text x="100" y="65">R</text>
+            <circle cx="40" cy="90" r="16" />
+            <text x="40" y="96">V</text>
+          </svg>
+          <strong>C</strong>
+        </button>
+      </div>
+    </section>
+    <section class="question-box" data-ai-question data-question-type="image_choice" data-expected-answer="A">
+      <div class="exam-label">期末測試題 · 圖片選擇題</div>
+      <h1>哪一張圖最像電容充電時，電容兩端電壓隨時間變化的曲線？</h1>
+      <div class="image-options" data-ai-options>
+        <button class="image-option" data-label="A" data-ai-desc="曲線由 0 快速上升，之後逐漸趨近固定最大值，符合電容充電電壓曲線。">
+          <svg viewBox="0 0 220 120" aria-label="A 指數上升趨平">
+            <path d="M30 95 H195 M30 95 V20" />
+            <path class="curve" d="M35 92 C70 50, 95 32, 185 28" />
+            <text x="112" y="112">t</text><text x="12" y="24">V</text>
+          </svg>
+          <strong>A</strong>
+        </button>
+        <button class="image-option" data-label="B" data-ai-desc="直線等速上升，並非典型 RC 電容充電曲線。">
+          <svg viewBox="0 0 220 120" aria-label="B 線性上升">
+            <path d="M30 95 H195 M30 95 V20" />
+            <path class="curve" d="M35 92 L185 28" />
+            <text x="112" y="112">t</text><text x="12" y="24">V</text>
+          </svg>
+          <strong>B</strong>
+        </button>
+        <button class="image-option" data-label="C" data-ai-desc="曲線由高往低衰減，這比較像放電而不是充電。">
+          <svg viewBox="0 0 220 120" aria-label="C 指數下降">
+            <path d="M30 95 H195 M30 95 V20" />
+            <path class="curve" d="M35 28 C70 70, 105 88, 185 92" />
+            <text x="112" y="112">t</text><text x="12" y="24">V</text>
+          </svg>
+          <strong>C</strong>
+        </button>
+      </div>
+    </section>
+    <section class="question-box" data-ai-question data-question-type="calculation_choice" data-expected-answer="B">
+      <div class="exam-label">期末測試題 · 計算選擇題</div>
+      <h1>一個 100 歐姆電阻與 100 歐姆電阻並聯，等效電阻是多少？</h1>
+      <div class="options" data-ai-options>
+        <label class="option"><input type="radio" name="answer8" value="A"> <span data-label="A">A</span> 25 Ω</label>
+        <label class="option"><input type="radio" name="answer8" value="B"> <span data-label="B">B</span> 50 Ω</label>
+        <label class="option"><input type="radio" name="answer8" value="C"> <span data-label="C">C</span> 100 Ω</label>
+        <label class="option"><input type="radio" name="answer8" value="D"> <span data-label="D">D</span> 200 Ω</label>
+      </div>
+    </section>
+    <aside class="note">
+      本視窗模擬「開始作答」後跳出的獨立頁面。
+    </aside>
+    <section class="prediction" id="prediction" style="display:none;"></section>
+  </main>
+
+  <div class="answer-flash" id="answerFlash" aria-hidden="true"></div>
+
+  <script src="ai-exam-window.js?v=10"></script>
+</body>
+</html>

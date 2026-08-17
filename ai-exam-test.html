@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI 考題視窗測試 · PourMatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ai-exam-test.css?v=4" />
+</head>
+<body>
+  <main class="shell">
+    <section class="panel">
+      <div class="eyebrow">missioncookies.cv 測試模式</div>
+      <h1>正式流程模擬</h1>
+      <p class="lead">這頁會先開啟 iLearning 登入模擬頁。帳密任意輸入後進到期末考入口，系統偵測到入口 URL 後，你按「開始作答」才會跳出獨立作答視窗並開始 AI 分析。</p>
+
+      <div class="toolbar">
+        <button id="startBtn" class="primary">開啟登入模擬</button>
+        <button id="resetBtn" class="secondary">重置</button>
+      </div>
+
+      <div class="timeline" id="timeline">
+        <div class="step active">開啟登入頁</div>
+        <div class="step">登入後進入課程</div>
+        <div class="step">偵測 view.php?id=251494</div>
+        <div class="step">等待開始作答新視窗</div>
+        <div class="step">擷取視窗內容</div>
+        <div class="step">AI 預測題目</div>
+      </div>
+    </section>
+
+    <section class="result" id="result">
+      <div class="empty">尚未開始測試</div>
+    </section>
+  </main>
+
+  <script src="ai-exam-test.js?v=4"></script>
+</body>
+</html>
