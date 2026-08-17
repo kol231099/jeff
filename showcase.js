@@ -331,9 +331,9 @@ scene.add(key);
 const fillLight = new THREE.DirectionalLight(0xBFD0FF, 1.1);
 fillLight.position.set(7, 5, -6);
 scene.add(fillLight);
-const rimGold = new THREE.PointLight(0xFFB547, 80, 30, 2); rimGold.position.set(6.5, 7.5, -4); scene.add(rimGold);
-const rimPink = new THREE.PointLight(0xFF4D8D, 62, 28, 2); rimPink.position.set(-7, 4.5, -5); scene.add(rimPink);
-const innerLight = new THREE.PointLight(0xFF9A4D, 24, 9, 2); innerLight.position.set(0, 5.4, 0); scene.add(innerLight);
+const rimGold = new THREE.PointLight(0xFFB547, 26, 30, 2); rimGold.position.set(6.5, 7.5, -4); scene.add(rimGold);
+const rimPink = new THREE.PointLight(0xFF4D8D, 20, 28, 2); rimPink.position.set(-7, 4.5, -5); scene.add(rimPink);
+const innerLight = new THREE.PointLight(0xFF9A4D, 14, 9, 2); innerLight.position.set(0, 5.4, 0); scene.add(innerLight);
 
 /* ---------------- 地面陰影與焦散 ---------------- */
 function radialTex(stops, size = 512) {
@@ -366,7 +366,7 @@ let composer = null, bloom = null;
 if (!lowPower) {
   composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.5, 0.9, 0.7);
+  bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.28, 0.7, 0.86);
   composer.addPass(bloom);
   composer.addPass(new OutputPass());
   composer.setPixelRatio(renderer.getPixelRatio());
@@ -495,7 +495,7 @@ function frame() {
   bubbleMat.uniforms.uTime.value = clock.elapsedTime;
   bubbleMat.uniforms.uOpacity.value = k.bub * (1 - e) * Math.min(1, k.fill * 1.6);
 
-  if (bloom) bloom.strength = 0.5 + k.dust * 0.35 + k.morph * 0.5;
+  if (bloom) bloom.strength = 0.28 + k.dust * 0.2 + k.morph * 0.3;
 
   bgLayer.style.backgroundColor = k.bg;
   document.documentElement.style.setProperty('--ink', k.ink);
