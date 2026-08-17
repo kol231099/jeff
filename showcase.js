@@ -43,7 +43,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, lowPower ? 1.5 : 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.15;
+renderer.toneMappingExposure = 1.32;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 const scene = new THREE.Scene();
@@ -59,7 +59,7 @@ pmrem.compileEquirectangularShader();
 const envRT = pmrem.fromScene(new RoomEnvironment(), 0.04);
 scene.environment = envRT.texture;
 // RoomEnvironment 是明亮的攝影棚，直接用會把玻璃洗白，壓低到只留反射細節
-scene.environmentIntensity = 0.38;
+scene.environmentIntensity = 0.62;
 step();
 
 // ---------- 酒杯輪廓 ----------
@@ -152,10 +152,12 @@ const liquidMat = new THREE.MeshPhysicalMaterial({
   vertexColors: true,
   metalness: 0,
   roughness: 0.14,
-  transmission: 0.72,
-  thickness: 2.6,
+  transmission: 0.55,
+  thickness: 2.2,
   ior: 1.36,
-  attenuationDistance: 3.2,
+  emissive: new THREE.Color('#FF3D82'),
+  emissiveIntensity: 0.16,
+  attenuationDistance: 4.5,
   attenuationColor: new THREE.Color('#FF5FA0'),
   envMapIntensity: 1.1,
   transparent: true,
@@ -220,7 +222,7 @@ caustic.position.y = 0.02;
 scene.add(caustic);
 
 // ---------- 燈光：環境貼圖負責反射，這些負責造型與品牌色 ----------
-const key = new THREE.DirectionalLight(0xffffff, 2.4);
+const key = new THREE.DirectionalLight(0xffffff, 3.1);
 key.position.set(-6, 12, 8);
 scene.add(key);
 
@@ -235,6 +237,11 @@ scene.add(rimPink);
 const rimPurple = new THREE.PointLight(0x7B5CFF, 55, 26, 2);
 rimPurple.position.set(0, 2.2, 9);
 scene.add(rimPurple);
+
+// 杯內的小燈：讓酒液像從內部被點亮，是這種鏡頭最有效的一招
+const inner = new THREE.PointLight(0xFF9A4D, 26, 9, 2);
+inner.position.set(0, 5.4, 0);
+scene.add(inner);
 step();
 
 // ---------- 後製 ----------
