@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>THE POUR · PourMatch 3D 展示</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="showcase.css?v=1" />
+</head>
+<body>
+
+  <!-- 載入畫面 -->
+  <div class="loader" id="loader">
+    <svg class="loader-ring" viewBox="0 0 300 300">
+      <circle cx="150" cy="150" r="130" class="ring-track" />
+      <circle cx="150" cy="150" r="130" class="ring-fill" id="loaderRing" />
+    </svg>
+    <div class="loader-center">
+      <div class="loader-label">Now loading</div>
+      <div class="loader-pct" id="loaderPct">0%</div>
+    </div>
+  </div>
+
+  <!-- 3D 畫布：固定不動，由捲動驅動 -->
+  <canvas id="scene"></canvas>
+
+  <!-- 頂部列 -->
+  <header class="sc-top">
+    <a class="sc-back" href="index.html">← 回到 PourMatch</a>
+    <div class="sc-mark">THE POUR</div>
+    <div class="sc-meta">03 · DEMO</div>
+  </header>
+
+  <!-- 捲動進度軌 -->
+  <div class="rail"><div class="rail-fill" id="railFill"></div></div>
+
+  <!-- 捲動內容：每一節對應一個鏡位 -->
+  <main class="scroller" id="scroller">
+
+    <section class="act act-hero in">
+      <div class="act-inner center">
+        <div class="eyebrow">程式化生成 · 即時運算 · 無貼圖素材</div>
+        <h1 class="title">
+          <span class="t-line">一杯酒的</span>
+          <span class="t-line grad">每一個細節</span>
+        </h1>
+        <p class="lede">
+          這不是一張圖，也不是影片。<br />
+          整杯酒在你的裝置上即時運算，玻璃的折射是真的。
+        </p>
+        <div class="scroll-cue"><span>向下捲動</span><i></i></div>
+      </div>
+    </section>
+
+    <section class="act">
+      <div class="act-inner left">
+        <div class="num">01</div>
+        <h2>倒入</h2>
+        <p>
+          酒液沿著杯壁上升，顏色由底部的深紫過渡到液面的琥珀金。
+          這個漸層寫在每一個頂點上，隨著液面高度重新計算，而不是一張預先畫好的貼圖。
+        </p>
+      </div>
+    </section>
+
+    <section class="act">
+      <div class="act-inner right">
+        <div class="num">02</div>
+        <h2>折射</h2>
+        <p>
+          玻璃使用 1.52 的折射率 —— 鈉鈣玻璃的真實數值。
+          你看到杯壁後方的景物被彎折、被壓縮，那是光線真的穿過了玻璃厚度，
+          不是把透明度調低的假象。
+        </p>
+      </div>
+    </section>
+
+    <section class="act">
+      <div class="act-inner left">
+        <div class="num">03</div>
+        <h2>接地</h2>
+        <p>
+          杯底有兩層陰影：緊貼杯腳的接觸陰影，以及擴散開的柔邊落影。
+          再加上酒液透光後灑在地面的彩色光池 —— 深色場景裡，
+          真正讓物件「站在」平面上的是光，不是暗。
+        </p>
+      </div>
+    </section>
+
+    <section class="act act-end">
+      <div class="act-inner center">
+        <div class="num">04</div>
+        <h2>你的那一杯</h2>
+        <p>
+          這杯是程式生成的。下一杯，由 AI 依你的品味調製。
+        </p>
+        <div class="end-cta">
+          <a href="quiz.html" class="sc-btn primary">開始品味測驗</a>
+          <a href="cocktail.html" class="sc-btn">調酒生成器</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <noscript>
+    <div class="fallback">這個展示需要 JavaScript 與 WebGL 才能運作。</div>
+  </noscript>
+
+  <script type="module" src="showcase.js?v=1"></script>
+</body>
+</html>
