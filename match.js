@@ -8,6 +8,7 @@ let pollTimer = null;      // 聊天室輪詢
 let roomsTimer = null;     // 未讀數輪詢
 let openRoom = null;       // 目前開啟的房間
 let lastMsgId = 0;
+let lastRendered = null;   // 用來判斷連續訊息是否收合
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g,
   c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -155,6 +156,7 @@ function showMatch(name, pic, pct, roomId) {
 async function loadRooms() {
   stopPolling();
   openRoom = null;
+  document.body.classList.remove('chat-open');
   body.innerHTML = loadingCard('載入聊天室…');
   try {
     const r = await api('/api/rooms');
@@ -190,6 +192,8 @@ async function enterRoom(roomId) {
   stopPolling();
   openRoom = roomId;
   lastMsgId = 0;
+  lastRendered = null;
+  document.body.classList.add('chat-open');
 
   const r = await api('/api/rooms');
   const { rooms } = await r.json();
@@ -213,7 +217,7 @@ async function enterRoom(roomId) {
       </form>
     </div>`;
 
-  document.getElementById('chatBack').onclick = () => loadRooms();
+  document.getElementById('chatBack').onclick = () => { document.body.classList.remove('chat-open'); loadRooms(); };
   document.getElementById('chatForm').onsubmit = sendMessage;
 
   await pullMessages(true);
@@ -232,20 +236,36 @@ async function pullMessages(initial) {
 
     const log = document.getElementById('chatLog');
     if (!log) return;
+
     if (initial && !messages.length) {
       log.innerHTML = `<div class="chat-empty">還沒有訊息。你們的味覺很接近，從喜歡的酒聊起吧。</div>`;
+      return;
     }
-    if (messages.length) {
-      if (initial) log.innerHTML = '';
-      log.insertAdjacentHTML('beforeend', messages.map(m => `
-        <div class="bubble ${m.mine ? 'mine' : 'theirs'}">
-          <div class="bubble-body">${esc(m.body)}</div>
-          <div class="bubble-time">${new Date(m.created_at * 1000).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })}</div>
-        </div>`).join(''));
-      lastMsgId = messages[messages.length - 1].id;
-      log.scrollTop = log.scrollHeight;
-      api(`/api/rooms/${openRoom}/read`, { method: 'POST', body: JSON.stringify({ up_to: lastMsgId }) });
-    }
+    if (!messages.length) return;
+
+    // 有訊息就一定要把空狀態拿掉，否則它的 margin:auto 會把訊息撐開
+    if (initial) log.innerHTML = '';
+    else log.querySelector('.chat-empty')?.remove();
+
+    const fmtTime = ts => new Date(ts * 1000)
+      .toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
+
+    log.insertAdjacentHTML('beforeend', messages.map((m, i) => {
+      const prev = i > 0 ? messages[i - 1] : lastRendered;
+      // 同一人連續發言且在 5 分鐘內就收合，時間只在群組最後一則顯示
+      const grouped = prev && prev.mine === m.mine && (m.created_at - prev.created_at) < 300;
+      const next = messages[i + 1];
+      const showTime = !next || next.mine !== m.mine || (next.created_at - m.created_at) >= 300;
+      return `<div class="bubble ${m.mine ? 'mine' : 'theirs'}${grouped ? ' grouped' : ''}">
+        <div class="bubble-body">${esc(m.body)}</div>
+        ${showTime ? `<div class="bubble-time">${fmtTime(m.created_at)}</div>` : ''}
+      </div>`;
+    }).join(''));
+
+    lastRendered = messages[messages.length - 1];
+    lastMsgId = lastRendered.id;
+    log.scrollTop = log.scrollHeight;
+    api(`/api/rooms/${openRoom}/read`, { method: 'POST', body: JSON.stringify({ up_to: lastMsgId }) });
   } catch { /* 輪詢失敗就等下一次，不打斷使用者 */ }
 }
 
@@ -311,6 +331,7 @@ function switchTab(tab) {
   currentTab = tab;
   stopPolling();
   openRoom = null;
+  document.body.classList.remove('chat-open');
   tabsEl.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
   if (tab === 'rooms') loadRooms();
   else if (tab === 'group') renderGroup();

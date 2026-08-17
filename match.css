@@ -253,11 +253,24 @@
 }
 
 /* 聊天室 */
-.chat-wrap { padding: 0; overflow: hidden; display: flex; flex-direction: column; height: 68vh; min-height: 420px; }
+/* 進入房間時把頁首與分頁收起來，讓聊天佔滿畫面 */
+body.chat-open .social-header,
+body.chat-open .tabs { display: none; }
+
+.chat-wrap {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 200px);
+  min-height: 460px;
+}
 .chat-head {
   display: flex; align-items: center; gap: 12px;
-  padding: 16px 18px;
+  padding: 14px 18px;
   border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.02);
+  flex-shrink: 0;
 }
 .chat-back {
   background: rgba(255, 255, 255, 0.05);
@@ -267,68 +280,100 @@
   border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
+  flex-shrink: 0;
 }
-.chat-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+.chat-back:hover { background: rgba(255, 255, 255, 0.1); }
+.chat-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
 .chat-name { font-size: 15px; font-weight: 700; }
 .chat-status { font-size: 12px; color: var(--text-dim); }
 
 .chat-log {
   flex: 1;
   overflow-y: auto;
-  padding: 20px 18px;
-  display: flex; flex-direction: column; gap: 10px;
+  overscroll-behavior: contain;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
-.chat-empty { text-align: center; color: var(--text-dim); font-size: 14px; margin: auto; padding: 0 20px; }
-.bubble { max-width: 74%; }
-.bubble.mine { align-self: flex-end; text-align: right; }
+/* 只有在完全沒有訊息時才會出現，撐滿並置中 */
+.chat-empty {
+  margin: auto;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 14px;
+  max-width: 320px;
+  line-height: 1.8;
+}
+
+.bubble { max-width: 72%; margin-top: 10px; }
+.bubble.grouped { margin-top: 2px; }   /* 同一人連續發言收合 */
+.bubble.mine { align-self: flex-end; }
 .bubble.theirs { align-self: flex-start; }
+
 .bubble-body {
-  padding: 11px 15px;
-  border-radius: 16px;
+  padding: 10px 14px;
+  border-radius: 18px;
   font-size: 14.5px;
-  line-height: 1.6;
+  line-height: 1.55;
   word-break: break-word;
   white-space: pre-wrap;
 }
 .bubble.mine .bubble-body {
-  background: linear-gradient(135deg, rgba(255, 181, 71, 0.9), rgba(255, 77, 141, 0.9));
-  color: #14141A;
-  border-bottom-right-radius: 5px;
+  background: linear-gradient(135deg, #FFB547, #FF4D8D);
+  color: #1a0b12;
+  font-weight: 500;
+  border-bottom-right-radius: 6px;
 }
+.bubble.mine.grouped .bubble-body { border-top-right-radius: 6px; }
 .bubble.theirs .bubble-body {
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.08);
   border: 1px solid var(--border);
-  border-bottom-left-radius: 5px;
+  color: var(--text);
+  border-bottom-left-radius: 6px;
 }
-.bubble-time { font-size: 10.5px; color: var(--text-dim); margin-top: 4px; }
+.bubble.theirs.grouped .bubble-body { border-top-left-radius: 6px; }
+
+.bubble-time {
+  font-size: 10.5px;
+  color: var(--text-dim);
+  margin-top: 3px;
+  padding: 0 6px;
+}
+.bubble.mine .bubble-time { text-align: right; }
 
 .chat-form {
   display: flex; gap: 10px;
   padding: 14px 16px;
   border-top: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.02);
+  flex-shrink: 0;
 }
 .chat-input {
   flex: 1;
-  padding: 13px 16px;
+  padding: 13px 18px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 100px;
   color: var(--text);
   font-family: inherit;
   font-size: 14.5px;
 }
 .chat-input:focus { outline: none; border-color: rgba(123, 92, 255, 0.6); }
+.chat-input::placeholder { color: var(--text-dim); }
 .chat-send {
-  padding: 13px 24px;
+  padding: 13px 26px;
   border: none;
-  border-radius: 12px;
+  border-radius: 100px;
   background: linear-gradient(135deg, #FFB547, #FF4D8D, #7B5CFF);
   color: #fff;
   font-family: inherit;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
+  flex-shrink: 0;
 }
+.chat-send:hover { filter: brightness(1.08); }
 
 /* 群組說明 */
 .group-card { padding: 36px 30px; }
@@ -368,6 +413,6 @@
   .tabs { gap: 6px; }
   .tab { padding: 9px 14px; font-size: 13px; }
   .cand-grid { grid-template-columns: 1fr; }
-  .chat-wrap { height: 74vh; }
+  .chat-wrap { height: calc(100vh - 150px); min-height: 0; }
   .bubble { max-width: 85%; }
 }
