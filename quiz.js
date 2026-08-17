@@ -12,11 +12,61 @@ const QUESTIONS = [
     ],
   },
   {
+    id: 'aroma',
+    title: '哪些香氣會讓你想多聞兩下？',
+    subtitle: '可以複選，選越多我們越懂你',
+    type: 'multi',
+    options: [
+      { value: 'citrus', emoji: '🍊', label: '柑橘皮油', desc: '檸檬、葡萄柚、橙皮' },
+      { value: 'floral', emoji: '🌸', label: '花香調', desc: '接骨木、玫瑰、洋甘菊' },
+      { value: 'spice', emoji: '🌶️', label: '辛香料', desc: '肉桂、丁香、黑胡椒' },
+      { value: 'wood', emoji: '🪵', label: '木質陳年', desc: '橡木桶、香草、雪茄盒' },
+      { value: 'tropical', emoji: '🥭', label: '熱帶果香', desc: '芒果、百香果、鳳梨' },
+      { value: 'herbal', emoji: '🌿', label: '草本藥草', desc: '迷迭香、羅勒、苦艾' },
+      { value: 'roast', emoji: '☕', label: '烘焙焦香', desc: '咖啡、可可、堅果' },
+      { value: 'mineral', emoji: '🧂', label: '礦石鹹感', desc: '海風、燧石、鹽花' },
+    ],
+  },
+  {
+    id: 'texture',
+    title: '入口的口感，你偏好哪一種？',
+    type: 'single',
+    options: [
+      { value: 'sparkling', emoji: '🫧', label: '氣泡跳躍', desc: '刺刺的、有生命力' },
+      { value: 'silky', emoji: '🥛', label: '絲滑綿密', desc: '像天鵝絨滑過舌尖' },
+      { value: 'crisp', emoji: '❄️', label: '清爽俐落', desc: '乾淨、不留餘韻' },
+      { value: 'viscous', emoji: '🍯', label: '濃稠厚重', desc: '掛杯、口感飽滿' },
+    ],
+  },
+  {
     id: 'strength',
     title: '你喜歡多強烈的酒精感？',
     type: 'slider',
     min: 1, max: 5, default: 3,
     labels: ['入口即化', '微醺怡人', '均衡有感', '烈火燒心', '直球強勁'],
+  },
+  {
+    id: 'sourness',
+    title: '對酸度的接受程度呢？',
+    type: 'slider',
+    min: 1, max: 5, default: 3,
+    labels: ['完全不要酸', '一點點就好', '酸甜平衡', '喜歡明亮酸感', '越酸越開心'],
+  },
+  {
+    id: 'base',
+    title: '有偏愛的基酒嗎？',
+    subtitle: '可以複選，沒有特別偏好就選「都想試試」',
+    type: 'multi',
+    options: [
+      { value: 'gin', emoji: '🌲', label: '琴酒', desc: '杜松子與植物香' },
+      { value: 'whisky', emoji: '🥃', label: '威士忌', desc: '穀物與桶陳' },
+      { value: 'rum', emoji: '🏝️', label: '蘭姆酒', desc: '甘蔗與焦糖' },
+      { value: 'tequila', emoji: '🌵', label: '龍舌蘭', desc: '青草與土地味' },
+      { value: 'vodka', emoji: '💎', label: '伏特加', desc: '乾淨中性' },
+      { value: 'brandy', emoji: '🍇', label: '白蘭地', desc: '果實蒸餾陳年' },
+      { value: 'sake', emoji: '🍶', label: '清酒 / 燒酎', desc: '米香與東方調' },
+      { value: 'any', emoji: '🎲', label: '都想試試', desc: '交給 AI 決定' },
+    ],
   },
   {
     id: 'mood',
@@ -39,6 +89,24 @@ const QUESTIONS = [
       { value: 'restaurant', emoji: '🍽️', label: '餐酒搭配', desc: '與美食共舞' },
       { value: 'outdoor', emoji: '🌌', label: '戶外露營', desc: '星空下的微醺' },
     ],
+  },
+  {
+    id: 'timing',
+    title: '最想來一杯的時刻是？',
+    type: 'single',
+    options: [
+      { value: 'aperitif', emoji: '🌇', label: '傍晚開胃', desc: '下班後的第一杯' },
+      { value: 'dinner', emoji: '🍽️', label: '佐餐時光', desc: '配著菜一起慢慢喝' },
+      { value: 'late', emoji: '🌃', label: '深夜獨飲', desc: '城市安靜下來之後' },
+      { value: 'brunch', emoji: '☀️', label: '週末白天', desc: '陽光下的微醺' },
+    ],
+  },
+  {
+    id: 'adventure',
+    title: '你有多想嘗試沒喝過的東西？',
+    type: 'slider',
+    min: 1, max: 5, default: 3,
+    labels: ['只喝我熟悉的', '偶爾換換口味', '一半經典一半新奇', '想被推坑', '越沒聽過越好'],
   },
   {
     id: 'personality',
@@ -64,6 +132,14 @@ const QUESTIONS = [
   },
 ];
 
+// 判斷某題是否已作答（多選要看陣列長度，滑桿永遠算已答）
+function isAnswered(q) {
+  if (q.type === 'slider') return true;
+  const a = answers[q.id];
+  if (q.type === 'multi') return Array.isArray(a) && a.length > 0;
+  return Boolean(a);
+}
+
 let currentIdx = 0;
 const answers = {};
 
@@ -85,12 +161,16 @@ function renderQuestion() {
     <div class="question-card">
       <div class="question-num">Q${String(currentIdx + 1).padStart(2, '0')}</div>
       <h2 class="question-title">${q.title}</h2>
+      ${q.subtitle ? `<p class="question-subtitle">${q.subtitle}</p>` : ''}
   `;
 
-  if (q.type === 'single') {
+  if (q.type === 'single' || q.type === 'multi') {
+    const picked = q.type === 'multi' ? (answers[q.id] || []) : answers[q.id];
     html += `<div class="options-grid">`;
     q.options.forEach(opt => {
-      const selected = answers[q.id] === opt.value ? 'selected' : '';
+      const selected = q.type === 'multi'
+        ? (picked.includes(opt.value) ? 'selected' : '')
+        : (picked === opt.value ? 'selected' : '');
       html += `
         <button class="option-card ${selected}" data-value="${opt.value}">
           <div class="option-emoji">${opt.emoji}</div>
@@ -119,7 +199,7 @@ function renderQuestion() {
   html += `
       <div class="quiz-controls">
         <button class="btn-back" id="btnBack" ${currentIdx === 0 ? 'disabled' : ''}>← 上一題</button>
-        <button class="btn-next" id="btnNext" ${!answers[q.id] && q.type !== 'slider' ? 'disabled' : ''}>
+        <button class="btn-next" id="btnNext" ${isAnswered(q) ? '' : 'disabled'}>
           ${currentIdx === total - 1 ? '開始 AI 分析 ✨' : '下一題 →'}
         </button>
       </div>
@@ -130,10 +210,18 @@ function renderQuestion() {
   // 綁定事件
   container.querySelectorAll('.option-card').forEach(card => {
     card.addEventListener('click', () => {
-      answers[q.id] = card.dataset.value;
-      container.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
-      document.getElementById('btnNext').disabled = false;
+      const val = card.dataset.value;
+      if (q.type === 'multi') {
+        const arr = answers[q.id] || (answers[q.id] = []);
+        const i = arr.indexOf(val);
+        if (i >= 0) arr.splice(i, 1); else arr.push(val);
+        card.classList.toggle('selected');
+      } else {
+        answers[q.id] = val;
+        container.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+      }
+      document.getElementById('btnNext').disabled = !isAnswered(q);
     });
   });
 
@@ -206,8 +294,23 @@ function renderResult(data) {
   result.style.display = 'block';
   document.getElementById('profileText').textContent = data.profile || '';
 
+  const nickEl = document.getElementById('profileNickname');
+  if (nickEl) {
+    nickEl.textContent = data.nickname || '';
+    nickEl.style.display = data.nickname ? '' : 'none';
+  }
+
+  const traitsEl = document.getElementById('profileTraits');
+  if (traitsEl) {
+    traitsEl.innerHTML = (data.traits || []).map(t => `<span class="trait-chip">${t}</span>`).join('');
+  }
+
+  const recs = data.recommendations || [];
+  const countEl = document.getElementById('recCount');
+  if (countEl) countEl.textContent = `${recs.length} 款推薦`;
+
   const grid = document.getElementById('recGrid');
-  grid.innerHTML = (data.recommendations || []).map(r => `
+  grid.innerHTML = recs.map(r => `
     <div class="rec-card">
       <div class="rec-score">
         <span class="rec-score-num">${r.match_score || '--'}</span>
@@ -215,11 +318,13 @@ function renderResult(data) {
       </div>
       <div class="rec-name">${r.name}</div>
       <div class="rec-category">${r.category || ''}</div>
+      ${r.origin ? `<div class="rec-origin">📍 ${r.origin}</div>` : ''}
       <div class="rec-tags">
         ${(r.flavor_tags || []).map(t => `<span class="rec-tag">${t}</span>`).join('')}
       </div>
       <div class="rec-reason">${r.reason || ''}</div>
       <div class="rec-tip"><strong>品飲建議：</strong>${r.serving_tip || ''}</div>
+      ${r.food_pairing ? `<div class="rec-tip"><strong>餐搭：</strong>${r.food_pairing}</div>` : ''}
     </div>
   `).join('');
 

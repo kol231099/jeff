@@ -6,7 +6,26 @@ const state = {
   sweet: 3,
   strong: 3,
   free_text: '',
+  // ===== 進階模式 =====
+  adv_texture: [],
+  adv_sour: 3,
+  adv_bitter: 3,
+  adv_ice: null,
+  adv_glass: null,
+  adv_complexity: null,
+  adv_technique: [],
+  adv_inspiration: null,
+  adv_color: null,
+  adv_diet: [],
+  adv_naming: null,
 };
+
+// 進階欄位清單，用於統計「已設定幾項」與組裝送出的 payload
+const ADV_CHIP_FIELDS = [
+  'adv_texture', 'adv_ice', 'adv_glass', 'adv_complexity',
+  'adv_technique', 'adv_inspiration', 'adv_color', 'adv_diet', 'adv_naming',
+];
+const ADV_SLIDER_DEFAULTS = { adv_sour: 3, adv_bitter: 3 };
 
 // Chip 多選 / 單選
 document.querySelectorAll('.chip-group').forEach(group => {
@@ -22,10 +41,17 @@ document.querySelectorAll('.chip-group').forEach(group => {
         const idx = arr.indexOf(val);
         if (idx >= 0) arr.splice(idx, 1); else arr.push(val);
       } else {
-        group.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-        chip.classList.add('selected');
-        state[field] = val;
+        // 再點一次已選中的項目視為取消
+        if (state[field] === val) {
+          chip.classList.remove('selected');
+          state[field] = null;
+        } else {
+          group.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+          chip.classList.add('selected');
+          state[field] = val;
+        }
       }
+      if (field.startsWith('adv_')) updateAdvCount();
     });
   });
 });
@@ -47,9 +73,94 @@ document.getElementById('freeText').addEventListener('input', e => {
   state.free_text = e.target.value;
 });
 
+// ===== 進階模式：滑桿、開關、計數 =====
+const sourSlider = document.getElementById('sourSlider');
+const bitterSlider = document.getElementById('bitterSlider');
+sourSlider.addEventListener('input', e => {
+  state.adv_sour = Number(e.target.value);
+  document.getElementById('sourVal').textContent = state.adv_sour;
+  updateAdvCount();
+});
+bitterSlider.addEventListener('input', e => {
+  state.adv_bitter = Number(e.target.value);
+  document.getElementById('bitterVal').textContent = state.adv_bitter;
+  updateAdvCount();
+});
+
+// 計算使用者實際動過的進階項目數量（滑桿維持預設值不算）
+function countAdvanced() {
+  let n = 0;
+  ADV_CHIP_FIELDS.forEach(f => {
+    const v = state[f];
+    if (Array.isArray(v)) { if (v.length) n++; }
+    else if (v) n++;
+  });
+  Object.entries(ADV_SLIDER_DEFAULTS).forEach(([f, def]) => {
+    if (state[f] !== def) n++;
+  });
+  return n;
+}
+
+function updateAdvCount() {
+  const n = countAdvanced();
+  const badge = document.getElementById('advCount');
+  const btn = document.getElementById('advancedBtn');
+  badge.textContent = n;
+  badge.hidden = n === 0;
+  btn.classList.toggle('has-advanced', n > 0);
+}
+
+// 只有實際設定過項目，才把進階偏好送給後端
+function buildAdvancedPayload() {
+  if (countAdvanced() === 0) return null;
+  const adv = {};
+  ADV_CHIP_FIELDS.forEach(f => {
+    const v = state[f];
+    if (Array.isArray(v) ? v.length : v) adv[f.replace('adv_', '')] = v;
+  });
+  Object.keys(ADV_SLIDER_DEFAULTS).forEach(f => {
+    adv[f.replace('adv_', '')] = state[f];
+  });
+  return adv;
+}
+
+const advOverlay = document.getElementById('advOverlay');
+
+function openAdvanced() {
+  advOverlay.hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+function closeAdvanced() {
+  advOverlay.hidden = true;
+  document.body.style.overflow = '';
+}
+
+document.getElementById('advancedBtn').addEventListener('click', openAdvanced);
+document.getElementById('advClose').addEventListener('click', closeAdvanced);
+document.getElementById('advDone').addEventListener('click', closeAdvanced);
+advOverlay.addEventListener('click', e => {
+  if (e.target === advOverlay) closeAdvanced();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !advOverlay.hidden) closeAdvanced();
+});
+
+document.getElementById('advReset').addEventListener('click', () => {
+  ADV_CHIP_FIELDS.forEach(f => { state[f] = Array.isArray(state[f]) ? [] : null; });
+  Object.entries(ADV_SLIDER_DEFAULTS).forEach(([f, def]) => { state[f] = def; });
+  advOverlay.querySelectorAll('.chip.selected').forEach(c => c.classList.remove('selected'));
+  sourSlider.value = ADV_SLIDER_DEFAULTS.adv_sour;
+  bitterSlider.value = ADV_SLIDER_DEFAULTS.adv_bitter;
+  document.getElementById('sourVal').textContent = ADV_SLIDER_DEFAULTS.adv_sour;
+  document.getElementById('bitterVal').textContent = ADV_SLIDER_DEFAULTS.adv_bitter;
+  updateAdvCount();
+});
+
 // 生成
 document.getElementById('generateBtn').addEventListener('click', async () => {
-  if (state.base_spirit.length === 0 && state.flavors.length === 0 && !state.mood && !state.free_text) {
+  const advanced = buildAdvancedPayload();
+  if (state.base_spirit.length === 0 && state.flavors.length === 0 && !state.mood
+      && !state.free_text && !advanced) {
     alert('至少選擇一項偏好，或在自由文字欄留言');
     return;
   }
@@ -74,7 +185,17 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
     const resp = await fetch('/api/cocktail-generator', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ preferences: state }),
+      body: JSON.stringify({
+        preferences: {
+          base_spirit: state.base_spirit,
+          flavors: state.flavors,
+          mood: state.mood,
+          sweet: state.sweet,
+          strong: state.strong,
+          free_text: state.free_text,
+        },
+        advanced,
+      }),
     });
     const data = await resp.json();
     clearInterval(tipInterval);
@@ -140,11 +261,60 @@ function renderCocktail(data) {
   document.getElementById('stepsList').innerHTML =
     (data.steps || []).map(s => `<li>${s}</li>`).join('');
 
+  // 進階模式的額外欄位
+  renderAdvancedResult(data);
+
   // 根據顏色描述改酒液漸層（簡單情境式變色）
   tintLiquidByColor(data.color || '');
 
   lastCocktailData = data;
   injectPublishRow('cocktail', data.history_id);
+}
+
+// 進階模式回傳的規格與延伸內容，基本模式不會有這些欄位
+function renderAdvancedResult(data) {
+  const wrap = document.getElementById('advResult');
+  if (!wrap) return;
+
+  const specs = [
+    { label: '技法', value: data.technique },
+    { label: '難度', value: data.difficulty },
+    { label: '製作時間', value: data.prep_time },
+    { label: '推估酒精濃度', value: data.abv_estimate },
+  ].filter(s => s.value);
+
+  const proTips = data.pro_tips || [];
+  const variations = data.variations || [];
+  const mocktail = data.mocktail_version;
+
+  if (!specs.length && !proTips.length && !variations.length && !mocktail) {
+    wrap.hidden = true;
+    return;
+  }
+  wrap.hidden = false;
+
+  document.getElementById('advSpecGrid').innerHTML = specs.map(s => `
+    <div class="adv-spec">
+      <div class="adv-spec-label">${s.label}</div>
+      <div class="adv-spec-value">${s.value}</div>
+    </div>
+  `).join('');
+
+  const tipsBox = document.getElementById('advProTips');
+  tipsBox.hidden = proTips.length === 0;
+  document.getElementById('proTipsList').innerHTML = proTips.map(t => `<li>${t}</li>`).join('');
+
+  const varBox = document.getElementById('advVariations');
+  varBox.hidden = variations.length === 0;
+  document.getElementById('variationsList').innerHTML = variations.map(v =>
+    typeof v === 'string'
+      ? `<li>${v}</li>`
+      : `<li><strong>${v.name || ''}</strong>${v.name ? '：' : ''}${v.description || ''}</li>`
+  ).join('');
+
+  const mockBox = document.getElementById('advMocktail');
+  mockBox.hidden = !mocktail;
+  document.getElementById('mocktailText').textContent = mocktail || '';
 }
 
 function injectPublishRow(type, historyId) {

@@ -19,6 +19,36 @@ const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 
+// ===== AI 產出多樣性 =====
+// 每次請求隨機挑一個切入視角，避免相同答案永遠得到同一批推薦
+function pick(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+const QUIZ_ANGLES = [
+  '從產地與風土出發，強調每款酒背後的土地與氣候',
+  '從調製手法出發，關注攪拌、搖盪、澄清、浸漬等技法差異',
+  '從歷史與時代背景出發，挑選有故事的酒款',
+  '從季節與氣溫出發，考量此刻適合入口的溫度與濃度',
+  '從香氣結構出發，拆解前中後段的層次變化',
+  '從餐酒搭配出發，優先考慮與食物的互動',
+  '從酒吧文化出發，挑選在不同城市酒吧會遇見的招牌',
+  '從原料的稀有度出發，介紹少見的基酒或利口酒',
+  '從情緒療癒出發，挑選能對應他當下心境的酒',
+  '從反差實驗出發，刻意推薦與他既有偏好互補的選擇',
+];
+
+const COCKTAIL_ANGLES = [
+  '以一個具體的城市街景為靈感',
+  '以某個季節的天氣與光線為靈感',
+  '以一種情緒或記憶為靈感',
+  '以一道料理的風味結構為靈感',
+  '以某種音樂類型的節奏感為靈感',
+  '以一個自然場景（海、森林、沙漠、雪地）為靈感',
+  '以經典調酒的變奏改編為靈感',
+  '以一種東方食材或茶飲為靈感',
+];
+
 // ===== Auth helper =====
 function getUser(req) {
   const token = req.cookies.token;
@@ -122,21 +152,44 @@ app.post('/api/taste-quiz', async (req, res) => {
     if (!ai) return;
 
     const { answers } = req.body;
-    const prompt = `你是一位專業的調酒師與品酒顧問。根據用戶的品味測驗，分析他的飲酒人格並推薦 3 款酒。
+    const angle = pick(QUIZ_ANGLES);
+    const prompt = `你是一位專業的調酒師與品酒顧問。根據用戶的品味測驗，分析他的飲酒人格並推薦 4 款酒。
 
 用戶答案：${JSON.stringify(answers)}
 
+本次分析的切入視角：${angle}
+（這個視角只影響你挑酒與敘述的角度，不要在輸出中直接提到「視角」這個詞。）
+
+四款推薦必須各自扮演不同角色，順序如下：
+1. 舒適圈：最貼近他答案的安全選擇
+2. 進階款：在他偏好的方向上再推一步，稍微挑戰他
+3. 冷門驚喜：小眾、少見、他很可能沒喝過的
+4. 情境特調：專門配合他選的場合與時段
+
+多樣性要求（很重要）：
+- 四款的基酒、產地、調製手法盡量不重複
+- 避免無條件端出莫吉托、瑪格麗特、Old Fashioned、Negroni、Gin Tonic 這類爛大街的答案；最多只能出現一款，而且必須是他的答案強烈指向它
+- match_score 之間要有差距，不要四款都給 90 幾分
+- 如果他的冒險程度高，就大膽一點；如果低，就以熟悉度為優先
+
 請以 JSON 回覆，格式：
 {
+  "nickname": "給他的風味人格取一個 4-8 字的稱號，要有畫面感，例如「深夜煙燻旅人」",
   "profile": "一段 2-3 句話描述用戶的飲酒人格與偏好",
+  "traits": ["3-5 個形容他品味的短標籤，每個 2-6 字"],
   "recommendations": [
-    { "name": "酒名（中文）", "category": "類別", "match_score": 95,
-      "flavor_tags": ["標籤1","標籤2","標籤3"], "reason": "1-2 句", "serving_tip": "品飲建議" }
+    { "name": "酒名（中文，可附原文）", "category": "類別", "origin": "產地或發源地",
+      "match_score": 95, "flavor_tags": ["標籤1","標籤2","標籤3"],
+      "reason": "為什麼推薦給他，1-2 句，要對應他的具體答案",
+      "serving_tip": "品飲建議", "food_pairing": "適合搭配的食物" }
   ]
 }`;
     const completion = await ai.chat.completions.create({
       model: 'gpt-4o-mini',
       response_format: { type: 'json_object' },
+      temperature: 1.05,
+      top_p: 0.95,
+      presence_penalty: 0.4,
       messages: [{ role: 'user', content: prompt }],
     });
     const result = JSON.parse(completion.choices[0].message.content);
@@ -161,10 +214,46 @@ app.post('/api/cocktail-generator', async (req, res) => {
     const ai = requireOpenAIClient(res);
     if (!ai) return;
 
-    const { preferences } = req.body;
+    const { preferences, advanced } = req.body;
+    const angle = pick(COCKTAIL_ANGLES);
+
+    // 進階模式：附上額外偏好，並要求更完整的配方規格
+    const advancedBlock = advanced ? `
+
+使用者另外開啟了「進階模式」，以下是他的細節要求，請嚴格遵守：
+${JSON.stringify(advanced)}
+
+進階欄位對照：
+- texture 口感質地 / ice 冰與溫度 / glass 指定杯型 / complexity 配方複雜度
+- technique 希望使用的調製技法 / inspiration 靈感來源類型 / color 期望酒液顏色
+- diet 飲食與材料限制（mocktail=需要無酒精版本、low_cal=低糖低卡、no_dairy=不含乳製品、
+  no_egg=不含蛋、vegan=全素、common=只用一般家庭或超市買得到的材料）
+- naming 命名風格 / sour 酸度 1-5 / bitter 苦韻 1-5
+
+若 diet 含 mocktail，mocktail_version 欄位必填；
+若指定了 glass 或 color，輸出必須與其一致；
+若 complexity 為 simple，材料不得超過 3 種。
+
+進階模式必須額外輸出這些欄位：
+  "technique": "主要調製技法",
+  "difficulty": "新手 / 進階 / 專業 其中之一",
+  "prep_time": "預估製作時間，例如「約 5 分鐘」",
+  "abv_estimate": "推估酒精濃度，例如「約 18% ABV」",
+  "pro_tips": ["2-3 個讓成品更好的實作要訣"],
+  "variations": [{"name":"變化版名稱","description":"改動了什麼，一句話"}],
+  "mocktail_version": "無酒精版本要怎麼調（沒有需求時給空字串）"` : '';
+
     const prompt = `你是世界級的創意調酒師。根據用戶的偏好，創造一款獨一無二的調酒。
 
 用戶偏好：${JSON.stringify(preferences)}
+
+本次創作的靈感方向：${angle}
+（這只是你發想的起點，不要在輸出中直接提到「靈感方向」這個詞。）
+
+創作要求：
+- 酒譜要具體可執行，份量用 ml 或 oz 標示清楚
+- 不要每次都端出雷同的配方，避免落入固定套路
+- story 要能呼應使用者填的心情與自由文字${advancedBlock}
 
 請以 JSON 回覆：
 {
@@ -177,6 +266,9 @@ app.post('/api/cocktail-generator', async (req, res) => {
     const completion = await ai.chat.completions.create({
       model: 'gpt-4o-mini',
       response_format: { type: 'json_object' },
+      temperature: 1.1,
+      top_p: 0.95,
+      presence_penalty: 0.5,
       messages: [{ role: 'user', content: prompt }],
     });
     const result = JSON.parse(completion.choices[0].message.content);
@@ -185,7 +277,7 @@ app.post('/api/cocktail-generator', async (req, res) => {
     const u = getUser(req);
     if (u) {
       const info = db.prepare('INSERT INTO cocktail_history (user_id, preferences, result) VALUES (?, ?, ?)')
-        .run(u.id, JSON.stringify(preferences), JSON.stringify(result));
+        .run(u.id, JSON.stringify({ ...preferences, advanced }), JSON.stringify(result));
       history_id = info.lastInsertRowid;
     }
     res.json({ ...result, history_id });
