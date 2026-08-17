@@ -154,6 +154,20 @@ step();
 
 /* ---------------- 粒子流場 ---------------- */
 // 沿數條封閉曲線灑點，shader 讓每顆點各自緩慢漂移，形成流動的緞帶
+// 從已建好的杯體幾何隨機取樣頂點，當作粒子聚攏時的目標座標
+function sampleSurface(geometries, count) {
+  const out = new Float32Array(count * 3);
+  const pools = geometries.map(g => g.attributes.position);
+  for (let i = 0; i < count; i++) {
+    const pool = pools[Math.floor(Math.random() * pools.length)];
+    const v = Math.floor(Math.random() * pool.count);
+    out[i * 3] = pool.getX(v);
+    out[i * 3 + 1] = pool.getY(v);
+    out[i * 3 + 2] = pool.getZ(v);
+  }
+  return out;
+}
+
 function buildParticles(count) {
   const pos = new Float32Array(count * 3);
   const phase = new Float32Array(count);
@@ -164,7 +178,7 @@ function buildParticles(count) {
     for (let i = 0; i < 7; i++) {
       const a = (i / 6) * Math.PI * 2 + c * 0.9;
       const r = 9 + Math.sin(c * 2.1 + i) * 4.5;
-      cp.push(new THREE.Vector3(Math.cos(a) * r, 2 + Math.sin(i * 1.7 + c) * 5.5, Math.sin(a) * r * 0.75));
+      cp.push(new THREE.Vector3(Math.cos(a) * r, 6 + Math.sin(i * 1.7 + c) * 5.5, Math.sin(a) * r * 0.75));
     }
     curves.push(new THREE.CatmullRomCurve3(cp, true, 'catmullrom', 0.6));
   }
@@ -181,13 +195,16 @@ function buildParticles(count) {
   g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   g.setAttribute('aPhase', new THREE.BufferAttribute(phase, 1));
   g.setAttribute('aSize', new THREE.BufferAttribute(size, 1));
+  g.setAttribute('aTarget', new THREE.BufferAttribute(
+    sampleSurface([bowl.geometry, stem.geometry, foot.geometry,
+                   paintLiquid(liquidProfile(1))], count), 3));
   return g;
 }
 
 const particleMat = new THREE.ShaderMaterial({
   transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
   uniforms: {
-    uTime: { value: 0 }, uOpacity: { value: 0 },
+    uTime: { value: 0 }, uOpacity: { value: 0 }, uMorph: { value: 0 },
     uPixelRatio: { value: renderer.getPixelRatio() },
     uColorA: { value: new THREE.Color('#FFD9A0') },
     uColorB: { value: new THREE.Color('#9B7BFF') },
@@ -195,18 +212,31 @@ const particleMat = new THREE.ShaderMaterial({
   vertexShader: `
     attribute float aPhase;
     attribute float aSize;
+    attribute vec3 aTarget;
     uniform float uTime;
     uniform float uPixelRatio;
+    uniform float uMorph;
     varying float vMix;
+    varying float vMorph;
     void main() {
-      vec3 p = position;
+      // 每顆點依相位錯開起跑時間，聚攏才不會像一整塊平移
+      float m = clamp((uMorph * 1.42 - (aPhase / 6.2831) * 0.42), 0.0, 1.0);
+      m = m * m * (3.0 - 2.0 * m);
+
+      vec3 flow = position;
       float t = uTime * 0.22 + aPhase;
-      p.x += sin(t) * 0.9;
-      p.y += cos(t * 0.8) * 0.7;
-      p.z += sin(t * 0.6 + 1.3) * 0.9;
+      flow.x += sin(t) * 0.9 * (1.0 - m);
+      flow.y += cos(t * 0.8) * 0.7 * (1.0 - m);
+      flow.z += sin(t * 0.6 + 1.3) * 0.9 * (1.0 - m);
+
+      // 聚攏後仍在杯面上輕微呼吸，避免看起來像貼死的貼圖
+      vec3 tgt = aTarget * (1.0 + sin(uTime * 1.6 + aPhase) * 0.012 * m);
+
+      vec3 p = mix(flow, tgt, m);
       vMix = 0.5 + 0.5 * sin(aPhase + uTime * 0.4);
+      vMorph = m;
       vec4 mv = modelViewMatrix * vec4(p, 1.0);
-      gl_PointSize = aSize * uPixelRatio * (46.0 / -mv.z);
+      gl_PointSize = aSize * uPixelRatio * (46.0 / -mv.z) * (1.0 - m * 0.35);
       gl_Position = projectionMatrix * mv;
     }`,
   fragmentShader: `
@@ -214,18 +244,85 @@ const particleMat = new THREE.ShaderMaterial({
     uniform vec3 uColorA;
     uniform vec3 uColorB;
     varying float vMix;
+    varying float vMorph;
     void main() {
       vec2 d = gl_PointCoord - 0.5;
       float a = smoothstep(0.5, 0.06, length(d));
       if (a <= 0.001) discard;
-      gl_FragColor = vec4(mix(uColorA, uColorB, vMix), a * uOpacity);
+      // 聚攏時偏金色，散開時偏紫，讓兩種狀態一眼可辨
+      vec3 col = mix(mix(uColorA, uColorB, vMix), vec3(1.0, 0.82, 0.55), vMorph);
+      gl_FragColor = vec4(col, a * uOpacity * (1.0 + vMorph * 0.5));
     }`,
 });
 
 const particles = new THREE.Points(buildParticles(lowPower ? 2600 : 7000), particleMat);
-particles.position.y = 4;
 scene.add(particles);
 step();
+
+/* ---------------- 酒液中的上升氣泡 ---------------- */
+function buildBubbles(count) {
+  const pos = new Float32Array(count * 3);
+  const phase = new Float32Array(count);
+  const size = new Float32Array(count);
+  for (let i = 0; i < count; i++) {
+    const a = Math.random() * Math.PI * 2;
+    const r = Math.sqrt(Math.random()) * 2.6;
+    pos[i * 3] = Math.cos(a) * r;
+    pos[i * 3 + 1] = LIQ_FLOOR + Math.random() * (LIQ_TOP - LIQ_FLOOR);
+    pos[i * 3 + 2] = Math.sin(a) * r;
+    phase[i] = Math.random();
+    size[i] = 0.5 + Math.random() * 1.4;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  g.setAttribute('aPhase', new THREE.BufferAttribute(phase, 1));
+  g.setAttribute('aSize', new THREE.BufferAttribute(size, 1));
+  return g;
+}
+
+const bubbleMat = new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  uniforms: {
+    uTime: { value: 0 }, uOpacity: { value: 0 },
+    uPixelRatio: { value: renderer.getPixelRatio() },
+    uFloor: { value: LIQ_FLOOR }, uTop: { value: LIQ_TOP },
+  },
+  vertexShader: `
+    attribute float aPhase;
+    attribute float aSize;
+    uniform float uTime;
+    uniform float uPixelRatio;
+    uniform float uFloor;
+    uniform float uTop;
+    varying float vFade;
+    void main() {
+      float span = uTop - uFloor;
+      // 循環上升：到液面後從杯底重新開始
+      float rise = mod(aPhase + uTime * 0.075, 1.0);
+      vec3 p = position;
+      p.y = uFloor + rise * span;
+      p.x += sin(uTime * 0.9 + aPhase * 12.0) * 0.09;
+      p.z += cos(uTime * 0.7 + aPhase * 9.0) * 0.09;
+      // 接近液面時淡出，避免氣泡穿出液體
+      vFade = smoothstep(0.0, 0.12, rise) * (1.0 - smoothstep(0.82, 1.0, rise));
+      vec4 mv = modelViewMatrix * vec4(p, 1.0);
+      gl_PointSize = aSize * uPixelRatio * (30.0 / -mv.z);
+      gl_Position = projectionMatrix * mv;
+    }`,
+  fragmentShader: `
+    uniform float uOpacity;
+    varying float vFade;
+    void main() {
+      vec2 d = gl_PointCoord - 0.5;
+      float len = length(d);
+      float ring = smoothstep(0.5, 0.34, len) - smoothstep(0.3, 0.14, len) * 0.55;
+      if (ring <= 0.001) discard;
+      gl_FragColor = vec4(vec3(1.0, 0.93, 0.82), ring * vFade * uOpacity);
+    }`,
+});
+
+const bubbles = new THREE.Points(buildBubbles(lowPower ? 140 : 320), bubbleMat);
+drink.add(bubbles);
 
 /* ---------------- 燈光 ---------------- */
 const key = new THREE.DirectionalLight(0xffffff, 3.0);
@@ -280,14 +377,18 @@ step();
 /* ---------------- 捲動關鍵影格 ---------------- */
 // bg 頁面底色（明暗交替）／ink 文字色／explode 拆解程度／dust 粒子濃度／ground 地面存在感
 const KEYS = [
-  { p: 0.00, cam: [0, 7.2, 27], look: [0, 4.4, 0], spin: 0.0, fill: 0.55, explode: 0,    dust: 0.12, bg: '#05060d', ink: '#EEF0FF', env: 0.60, ground: 1 },
-  { p: 0.13, cam: [0, 8.6, 15], look: [0, 6.1, 0], spin: 0.7, fill: 1.00, explode: 0,    dust: 0.10, bg: '#05060d', ink: '#EEF0FF', env: 0.60, ground: 1 },
-  { p: 0.30, cam: [13, 5.0, 15], look: [0, 4.2, 0], spin: 1.9, fill: 1.00, explode: 0,    dust: 0.05, bg: '#E8E8EA', ink: '#14141A', env: 1.35, ground: 0.35 },
-  { p: 0.50, cam: [0, 4.6, 30], look: [0, 3.4, 0], spin: 2.6, fill: 1.00, explode: 1,    dust: 0.05, bg: '#E8E8EA', ink: '#14141A', env: 1.35, ground: 0 },
-  { p: 0.66, cam: [7, 3.2, 22], look: [0, 2.6, 0], spin: 3.4, fill: 1.00, explode: 1,    dust: 0.10, bg: '#D8D8DC', ink: '#14141A', env: 1.25, ground: 0 },
-  { p: 0.80, cam: [0, 5.4, 13], look: [0, 5.2, 0], spin: 4.2, fill: 1.00, explode: 0.18, dust: 1.00, bg: '#020308', ink: '#EEF0FF', env: 0.42, ground: 0 },
-  { p: 0.92, cam: [-8, 4.4, 17], look: [0, 4.0, 0], spin: 5.0, fill: 1.00, explode: 0,   dust: 0.55, bg: '#05060d', ink: '#EEF0FF', env: 0.62, ground: 0.8 },
-  { p: 1.00, cam: [0, 7.6, 31], look: [0, 4.2, 0], spin: 5.6, fill: 1.00, explode: 0,    dust: 0.25, bg: '#05060d', ink: '#EEF0FF', env: 0.62, ground: 1 },
+  { p: 0.00, cam: [0, 7.2, 27],  look: [0, 4.4, 0], spin: 0.0, fill: 0.55, explode: 0,    dust: 0.12, morph: 0, bub: 0.5, bg: '#05060d', ink: '#EEF0FF', env: 0.60, ground: 1 },
+  { p: 0.10, cam: [0, 8.6, 15],  look: [0, 6.1, 0], spin: 0.7, fill: 1.00, explode: 0,    dust: 0.10, morph: 0, bub: 1.0, bg: '#05060d', ink: '#EEF0FF', env: 0.60, ground: 1 },
+  { p: 0.24, cam: [13, 5.0, 15], look: [0, 4.2, 0], spin: 1.9, fill: 1.00, explode: 0,    dust: 0.05, morph: 0, bub: 0.8, bg: '#E8E8EA', ink: '#14141A', env: 1.35, ground: 0.35 },
+  { p: 0.38, cam: [0, 4.6, 30],  look: [0, 3.4, 0], spin: 2.6, fill: 1.00, explode: 1,    dust: 0.05, morph: 0, bub: 0.4, bg: '#E8E8EA', ink: '#14141A', env: 1.35, ground: 0 },
+  { p: 0.52, cam: [7, 3.2, 22],  look: [0, 2.6, 0], spin: 3.4, fill: 1.00, explode: 1,    dust: 0.10, morph: 0, bub: 0.4, bg: '#D8D8DC', ink: '#14141A', env: 1.25, ground: 0 },
+  { p: 0.64, cam: [0, 5.4, 13],  look: [0, 5.2, 0], spin: 4.2, fill: 1.00, explode: 0.18, dust: 1.00, morph: 0, bub: 0.6, bg: '#020308', ink: '#EEF0FF', env: 0.42, ground: 0 },
+  // ---- 收尾：零件歸位 → 粒子聚攏成杯形 → 釋放 → 拉遠 ----
+  { p: 0.74, cam: [-8, 4.4, 17], look: [0, 4.0, 0], spin: 5.0, fill: 1.00, explode: 0,    dust: 0.70, morph: 0,    bub: 1.0, bg: '#04050b', ink: '#EEF0FF', env: 0.58, ground: 0.6 },
+  { p: 0.82, cam: [-11, 5.2, 14],look: [0, 4.6, 0], spin: 5.8, fill: 1.00, explode: 0,    dust: 0.85, morph: 0.15, bub: 1.0, bg: '#04050b', ink: '#EEF0FF', env: 0.55, ground: 0.4 },
+  { p: 0.89, cam: [0, 5.6, 19],  look: [0, 4.4, 0], spin: 6.6, fill: 1.00, explode: 0,    dust: 1.00, morph: 1.00, bub: 0.7, bg: '#020308', ink: '#EEF0FF', env: 0.48, ground: 0.2 },
+  { p: 0.95, cam: [9, 4.2, 20],  look: [0, 4.2, 0], spin: 7.2, fill: 1.00, explode: 0,    dust: 1.00, morph: 0.55, bub: 0.8, bg: '#03040a', ink: '#EEF0FF', env: 0.55, ground: 0.5 },
+  { p: 1.00, cam: [0, 7.6, 32],  look: [0, 4.2, 0], spin: 7.6, fill: 1.00, explode: 0,    dust: 0.45, morph: 0,    bub: 1.0, bg: '#05060d', ink: '#EEF0FF', env: 0.62, ground: 1 },
 ];
 
 const easeInOut = t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
@@ -308,6 +409,7 @@ function sample(p) {
   return {
     cam: l3(a.cam, b.cam), look: l3(a.look, b.look), spin: l(a.spin, b.spin),
     fill: l(a.fill, b.fill), explode: l(a.explode, b.explode), dust: l(a.dust, b.dust),
+    morph: l(a.morph, b.morph), bub: l(a.bub, b.bub),
     env: l(a.env, b.env), ground: l(a.ground, b.ground), bg, ink,
   };
 }
@@ -385,8 +487,15 @@ function frame() {
 
   particleMat.uniforms.uTime.value = clock.elapsedTime;
   particleMat.uniforms.uOpacity.value = k.dust;
-  particles.rotation.y = clock.elapsedTime * 0.035;
-  if (bloom) bloom.strength = 0.5 + k.dust * 0.35;
+  particleMat.uniforms.uMorph.value = k.morph;
+  // 聚攏程度越高，粒子的自轉就越貼近酒杯的自轉，形狀才對得上
+  particles.rotation.y = THREE.MathUtils.lerp(clock.elapsedTime * 0.035, drink.rotation.y, k.morph);
+  particles.position.y = drink.position.y * k.morph;
+
+  bubbleMat.uniforms.uTime.value = clock.elapsedTime;
+  bubbleMat.uniforms.uOpacity.value = k.bub * (1 - e) * Math.min(1, k.fill * 1.6);
+
+  if (bloom) bloom.strength = 0.5 + k.dust * 0.35 + k.morph * 0.5;
 
   bgLayer.style.backgroundColor = k.bg;
   document.documentElement.style.setProperty('--ink', k.ink);

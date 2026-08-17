@@ -284,3 +284,9 @@ body.ready .rail { opacity: 1; }
   .pl-text { font-size: 10px; }
   .pl-text b { font-size: 12px; }
 }
+
+.end-sub {
+  margin-top: 18px;
+  font-size: clamp(14px, 1.15vw, 16px);
+  color: color-mix(in srgb, var(--ink) 62%, transparent);
+}
