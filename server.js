@@ -234,14 +234,17 @@ ${JSON.stringify(advanced)}
 若指定了 glass 或 color，輸出必須與其一致；
 若 complexity 為 simple，材料不得超過 3 種。
 
-進階模式必須額外輸出這些欄位：
+進階模式的輸出必須包含 JSON 範本中 technique 之後的所有欄位，一個都不能省略。` : '';
+
+    // 進階欄位要寫進 JSON 範本本身，只放在說明區塊模型會忽略
+    const advSchema = advanced ? `,
   "technique": "主要調製技法",
   "difficulty": "新手 / 進階 / 專業 其中之一",
   "prep_time": "預估製作時間，例如「約 5 分鐘」",
   "abv_estimate": "推估酒精濃度，例如「約 18% ABV」",
   "pro_tips": ["2-3 個讓成品更好的實作要訣"],
   "variations": [{"name":"變化版名稱","description":"改動了什麼，一句話"}],
-  "mocktail_version": "無酒精版本要怎麼調（沒有需求時給空字串）"` : '';
+  "mocktail_version": "無酒精版本要怎麼調（沒有這個需求時給空字串）"` : '';
 
     const prompt = `你是世界級的創意調酒師。根據用戶的偏好，創造一款獨一無二的調酒。
 
@@ -261,7 +264,7 @@ ${JSON.stringify(advanced)}
   "color": "酒液顏色描述", "story": "故事或靈感（2-3 句）",
   "flavor_profile": { "sweet": 3, "sour": 2, "bitter": 1, "strong": 4 },
   "ingredients": [{"name":"材料","amount":"份量"}],
-  "steps": ["步驟1","步驟2"], "garnish": "裝飾"
+  "steps": ["步驟1","步驟2"], "garnish": "裝飾"${advSchema}
 }`;
     const completion = await ai.chat.completions.create({
       model: 'gpt-4o-mini',
