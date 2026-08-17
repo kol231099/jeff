@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=13" />
-<link rel="stylesheet" href="quiz.css?v=11" />
+<link rel="stylesheet" href="quiz.css?v=14" />
 <link rel="stylesheet" href="social.css?v=11" />
 </head>
 <body>
@@ -92,6 +92,16 @@
       </div>
       <h2 class="result-title">為你量身打造的 <span class="gradient-text" id="recCount">推薦</span></h2>
       <div class="rec-grid" id="recGrid"></div>
+      <!-- 測驗完的下一步：拿這份結果去配對 -->
+      <a href="match.html" class="next-match">
+        <div class="nm-left">
+          <div class="nm-label">下一步</div>
+          <div class="nm-title">找出跟你味覺重疊的人</div>
+          <div class="nm-sub">依這份結果比對其他酒友 · 雙方都想認識才會開啟聊天</div>
+        </div>
+        <div class="nm-arrow">→</div>
+      </a>
+
       <div class="result-actions">
         <button class="btn-primary" onclick="location.reload()">再測一次</button>
         <a href="cocktail.html" class="btn-ghost">試試調酒生成器 →</a>
