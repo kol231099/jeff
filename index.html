@@ -7,8 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css" />
-<link rel="stylesheet" href="home.css" />
+<link rel="stylesheet" href="styles.css?v=11" />
+<link rel="stylesheet" href="home.css?v=11" />
 </head>
 <body>
   <!-- 背景粒子 + 光暈層 -->
@@ -131,45 +131,151 @@
       <div class="holo-glass">
         <div class="holo-ring"></div>
         <div class="holo-ring ring-2"></div>
-        <svg class="glass-svg" viewBox="0 0 240 320">
+        <svg class="glass-svg" viewBox="0 0 240 400" aria-hidden="true">
           <defs>
-            <linearGradient id="liquidGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#FFB547" stop-opacity="0.9"/>
-              <stop offset="50%" stop-color="#FF4D8D" stop-opacity="0.85"/>
-              <stop offset="100%" stop-color="#7B5CFF" stop-opacity="0.9"/>
+            <!-- 酒液：由上而下的暖冷漸層 -->
+            <linearGradient id="hgLiquid" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#FFC46B"/>
+              <stop offset="42%" stop-color="#FF4D8D"/>
+              <stop offset="100%" stop-color="#7B5CFF"/>
             </linearGradient>
-            <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15"/>
-              <stop offset="50%" stop-color="#ffffff" stop-opacity="0.45"/>
-              <stop offset="100%" stop-color="#ffffff" stop-opacity="0.15"/>
+            <!-- 酒液表面：中心亮、邊緣暗，做出液面弧度 -->
+            <radialGradient id="hgSurface" cx="42%" cy="35%" r="75%">
+              <stop offset="0%" stop-color="#FFE3B0"/>
+              <stop offset="55%" stop-color="#FFB547"/>
+              <stop offset="100%" stop-color="#E0803A"/>
+            </radialGradient>
+            <!-- 玻璃杯體：左亮右暗，模擬單一光源 -->
+            <linearGradient id="hgGlass" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.30"/>
+              <stop offset="22%" stop-color="#ffffff" stop-opacity="0.06"/>
+              <stop offset="70%" stop-color="#ffffff" stop-opacity="0.10"/>
+              <stop offset="100%" stop-color="#ffffff" stop-opacity="0.26"/>
             </linearGradient>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+            <!-- 杯腳：兩側亮、中央暗，是玻璃圓柱的典型反光分布 -->
+            <linearGradient id="hgStem" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.42"/>
+              <stop offset="30%" stop-color="#ffffff" stop-opacity="0.14"/>
+              <stop offset="58%" stop-color="#ffffff" stop-opacity="0.2"/>
+              <stop offset="100%" stop-color="#ffffff" stop-opacity="0.38"/>
+            </linearGradient>
+            <!-- 杯口邊緣高光 -->
+            <linearGradient id="hgRim" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
+              <stop offset="30%" stop-color="#ffffff" stop-opacity="0.95"/>
+              <stop offset="62%" stop-color="#ffffff" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#ffffff" stop-opacity="0.8"/>
+            </linearGradient>
+            <!-- 地面投影 -->
+            <radialGradient id="hgShadow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#000000" stop-opacity="0.72"/>
+              <stop offset="55%" stop-color="#05060d" stop-opacity="0.38"/>
+              <stop offset="100%" stop-color="#05060d" stop-opacity="0"/>
+            </radialGradient>
+            <!-- 焦散光斑：酒液透光後在地面的彩色光池 -->
+            <radialGradient id="hgCaustic" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#FFC46B" stop-opacity="0.85"/>
+              <stop offset="35%" stop-color="#FF4D8D" stop-opacity="0.45"/>
+              <stop offset="70%" stop-color="#7B5CFF" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#7B5CFF" stop-opacity="0"/>
+            </radialGradient>
+            <!-- 焦散核心：正下方最亮的一點 -->
+            <radialGradient id="hgCausticCore" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#FFE3B0" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#FFB547" stop-opacity="0"/>
+            </radialGradient>
+            <!-- 倒影淡出遮罩 -->
+            <linearGradient id="hgFadeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.5"/>
+              <stop offset="45%" stop-color="#ffffff" stop-opacity="0.16"/>
+              <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+            </linearGradient>
+            <mask id="hgReflectMask">
+              <rect x="0" y="296" width="240" height="104" fill="url(#hgFadeGrad)"/>
+            </mask>
+
+            <filter id="hgSoft" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="7"/>
+            </filter>
+            <filter id="hgCausticBlur" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="9"/>
+            </filter>
+            <filter id="hgContact" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="3.5"/>
+            </filter>
+            <filter id="hgReflectBlur" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="1.6"/>
+            </filter>
+            <filter id="hgGlowSoft" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="6" result="b"/>
               <feMerge>
-                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="b"/>
                 <feMergeNode in="SourceGraphic"/>
               </feMerge>
             </filter>
+
+            <!-- 杯身與酒液共用的輪廓，供倒影重複使用 -->
+            <g id="hgGlassShape">
+              <!-- 杯身 -->
+              <path d="M58 72 C58 124 86 164 120 172 C154 164 182 124 182 72 Z"
+                    fill="url(#hgGlass)"/>
+              <!-- 酒液 -->
+              <path class="liquid" d="M70 96 C72 134 96 162 120 167 C144 162 168 134 170 96 Z"
+                    fill="url(#hgLiquid)" opacity="0.92"/>
+              <!-- 液面 -->
+              <ellipse class="surface" cx="120" cy="96" rx="50" ry="10.5" fill="url(#hgSurface)"/>
+              <ellipse cx="120" cy="96" rx="50" ry="10.5" fill="none"
+                       stroke="#FFE3B0" stroke-width="0.8" opacity="0.55"/>
+              <!-- 杯口 -->
+              <ellipse cx="120" cy="72" rx="62" ry="13" fill="none"
+                       stroke="url(#hgRim)" stroke-width="2.2"/>
+              <!-- 杯身左側高光 -->
+              <path class="hg-specular" d="M70 80 C70 122 88 152 108 164"
+                    fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.42"/>
+              <!-- 杯身右側細高光 -->
+              <path d="M172 84 C171 116 160 140 146 156"
+                    fill="none" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" opacity="0.2"/>
+              <!-- 杯腳：略微加寬並用專屬漸層，讓它像玻璃柱而不是一條線 -->
+              <path d="M115 172 C115 210 113.5 250 112.5 286 L127.5 286 C126.5 250 125 210 125 172 Z"
+                    fill="url(#hgStem)"/>
+              <line x1="117" y1="178" x2="115.8" y2="282" stroke="#ffffff" stroke-width="1" opacity="0.34"/>
+              <!-- 杯底 -->
+              <ellipse cx="120" cy="290" rx="52" ry="11" fill="url(#hgGlass)"/>
+              <ellipse cx="120" cy="290" rx="52" ry="11" fill="none"
+                       stroke="url(#hgRim)" stroke-width="1.6" opacity="0.75"/>
+            </g>
           </defs>
 
-          <!-- 酒杯輪廓 -->
-          <path d="M60 40 L180 40 L160 160 Q120 200 80 160 Z"
-                fill="url(#glassGrad)" stroke="#ffffff" stroke-width="1.5" opacity="0.85" filter="url(#glow)"/>
-          <!-- 液體 -->
-          <path class="liquid" d="M72 80 L168 80 L152 150 Q120 180 88 150 Z"
-                fill="url(#liquidGrad)" opacity="0.9"/>
-          <!-- 液體表面波紋 -->
-          <ellipse class="surface" cx="120" cy="80" rx="48" ry="6" fill="#FFB547" opacity="0.6"/>
-          <!-- 杯腳 -->
-          <line x1="120" y1="200" x2="120" y2="275" stroke="#ffffff" stroke-width="2" opacity="0.7" filter="url(#glow)"/>
-          <!-- 杯底 -->
-          <ellipse cx="120" cy="280" rx="50" ry="6" fill="url(#glassGrad)" stroke="#ffffff" stroke-width="1.5" opacity="0.7"/>
+          <!-- 1. 地面投影與焦散光池（不隨杯子浮動，改以縮放呼應） -->
+          <g class="hg-shadow">
+            <!-- 擴散陰影 -->
+            <ellipse cx="120" cy="307" rx="80" ry="14" fill="url(#hgShadow)" filter="url(#hgSoft)"/>
+            <!-- 接觸陰影：緊貼杯底，這條才會讓杯子「站在」平面上 -->
+            <ellipse cx="120" cy="298" rx="44" ry="6" fill="#03040a" opacity="0.75" filter="url(#hgContact)"/>
+            <!-- 焦散光池 -->
+            <g class="hg-caustic">
+              <ellipse cx="120" cy="306" rx="64" ry="12" fill="url(#hgCaustic)" filter="url(#hgCausticBlur)"/>
+              <ellipse cx="120" cy="304" rx="26" ry="5.5" fill="url(#hgCausticCore)" filter="url(#hgCausticBlur)"/>
+            </g>
+          </g>
 
-          <!-- 氣泡 -->
-          <circle class="bubble b1" cx="100" cy="140" r="3" fill="#fff" opacity="0.8"/>
-          <circle class="bubble b2" cx="130" cy="150" r="2" fill="#fff" opacity="0.7"/>
-          <circle class="bubble b3" cx="115" cy="160" r="2.5" fill="#fff" opacity="0.75"/>
-          <circle class="bubble b4" cx="145" cy="135" r="2" fill="#fff" opacity="0.6"/>
+          <!-- 2. 地面倒影：壓扁至 0.45 倍，模擬視角俯視的反射 -->
+          <g mask="url(#hgReflectMask)">
+            <g class="hg-reflection" transform="translate(0, 427) scale(1, -0.454)">
+              <use href="#hgGlassShape" filter="url(#hgReflectBlur)"/>
+            </g>
+          </g>
+
+          <!-- 3. 杯體本身 -->
+          <g class="hg-body">
+            <use href="#hgGlassShape" filter="url(#hgGlowSoft)"/>
+            <!-- 氣泡（限制在酒液範圍內） -->
+            <circle class="bubble b1" cx="103" cy="150" r="2.6" fill="#fff" opacity="0.75"/>
+            <circle class="bubble b2" cx="131" cy="156" r="1.8" fill="#fff" opacity="0.65"/>
+            <circle class="bubble b3" cx="117" cy="160" r="2.2" fill="#fff" opacity="0.7"/>
+            <circle class="bubble b4" cx="140" cy="146" r="1.6" fill="#fff" opacity="0.55"/>
+            <circle class="bubble b5" cx="95" cy="140" r="1.4" fill="#fff" opacity="0.5"/>
+          </g>
         </svg>
 
         <!-- 資料標籤線 -->
@@ -206,7 +312,7 @@
     <div class="feat">
       <div class="feat-icon">🧠</div>
       <div class="feat-title">AI 味覺分析</div>
-      <div class="feat-desc">5 題完成屬於你的風味 DNA</div>
+      <div class="feat-desc">12 題深入分析你的風味 DNA</div>
     </div>
     <div class="feat">
       <div class="feat-icon">💞</div>
