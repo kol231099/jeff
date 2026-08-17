@@ -582,7 +582,8 @@ body {
 }
 .dl-top { top: -6%; right: 5%; animation-delay: 0.8s; }
 .dl-right { top: 48%; right: -18%; animation-delay: 1.1s; }
-.dl-left { bottom: 20%; left: -18%; animation-delay: 1.4s; }
+/* 移到左側中段：原本 bottom 20% 會壓到「馬丁尼」那張卡 */
+.dl-left { top: 42%; left: -19%; animation-delay: 1.4s; }
 
 .dl-line {
   position: absolute;
