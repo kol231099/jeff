@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const OpenAI = require('openai');
 const { db, assignUniqueCode } = require('./db');
+const { tasteSimilarity } = require('./taste');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -58,6 +59,23 @@ function getUser(req) {
     return db.prepare('SELECT * FROM users WHERE id = ?').get(payload.uid);
   } catch { return null; }
 }
+const ONLINE_WINDOW = 5 * 60; // 5 分鐘內有動作視為在線
+
+// 記錄活躍時間。每 60 秒最多寫一次，避免每個請求都打資料庫
+const lastSeenCache = new Map();
+function touchLastSeen(userId) {
+  const now = Math.floor(Date.now() / 1000);
+  if (now - (lastSeenCache.get(userId) || 0) < 60) return;
+  lastSeenCache.set(userId, now);
+  db.prepare('UPDATE users SET last_seen = ? WHERE id = ?').run(now, userId);
+}
+
+app.use((req, res, next) => {
+  const u = getUser(req);
+  if (u) touchLastSeen(u.id);
+  next();
+});
+
 function requireAuth(req, res, next) {
   const user = getUser(req);
   if (!user) return res.status(401).json({ error: '請先登入' });
@@ -709,44 +727,179 @@ function quizSimilarity(a, b) {
   return Math.min(100, Math.round(score));
 }
 
+// ===== 配對 =====
+const now = () => Math.floor(Date.now() / 1000);
+const isOnline = u => (u.last_seen || 0) >= now() - ONLINE_WINDOW;
+
+// 一對一房間的鍵：固定小 id 在前，同一組人永遠只會有一間房
+const directKey = (a, b) => (a < b ? `${a}-${b}` : `${b}-${a}`);
+
+function latestAnswers(userId) {
+  const row = db.prepare(
+    'SELECT answers FROM quiz_history WHERE user_id = ? ORDER BY id DESC LIMIT 1'
+  ).get(userId);
+  if (!row) return null;
+  try { return JSON.parse(row.answers); } catch { return null; }
+}
+
+// 撈出還沒表態過的人並依相似度排序
+function rankCandidates(me, myAns, { mode = 'all', limit = 20 } = {}) {
+  const rows = db.prepare(`
+    SELECT u.id, u.name, u.picture, u.unique_code, u.bio, u.last_seen,
+      (SELECT answers FROM quiz_history WHERE user_id = u.id ORDER BY id DESC LIMIT 1) AS latest_ans
+    FROM users u
+    WHERE u.id != ?
+      AND EXISTS (SELECT 1 FROM quiz_history WHERE user_id = u.id)
+      AND NOT EXISTS (SELECT 1 FROM match_actions WHERE from_user = ? AND to_user = u.id)
+  `).all(me.id, me.id);
+
+  const scored = rows.map(r => {
+    let ans = null;
+    try { ans = r.latest_ans ? JSON.parse(r.latest_ans) : null; } catch { ans = null; }
+    const sim = tasteSimilarity(myAns, ans);
+    return {
+      user: { ...publicUser(r), online: isOnline(r), last_seen: r.last_seen || 0 },
+      match_percent: sim.percent,
+      score: sim.score,
+      shared: sim.shared,
+      breakdown: sim.breakdown,
+    };
+  });
+
+  // 「在線」不是獨立的池子，是同一份清單的篩選；空的時候退回最近活躍
+  let list = scored;
+  let fallback = false;
+  if (mode === 'online') {
+    const onlineOnly = scored.filter(c => c.user.online);
+    if (onlineOnly.length > 0) {
+      list = onlineOnly;
+    } else {
+      fallback = true;
+      list = scored.slice().sort((a, b) => b.user.last_seen - a.user.last_seen).slice(0, limit);
+      return { list, fallback };
+    }
+  }
+  list = list.slice().sort((a, b) => b.score - a.score).slice(0, limit);
+  return { list, fallback };
+}
+
+app.get('/api/match/candidates', requireAuth, (req, res) => {
+  try {
+    const myAns = latestAnswers(req.user.id);
+    if (!myAns) return res.status(400).json({ error: '請先完成一次品味測驗，才能開始配對' });
+
+    const mode = req.query.mode === 'online' ? 'online' : 'all';
+    const limit = Math.min(50, Math.max(1, Number(req.query.limit) || 20));
+    const { list, fallback } = rankCandidates(req.user, myAns, { mode, limit });
+
+    res.json({
+      mode,
+      fallback,
+      message: fallback ? '目前沒有人在線，這幾位最近上線過' : undefined,
+      candidates: list,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 表態。雙方都 like 就開房間，整段包在交易裡避免同時按下時開出兩間
+const applyAction = db.transaction((fromId, toId, action) => {
+  db.prepare(`
+    INSERT INTO match_actions (from_user, to_user, action, created_at)
+    VALUES (?, ?, ?, strftime('%s','now'))
+    ON CONFLICT(from_user, to_user) DO UPDATE SET action = excluded.action, created_at = excluded.created_at
+  `).run(fromId, toId, action);
+
+  if (action !== 'like') return { matched: false, room_id: null };
+
+  const reciprocal = db.prepare(
+    `SELECT 1 FROM match_actions WHERE from_user = ? AND to_user = ? AND action = 'like'`
+  ).get(toId, fromId);
+  if (!reciprocal) return { matched: false, room_id: null };
+
+  const key = directKey(fromId, toId);
+  const existing = db.prepare('SELECT id FROM rooms WHERE direct_key = ?').get(key);
+  if (existing) return { matched: true, room_id: existing.id };
+
+  const info = db.prepare(
+    `INSERT INTO rooms (kind, direct_key, created_at) VALUES ('direct', ?, strftime('%s','now'))`
+  ).run(key);
+  const roomId = info.lastInsertRowid;
+  const addMember = db.prepare('INSERT INTO room_members (room_id, user_id) VALUES (?, ?)');
+  addMember.run(roomId, fromId);
+  addMember.run(roomId, toId);
+  return { matched: true, room_id: roomId };
+});
+
+app.post('/api/match/action', requireAuth, (req, res) => {
+  try {
+    const toId = Number(req.body.to_user);
+    const action = req.body.action;
+    if (!['like', 'pass'].includes(action)) return res.status(400).json({ error: 'action 只能是 like 或 pass' });
+    if (!Number.isInteger(toId) || toId === req.user.id) return res.status(400).json({ error: '對象不正確' });
+    const target = db.prepare('SELECT id FROM users WHERE id = ?').get(toId);
+    if (!target) return res.status(404).json({ error: '對象不存在' });
+
+    const out = applyAction(req.user.id, toId, action);
+    res.json(out);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 誰喜歡了我（我還沒回應的）
+app.get('/api/match/likes-me', requireAuth, (req, res) => {
+  const myAns = latestAnswers(req.user.id);
+  const rows = db.prepare(`
+    SELECT u.id, u.name, u.picture, u.unique_code, u.bio, u.last_seen, a.created_at,
+      (SELECT answers FROM quiz_history WHERE user_id = u.id ORDER BY id DESC LIMIT 1) AS latest_ans
+    FROM match_actions a
+    JOIN users u ON u.id = a.from_user
+    WHERE a.to_user = ? AND a.action = 'like'
+      AND NOT EXISTS (SELECT 1 FROM match_actions m WHERE m.from_user = ? AND m.to_user = a.from_user)
+    ORDER BY a.created_at DESC
+  `).all(req.user.id, req.user.id);
+
+  res.json({
+    likes: rows.map(r => {
+      let ans = null;
+      try { ans = r.latest_ans ? JSON.parse(r.latest_ans) : null; } catch {}
+      const sim = tasteSimilarity(myAns, ans);
+      return {
+        user: { ...publicUser(r), online: isOnline(r) },
+        match_percent: sim.percent,
+        shared: sim.shared,
+        liked_at: r.created_at,
+      };
+    }),
+  });
+});
+
+// 舊端點保留給現有的 match.html，改用新的相似度
 app.get('/api/match', requireAuth, async (req, res) => {
   try {
-    const myLatest = db.prepare(
-      'SELECT answers FROM quiz_history WHERE user_id = ? ORDER BY id DESC LIMIT 1'
-    ).get(req.user.id);
-    if (!myLatest) {
+    const myAns = latestAnswers(req.user.id);
+    if (!myAns) {
       return res.status(400).json({ error: '請先完成一次品味測驗，AI 才能為你配對酒友' });
     }
-    const myAns = JSON.parse(myLatest.answers);
-
-    const others = db.prepare(`
-      SELECT u.id, u.name, u.picture, u.unique_code, u.bio,
-        (SELECT answers FROM quiz_history WHERE user_id = u.id ORDER BY id DESC LIMIT 1) AS latest_ans
-      FROM users u
-      WHERE u.id != ?
-        AND EXISTS (SELECT 1 FROM quiz_history WHERE user_id = u.id)
-    `).all(req.user.id);
-
-    if (others.length === 0) {
+    const { list } = rankCandidates(req.user, myAns, { mode: 'all', limit: 3 });
+    if (list.length === 0) {
       return res.json({ matches: [], message: '目前還沒有其他做過測驗的用戶，邀請朋友加入吧！' });
     }
 
-    const scored = others
-      .map(o => ({ ...o, score: quizSimilarity(myAns, o.latest_ans ? JSON.parse(o.latest_ans) : null) }))
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 3);
-
-    const prompt = `你是 PourMatch 的 AI 飲酒配對顧問。根據兩人的品味測驗答案，用 1 句溫暖、有趣、像詩的中文描述他們為什麼合得來。
+    let comments = [];
+    if (openai) {
+      const prompt = `你是 PourMatch 的 AI 飲酒配對顧問。根據兩人的品味測驗答案，用 1 句溫暖、有趣、像詩的中文描述他們為什麼合得來。
 
 我的答案：${JSON.stringify(myAns)}
 
-請為以下 ${scored.length} 位候選人，分別給出一句配對評語（不要超過 30 字，每句獨特）：
-${scored.map((s, i) => `${i + 1}. ${s.name}（答案：${s.latest_ans}）`).join('\n')}
+請為以下 ${list.length} 位候選人，分別給出一句配對評語（不要超過 30 字，每句獨特）：
+${list.map((c, i) => `${i + 1}. ${c.user.name}（一致面向：${c.shared.join('、') || '無'}，相似度 ${c.match_percent}%）`).join('\n')}
 
 回覆 JSON：{ "comments": ["第一位的評語", "第二位的評語", "..."] }`;
-
-    let comments = [];
-    if (openai) {
       try {
         const completion = await openai.chat.completions.create({
           model: 'gpt-4o-mini',
@@ -757,16 +910,119 @@ ${scored.map((s, i) => `${i + 1}. ${s.name}（答案：${s.latest_ans}）`).join
       } catch (e) { console.error('match AI error', e.message); }
     }
 
-    const matches = scored.map((s, i) => ({
-      user: { id: s.id, name: s.name, picture: s.picture, unique_code: s.unique_code, bio: s.bio || '' },
-      match_score: s.score,
-      comment: comments[i] || '你們的味蕾頻率剛剛好對上了。',
-    }));
-    res.json({ matches });
+    res.json({
+      matches: list.map((c, i) => ({
+        user: c.user,
+        match_score: c.match_percent,
+        shared: c.shared,
+        comment: comments[i] || '你們的味蕾頻率剛剛好對上了。',
+      })),
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
   }
+});
+
+// ===== 聊天室（一對一與群組共用）=====
+function requireMember(req, res) {
+  const roomId = Number(req.params.id);
+  if (!Number.isInteger(roomId)) { res.status(400).json({ error: '房間不正確' }); return null; }
+  const member = db.prepare('SELECT 1 FROM room_members WHERE room_id = ? AND user_id = ?')
+    .get(roomId, req.user.id);
+  // 不是成員一律回 404，不要洩漏房間是否存在
+  if (!member) { res.status(404).json({ error: '找不到房間' }); return null; }
+  return roomId;
+}
+
+app.get('/api/rooms', requireAuth, (req, res) => {
+  const rooms = db.prepare(`
+    SELECT r.id, r.kind, r.title, r.created_at, rm.last_read_id
+    FROM rooms r
+    JOIN room_members rm ON rm.room_id = r.id AND rm.user_id = ?
+    ORDER BY r.id DESC
+  `).all(req.user.id);
+
+  const others = db.prepare(`
+    SELECT u.id, u.name, u.picture, u.unique_code, u.bio, u.last_seen
+    FROM room_members rm JOIN users u ON u.id = rm.user_id
+    WHERE rm.room_id = ? AND rm.user_id != ?
+  `);
+  const lastMsg = db.prepare(
+    'SELECT id, sender_id, body, created_at FROM messages WHERE room_id = ? ORDER BY id DESC LIMIT 1'
+  );
+  const unread = db.prepare(
+    'SELECT COUNT(*) c FROM messages WHERE room_id = ? AND id > ? AND sender_id != ?'
+  );
+
+  res.json({
+    rooms: rooms.map(r => ({
+      id: r.id,
+      kind: r.kind,
+      title: r.title,
+      created_at: r.created_at,
+      members: others.all(r.id, req.user.id).map(u => ({ ...publicUser(u), online: isOnline(u) })),
+      last_message: lastMsg.get(r.id) || null,
+      unread: unread.get(r.id, r.last_read_id || 0, req.user.id).c,
+    })),
+  });
+});
+
+// 前端輪詢用：帶 after 只取新訊息
+app.get('/api/rooms/:id/messages', requireAuth, (req, res) => {
+  const roomId = requireMember(req, res);
+  if (roomId === null) return;
+  const after = Number(req.query.after) || 0;
+  const limit = Math.min(100, Math.max(1, Number(req.query.limit) || 50));
+
+  const rows = after > 0
+    ? db.prepare('SELECT * FROM messages WHERE room_id = ? AND id > ? ORDER BY id ASC LIMIT ?')
+        .all(roomId, after, limit)
+    : db.prepare('SELECT * FROM (SELECT * FROM messages WHERE room_id = ? ORDER BY id DESC LIMIT ?) ORDER BY id ASC')
+        .all(roomId, limit);
+
+  res.json({
+    messages: rows.map(m => ({
+      id: m.id, sender_id: m.sender_id, body: m.body, created_at: m.created_at,
+      mine: m.sender_id === req.user.id,
+    })),
+  });
+});
+
+app.post('/api/rooms/:id/messages', requireAuth, (req, res) => {
+  const roomId = requireMember(req, res);
+  if (roomId === null) return;
+  const body = typeof req.body.body === 'string' ? req.body.body.trim() : '';
+  if (!body) return res.status(400).json({ error: '訊息不能是空的' });
+  if (body.length > 1000) return res.status(400).json({ error: '訊息過長' });
+
+  const info = db.prepare(
+    `INSERT INTO messages (room_id, sender_id, body, created_at) VALUES (?, ?, ?, strftime('%s','now'))`
+  ).run(roomId, req.user.id, body);
+  // 自己送出的訊息直接算已讀
+  db.prepare('UPDATE room_members SET last_read_id = ? WHERE room_id = ? AND user_id = ?')
+    .run(info.lastInsertRowid, roomId, req.user.id);
+
+  res.json({ id: info.lastInsertRowid, body, created_at: now(), mine: true });
+});
+
+app.post('/api/rooms/:id/read', requireAuth, (req, res) => {
+  const roomId = requireMember(req, res);
+  if (roomId === null) return;
+  const upTo = Number(req.body.up_to) || 0;
+  db.prepare('UPDATE room_members SET last_read_id = MAX(last_read_id, ?) WHERE room_id = ? AND user_id = ?')
+    .run(upTo, roomId, req.user.id);
+  res.json({ ok: true });
+});
+
+// 退出房間。一對一退出等於結束這段對話
+app.delete('/api/rooms/:id', requireAuth, (req, res) => {
+  const roomId = requireMember(req, res);
+  if (roomId === null) return;
+  db.prepare('DELETE FROM room_members WHERE room_id = ? AND user_id = ?').run(roomId, req.user.id);
+  const left = db.prepare('SELECT COUNT(*) c FROM room_members WHERE room_id = ?').get(roomId).c;
+  if (left === 0) db.prepare('DELETE FROM rooms WHERE id = ?').run(roomId);
+  res.json({ ok: true });
 });
 
 app.listen(PORT, '127.0.0.1', () => {
