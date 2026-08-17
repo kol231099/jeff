@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="showcase.css?v=1" />
+<link rel="stylesheet" href="showcase.css?v=2" />
 </head>
 <body>
 
@@ -25,6 +25,8 @@
 
   <!-- 3D 畫布：固定不動，由捲動驅動 -->
   <canvas id="scene"></canvas>
+  <!-- 暗角：壓住畫面邊緣與亮部，讓文字在玻璃前仍讀得到 -->
+  <div class="scrim"></div>
 
   <!-- 頂部列 -->
   <header class="sc-top">
@@ -109,6 +111,6 @@
     <div class="fallback">這個展示需要 JavaScript 與 WebGL 才能運作。</div>
   </noscript>
 
-  <script type="module" src="showcase.js?v=1"></script>
+  <script type="module" src="showcase.js?v=2"></script>
 </body>
 </html>

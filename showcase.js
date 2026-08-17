@@ -58,6 +58,8 @@ const pmrem = new THREE.PMREMGenerator(renderer);
 pmrem.compileEquirectangularShader();
 const envRT = pmrem.fromScene(new RoomEnvironment(), 0.04);
 scene.environment = envRT.texture;
+// RoomEnvironment 是明亮的攝影棚，直接用會把玻璃洗白，壓低到只留反射細節
+scene.environmentIntensity = 0.38;
 step();
 
 // ---------- 酒杯輪廓 ----------
@@ -181,8 +183,10 @@ function radialTexture(stops, size = 512) {
 }
 
 const ground = new THREE.Mesh(
-  new THREE.CircleGeometry(30, 64),
-  new THREE.MeshStandardMaterial({ color: 0x070818, roughness: 0.42, metalness: 0.5 })
+  new THREE.CircleGeometry(40, 64),
+  new THREE.MeshStandardMaterial({
+    color: 0x04050c, roughness: 0.62, metalness: 0.35, envMapIntensity: 0.35,
+  })
 );
 ground.rotation.x = -Math.PI / 2;
 ground.position.y = -0.001;
@@ -254,11 +258,11 @@ step();
 // ---------- 捲動驅動的運鏡 ----------
 // 每個關鍵影格 = 一個章節的鏡位；捲動進度在影格之間內插
 const KEYS = [
-  { p: 0.00, cam: [0.0, 5.6, 16.0], look: [0, 4.6, 0], spin: 0.0,  fill: 0.02 },
-  { p: 0.28, cam: [0.0, 6.6, 10.2], look: [0, 5.9, 0], spin: 0.9,  fill: 1.0  },
-  { p: 0.55, cam: [8.2, 3.4,  8.6], look: [0, 3.4, 0], spin: 2.1,  fill: 1.0  },
-  { p: 0.78, cam: [-6.4, 1.5, 9.4], look: [0, 1.4, 0], spin: 3.2,  fill: 1.0  },
-  { p: 1.00, cam: [0.0, 6.2, 19.0], look: [0, 4.3, 0], spin: 4.0,  fill: 1.0  },
+  { p: 0.00, cam: [0.0,  7.0, 26.0], look: [0, 4.4, 0], spin: 0.0, fill: 0.55 },
+  { p: 0.28, cam: [0.0,  8.4, 15.5], look: [0, 6.2, 0], spin: 0.9, fill: 1.0  },
+  { p: 0.55, cam: [11.5, 5.2, 13.5], look: [0, 4.0, 0], spin: 2.1, fill: 1.0  },
+  { p: 0.78, cam: [-9.0, 1.9, 14.5], look: [0, 1.5, 0], spin: 3.2, fill: 1.0  },
+  { p: 1.00, cam: [0.0,  7.4, 30.0], look: [0, 4.2, 0], spin: 4.0, fill: 1.0  },
 ];
 
 const easeInOut = t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
