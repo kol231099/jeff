@@ -101,12 +101,12 @@ body {
   color: var(--ink);
 }
 
-/* 暗角：只在深色場景出現，明亮場景由 JS 切換 ink 後自然變淡 */
+/* 暗角：只在深色場景需要，明亮場景由 JS 把它淡出，否則會把攝影棚壓成灰的 */
 .scrim {
   position: fixed; inset: 0; z-index: 4; pointer-events: none;
   background:
-    radial-gradient(ellipse 62% 52% at 50% 46%, rgba(5, 6, 13, 0) 0%, rgba(5, 6, 13, 0.42) 100%);
-  mix-blend-mode: multiply;
+    radial-gradient(ellipse 62% 52% at 50% 46%, rgba(5, 6, 13, 0) 0%, rgba(5, 6, 13, 0.5) 100%);
+  opacity: 1;
 }
 
 /* ---------- 頂部列 / 進度軌 ---------- */
@@ -172,7 +172,7 @@ body.ready .rail { opacity: 1; }
   font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
   font-weight: 900; font-size: clamp(40px, 7.4vw, 96px);
   line-height: 1.04; letter-spacing: -2px; margin-bottom: 26px;
-  text-shadow: 0 6px 44px rgba(5, 6, 13, 0.7);
+  text-shadow: 0 6px 44px var(--halo, rgba(5, 6, 13, 0.7));
 }
 .t-line { display: block; }
 .grad {
@@ -194,7 +194,7 @@ body.ready .rail { opacity: 1; }
   font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
   font-size: clamp(28px, 4vw, 52px); font-weight: 700;
   letter-spacing: -1px; line-height: 1.16; margin-bottom: 18px;
-  text-shadow: 0 4px 30px rgba(5, 6, 13, 0.55);
+  text-shadow: 0 4px 30px var(--halo, rgba(5, 6, 13, 0.55));
 }
 .act p {
   font-size: clamp(14px, 1.1vw, 16px); font-weight: 300;

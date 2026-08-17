@@ -318,6 +318,8 @@ const railFill = document.getElementById('railFill');
 const bgLayer = document.getElementById('bgLayer');
 const typeLayer = document.getElementById('typeLayer');
 const labelLayer = document.getElementById('labelLayer');
+const scrim = document.querySelector('.scrim');
+const cLum = new THREE.Color();
 let targetP = 0, smoothP = 0;
 
 function readScroll() {
@@ -388,6 +390,11 @@ function frame() {
 
   bgLayer.style.backgroundColor = k.bg;
   document.documentElement.style.setProperty('--ink', k.ink);
+  // 場景越亮，暗角與文字光暈就越收斂
+  const lum = (cLum.set(k.bg).r * 0.299 + cLum.set(k.bg).g * 0.587 + cLum.set(k.bg).b * 0.114);
+  scrim.style.opacity = String(THREE.MathUtils.clamp(1 - lum * 1.9, 0, 1));
+  document.documentElement.style.setProperty('--halo',
+    lum > 0.4 ? 'rgba(232,232,234,0.75)' : 'rgba(5,6,13,0.7)');
   typeLayer.style.setProperty('--type-shift', `${(smoothP - 0.5) * -260}px`);
 
   // 標籤只在拆解時出現，每格重新投影
