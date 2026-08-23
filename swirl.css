@@ -4,9 +4,9 @@
 
 .swirl-stage {
   position: relative;
-  width: min(150px, 38vw);
-  height: min(190px, 46vw);
-  margin: 0 auto 26px;
+  width: min(112px, 28vw);
+  height: min(146px, 36vw);
+  margin: 0 auto 22px;
   display: grid;
   place-items: center;
 }

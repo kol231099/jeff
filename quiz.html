@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="styles.css?v=17" />
 <link rel="stylesheet" href="transition.css?v=5" />
 <link rel="stylesheet" href="quiz.css?v=15" />
-<link rel="stylesheet" href="shaker.css?v=5" />
+<link rel="stylesheet" href="shaker.css?v=6" />
 <link rel="stylesheet" href="flood.css?v=2" />
 <link rel="stylesheet" href="social.css?v=11" />
 <script>
@@ -119,29 +119,43 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
       </div>
       <div class="shaker-stage">
         <div class="shaker-glow"></div>
-        <svg class="shaker-svg" viewBox="40 32 120 232" aria-hidden="true">
+        <svg class="shaker-svg" viewBox="46 26 108 214" aria-hidden="true">
           <defs>
+            <!-- 金屬：亮暗交錯的窄帶，圓柱才有立體感 -->
             <linearGradient id="shMetal" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%"   stop-color="#7C86B8"/>
-              <stop offset="18%"  stop-color="#EEF2FF"/>
-              <stop offset="42%"  stop-color="#AAB4E0"/>
-              <stop offset="66%"  stop-color="#F3F6FF"/>
-              <stop offset="100%" stop-color="#6A7299"/>
+              <stop offset="0%"   stop-color="#5E6788"/>
+              <stop offset="10%"  stop-color="#98A3C6"/>
+              <stop offset="24%"  stop-color="#F2F5FF"/>
+              <stop offset="38%"  stop-color="#B9C2E2"/>
+              <stop offset="54%"  stop-color="#8C96BC"/>
+              <stop offset="70%"  stop-color="#E6EBFB"/>
+              <stop offset="86%"  stop-color="#9AA4C8"/>
+              <stop offset="100%" stop-color="#5A6382"/>
             </linearGradient>
             <linearGradient id="shDrink" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%"   stop-color="#FFC46B"/>
-              <stop offset="50%"  stop-color="#FF4D8D"/>
-              <stop offset="100%" stop-color="#7B5CFF"/>
+              <stop offset="0%"   stop-color="#FFD9A0"/>
+              <stop offset="42%"  stop-color="#FF6E88"/>
+              <stop offset="100%" stop-color="#8B5CE0"/>
             </linearGradient>
             <clipPath id="shInner">
-              <path d="M66,150 L134,150 L128,232 Q100,244 72,232 Z"/>
+              <path d="M74,116 L126,116 L122,206 Q100,215 78,206 Z"/>
             </clipPath>
-            <!-- 搖酒器外形，主體與殘影共用 -->
             <g id="shShape">
-              <rect x="82" y="44" width="36" height="20" rx="6" fill="url(#shMetal)"/>
-              <path d="M72,64 L128,64 L134,96 L66,96 Z" fill="url(#shMetal)"/>
-              <path d="M66,96 L134,96 L128,232 Q100,246 72,232 Z" fill="url(#shMetal)"/>
-              <path d="M66,96 L134,96 L133,104 L67,104 Z" fill="rgba(255,255,255,.55)"/>
+              <!-- 頂蓋 -->
+              <path d="M92,36 Q100,30 108,36 L109,48 L91,48 Z" fill="url(#shMetal)"/>
+              <rect x="88" y="48" width="24" height="7" rx="2.5" fill="url(#shMetal)"/>
+              <!-- 濾網段：兩端帶弧度，不是直線斜邊 -->
+              <path d="M84,55 L116,55 Q120,58 121,66 L127,86 Q128,90 126,92 L74,92 Q72,90 73,86 L79,66 Q80,58 84,55 Z"
+                    fill="url(#shMetal)"/>
+              <!-- 接縫 -->
+              <rect x="73" y="92" width="54" height="4.5" rx="2" fill="#7E88AC"/>
+              <rect x="73" y="92" width="54" height="1.6" rx="0.8" fill="rgba(255,255,255,.6)"/>
+              <!-- 杯身：微弧的側壁 -->
+              <path d="M74,96.5 L126,96.5 Q128,150 122,206 Q100,216 78,206 Q72,150 74,96.5 Z"
+                    fill="url(#shMetal)"/>
+              <!-- 窄而亮的鏡面高光 -->
+              <path d="M84,102 Q82,152 87,199" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="2.6" stroke-linecap="round"/>
+              <path d="M112,104 Q114,150 110,196" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.4" stroke-linecap="round"/>
             </g>
           </defs>
 
@@ -152,19 +166,18 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
             <use href="#shShape"/>
             <g clip-path="url(#shInner)">
               <g class="sh-content">
-                <rect x="40" y="168" width="130" height="110" fill="url(#shDrink)" opacity="0.92"/>
-                <rect class="sh-ice i1" x="80"  y="176" width="20" height="20" rx="5" fill="rgba(255,255,255,.72)"/>
-                <rect class="sh-ice i2" x="106" y="192" width="16" height="16" rx="4" fill="rgba(255,255,255,.6)"/>
-                <rect class="sh-ice i3" x="86"  y="206" width="14" height="14" rx="4" fill="rgba(255,255,255,.5)"/>
+                <rect x="52" y="140" width="120" height="90" fill="url(#shDrink)" opacity="0.9"/>
+                <rect class="sh-ice i1" x="88"  y="146" width="17" height="17" rx="4.5" fill="rgba(255,255,255,.66)"/>
+                <rect class="sh-ice i2" x="107" y="160" width="13" height="13" rx="3.5" fill="rgba(255,255,255,.52)"/>
+                <rect class="sh-ice i3" x="90"  y="172" width="11" height="11" rx="3" fill="rgba(255,255,255,.42)"/>
               </g>
             </g>
-            <rect class="sh-sheen" x="74" y="100" width="14" height="60" rx="7" fill="rgba(255,255,255,.5)"/>
           </g>
 
-          <circle class="sh-drop"    cx="140" cy="120" r="4"   fill="#FFD9A0" style="--dx:34px;--dy:-26px"/>
-          <circle class="sh-drop d2" cx="62"  cy="140" r="3.4" fill="#FF9AC4" style="--dx:-32px;--dy:-18px"/>
-          <circle class="sh-drop d3" cx="146" cy="170" r="3"   fill="#C0A6FF" style="--dx:30px;--dy:22px"/>
-          <circle class="sh-drop d4" cx="58"  cy="182" r="3.6" fill="#FFD9A0" style="--dx:-28px;--dy:26px"/>
+          <circle class="sh-drop"    cx="132" cy="96"  r="2.6" fill="#FFD9A0" style="--dx:26px;--dy:-20px"/>
+          <circle class="sh-drop d2" cx="70"  cy="112" r="2.2" fill="#FF9AC4" style="--dx:-24px;--dy:-14px"/>
+          <circle class="sh-drop d3" cx="134" cy="140" r="2"   fill="#C0A6FF" style="--dx:22px;--dy:18px"/>
+          <circle class="sh-drop d4" cx="68"  cy="152" r="2.4" fill="#FFD9A0" style="--dx:-20px;--dy:20px"/>
         </svg>
         <div class="shaker-beat"><i></i><i></i><i></i></div>
       </div>
@@ -201,7 +214,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="i18n.js?v=11"></script>
-  <script src="transition.js?v=3"></script>
+  <script src="transition.js?v=4"></script>
   <script src="particles.js?v=10"></script>
   <script src="auth.js?v=13"></script>
   <script src="quiz.js?v=13"></script>

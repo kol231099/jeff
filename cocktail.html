@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="transition.css?v=5" />
 <link rel="stylesheet" href="quiz.css?v=15" />
 <link rel="stylesheet" href="cocktail.css?v=11" />
-<link rel="stylesheet" href="swirl.css?v=1" />
+<link rel="stylesheet" href="swirl.css?v=2" />
 <link rel="stylesheet" href="flood.css?v=2" />
 <link rel="stylesheet" href="social.css?v=11" />
 <script>
@@ -169,51 +169,56 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
       </div>
       <div class="swirl-stage">
         <div class="swirl-glow"></div>
-        <svg class="swirl-svg" viewBox="18 14 84 152" aria-hidden="true">
+        <svg class="swirl-svg" viewBox="24 16 72 148" aria-hidden="true">
           <defs>
             <linearGradient id="swDrink" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%"   stop-color="#FFC46B"/>
-              <stop offset="45%"  stop-color="#FF4D8D"/>
-              <stop offset="100%" stop-color="#7B5CFF"/>
+              <stop offset="0%"   stop-color="#FFCF95"/>
+              <stop offset="40%"  stop-color="#FF6E88"/>
+              <stop offset="100%" stop-color="#8B5CE0"/>
             </linearGradient>
+            <!-- 玻璃：兩側亮、中間透，是玻璃杯的典型反光分佈 -->
             <linearGradient id="swGlass" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%"   stop-color="rgba(255,255,255,.34)"/>
-              <stop offset="26%"  stop-color="rgba(255,255,255,.06)"/>
-              <stop offset="72%"  stop-color="rgba(255,255,255,.1)"/>
-              <stop offset="100%" stop-color="rgba(255,255,255,.3)"/>
+              <stop offset="0%"   stop-color="rgba(255,255,255,.42)"/>
+              <stop offset="14%"  stop-color="rgba(255,255,255,.1)"/>
+              <stop offset="50%"  stop-color="rgba(255,255,255,.03)"/>
+              <stop offset="86%"  stop-color="rgba(255,255,255,.12)"/>
+              <stop offset="100%" stop-color="rgba(255,255,255,.4)"/>
             </linearGradient>
-            <!-- 杯碗內緣，酒液只在這個範圍內 -->
             <clipPath id="swBowl">
-              <path d="M32,26 L88,26 C88,62 76,80 62,84 L58,84 C44,80 32,62 32,26 Z"/>
+              <path d="M38,30 C38,62 46,78 58,83 L62,83 C74,78 82,62 82,30 Z"/>
             </clipPath>
           </defs>
 
           <g class="sw-glass">
-            <!-- 酒液 -->
             <g clip-path="url(#swBowl)">
               <g class="sw-liquid">
-                <rect x="18" y="56" width="84" height="48" fill="url(#swDrink)"/>
-                <!-- 酒面 -->
-                <ellipse class="sw-surface" cx="60" cy="57" rx="30" ry="6"
-                         fill="#FFD9A0" opacity="0.85"/>
+                <rect x="24" y="54" width="72" height="40" fill="url(#swDrink)"/>
+                <!-- 液面：亮弧加一條暗邊，做出彎月面 -->
+                <ellipse class="sw-surface" cx="60" cy="55" rx="24" ry="4.6" fill="#FFE2B8" opacity="0.9"/>
+                <ellipse class="sw-surface" cx="60" cy="56.6" rx="24" ry="4.6" fill="rgba(180,70,110,.35)"/>
               </g>
-              <!-- 掛杯痕跡 -->
-              <rect class="sw-leg"    x="41" y="40" width="1.6" height="18" rx="1" fill="rgba(255,214,170,.9)"/>
-              <rect class="sw-leg l2" x="60" y="36" width="1.6" height="22" rx="1" fill="rgba(255,214,170,.9)"/>
-              <rect class="sw-leg l3" x="76" y="42" width="1.6" height="16" rx="1" fill="rgba(255,214,170,.9)"/>
+              <rect class="sw-leg"    x="45" y="40" width="1.1" height="16" rx="0.6" fill="rgba(255,220,180,.85)"/>
+              <rect class="sw-leg l2" x="60" y="36" width="1.1" height="20" rx="0.6" fill="rgba(255,220,180,.85)"/>
+              <rect class="sw-leg l3" x="73" y="42" width="1.1" height="14" rx="0.6" fill="rgba(255,220,180,.85)"/>
             </g>
 
-            <!-- 杯體 -->
-            <path d="M32,26 L88,26 C88,62 76,80 62,84 L58,84 C44,80 32,62 32,26 Z"
-                  fill="url(#swGlass)" stroke="rgba(255,245,225,.7)" stroke-width="1.6" stroke-linejoin="round"/>
-            <!-- 杯口 -->
-            <ellipse cx="60" cy="26" rx="28" ry="5" fill="none" stroke="rgba(255,245,225,.8)" stroke-width="1.6"/>
+            <!-- 杯碗 -->
+            <path d="M38,30 C38,62 46,78 58,83 L62,83 C74,78 82,62 82,30 Z"
+                  fill="url(#swGlass)" stroke="rgba(255,246,230,.62)" stroke-width="1.1"/>
+            <!-- 杯口：外圈細、內圈更細，看起來像有厚度的玻璃緣 -->
+            <ellipse cx="60" cy="30" rx="22" ry="3.6" fill="none" stroke="rgba(255,246,230,.8)" stroke-width="1.2"/>
+            <ellipse cx="60" cy="30" rx="20.2" ry="3" fill="none" stroke="rgba(255,246,230,.3)" stroke-width="0.7"/>
             <!-- 杯壁高光 -->
-            <path class="sw-sheen" d="M40,32 C40,54 46,68 54,76" fill="none"
-                  stroke="rgba(255,255,255,.55)" stroke-width="2" stroke-linecap="round"/>
-            <!-- 杯腳與底座 -->
-            <rect x="58.6" y="84" width="2.8" height="44" fill="rgba(255,245,225,.55)"/>
-            <ellipse cx="60" cy="130" rx="20" ry="4.5" fill="rgba(255,245,225,.45)"/>
+            <path class="sw-sheen" d="M45,36 C44,54 48,68 54,76" fill="none"
+                  stroke="rgba(255,255,255,.6)" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M76,38 C76,52 73,63 68,71" fill="none"
+                  stroke="rgba(255,255,255,.22)" stroke-width="1" stroke-linecap="round"/>
+            <!-- 杯腳：往下微收 -->
+            <path d="M59,83 L61,83 L61.6,126 L58.4,126 Z" fill="rgba(255,246,230,.5)"/>
+            <path d="M59.2,86 L59.8,124" stroke="rgba(255,255,255,.7)" stroke-width="0.7"/>
+            <!-- 底座 -->
+            <ellipse cx="60" cy="128" rx="17" ry="3.6" fill="rgba(255,246,230,.28)"/>
+            <ellipse cx="60" cy="127" rx="17" ry="3.6" fill="none" stroke="rgba(255,246,230,.55)" stroke-width="1"/>
           </g>
         </svg>
         <div class="swirl-beat"><i></i><i></i><i></i></div>
@@ -444,7 +449,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="i18n.js?v=11"></script>
-  <script src="transition.js?v=3"></script>
+  <script src="transition.js?v=4"></script>
   <script src="particles.js?v=10"></script>
   <script src="auth.js?v=13"></script>
   <script src="cocktail.js?v=12"></script>

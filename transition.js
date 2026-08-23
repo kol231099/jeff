@@ -4,6 +4,7 @@
 // 兩段之間靠 sessionStorage 傳遞，換頁後才知道要不要接續播放。
 (function () {
   const FLAG = 'pourmatch_transition';
+  const INTRO = 'pourmatch_intro';
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const WAVE = 'M0,40 C150,90 350,-10 600,40 C850,90 1050,-10 1200,40 L1200,140 L0,140 Z';
@@ -124,10 +125,18 @@
   window.pourIn = pourIn;
   window.pourTo = pourTo;
 
-  // 抵達時若帶著旗標就接續播放退場
+  const isHome = /(^\/$|\/index\.html$)/.test(location.pathname);
+
   window.addEventListener('DOMContentLoaded', () => {
+    // 從過場換頁抵達：接續播放退場
     if (sessionStorage.getItem(FLAG)) {
       sessionStorage.removeItem(FLAG);
+      pourIn();
+      return;
+    }
+    // 每個 session 第一次進首頁：先滿版蓋住，再揭開
+    if (isHome && !sessionStorage.getItem(INTRO)) {
+      sessionStorage.setItem(INTRO, '1');
       pourIn();
     }
   });

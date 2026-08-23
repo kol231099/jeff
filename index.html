@@ -14,7 +14,8 @@
 <script>
 /* 換頁抵達時，在第一個影格之前就蓋住畫面，避免閃爍。
    若 JS 之後出錯，3 秒後自動解除，不會把頁面永遠遮住。 */
-(function(){try{if(sessionStorage.getItem('pourmatch_transition')){
+(function(){try{var intro=!sessionStorage.getItem('pourmatch_intro');
+if(sessionStorage.getItem('pourmatch_transition')||intro){
 document.documentElement.classList.add('pour-arriving');
 setTimeout(function(){document.documentElement.classList.remove('pour-arriving');},3000);}}catch(e){}})();
 </script>
@@ -459,7 +460,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="i18n.js?v=11"></script>
-  <script src="transition.js?v=3"></script>
+  <script src="transition.js?v=4"></script>
   <script src="particles.js?v=10"></script>
   <script src="auth.js?v=13"></script>
 </body>
