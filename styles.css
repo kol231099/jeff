@@ -800,30 +800,20 @@ body {
 }
 
 /* ===== 導覽列的語言項目 ===== */
+/* 就是一般的選單項目，只是多一個地球圖示；樣式全部沿用 .nav-links a */
 .nav-lang { display: flex; align-items: center; }
 .lang-link {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 6px 14px;
+  gap: 6px;
+}
+.lang-globe { font-size: 13px; opacity: 0.8; }
+/* 展示頁沒有主選單，那裡才需要自己的外框 */
+.sc-top .lang-link {
+  margin-left: 16px;
+  padding: 5px 12px;
   border: 1px solid var(--border);
   border-radius: 100px;
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-dim) !important;
-  font-size: 13.5px;
-  font-weight: 600;
   text-decoration: none;
-  transition: color 0.25s, border-color 0.25s, background 0.25s;
-}
-.lang-link:hover {
-  color: var(--text) !important;
-  border-color: rgba(255, 181, 71, 0.5);
-  background: rgba(255, 181, 71, 0.1);
-}
-.lang-link::after { display: none !important; }
-.lang-globe { font-size: 13px; }
-.sc-top .lang-link { margin-left: 16px; }
-
-@media (max-width: 820px) {
-  .lang-link { padding: 5px 10px; font-size: 12px; }
+  color: var(--text-dim);
 }

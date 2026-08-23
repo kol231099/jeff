@@ -92,6 +92,8 @@
     liquid.style.height = '130vh';
     el.classList.add('active');
     setWord(el, label('tr.settling'));
+    // 覆蓋層已就位且顏色相同，這時才拿掉行內的臨時遮罩
+    document.documentElement.classList.remove('pour-arriving');
 
     if (reduce) { el.classList.remove('active'); liquid.style.height = '0'; return; }
 
