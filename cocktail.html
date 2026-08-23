@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="transition.css?v=4" />
 <link rel="stylesheet" href="quiz.css?v=15" />
 <link rel="stylesheet" href="cocktail.css?v=11" />
-<link rel="stylesheet" href="shaker.css?v=4" />
+<link rel="stylesheet" href="swirl.css?v=1" />
 <link rel="stylesheet" href="social.css?v=11" />
 <script>
 /* 換頁抵達時，在第一個影格之前就蓋住畫面，避免閃爍。
@@ -166,56 +166,56 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
         <svg class="shake-wave" viewBox="0 0 1200 140" preserveAspectRatio="none"><path d="M0,40 C150,90 350,-10 600,40 C850,90 1050,-10 1200,40 L1200,140 L0,140 Z"/></svg>
         <svg class="shake-wave w2" viewBox="0 0 1200 140" preserveAspectRatio="none"><path d="M0,40 C150,90 350,-10 600,40 C850,90 1050,-10 1200,40 L1200,140 L0,140 Z"/></svg>
       </div>
-      <div class="shaker-stage">
-        <div class="shaker-glow"></div>
-        <svg class="shaker-svg" viewBox="40 32 120 232" aria-hidden="true">
+      <div class="swirl-stage">
+        <div class="swirl-glow"></div>
+        <svg class="swirl-svg" viewBox="18 14 84 152" aria-hidden="true">
           <defs>
-            <linearGradient id="shMetal" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%"   stop-color="#7C86B8"/>
-              <stop offset="18%"  stop-color="#EEF2FF"/>
-              <stop offset="42%"  stop-color="#AAB4E0"/>
-              <stop offset="66%"  stop-color="#F3F6FF"/>
-              <stop offset="100%" stop-color="#6A7299"/>
-            </linearGradient>
-            <linearGradient id="shDrink" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="swDrink" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%"   stop-color="#FFC46B"/>
-              <stop offset="50%"  stop-color="#FF4D8D"/>
+              <stop offset="45%"  stop-color="#FF4D8D"/>
               <stop offset="100%" stop-color="#7B5CFF"/>
             </linearGradient>
-            <clipPath id="shInner">
-              <path d="M66,150 L134,150 L128,232 Q100,244 72,232 Z"/>
+            <linearGradient id="swGlass" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="rgba(255,255,255,.34)"/>
+              <stop offset="26%"  stop-color="rgba(255,255,255,.06)"/>
+              <stop offset="72%"  stop-color="rgba(255,255,255,.1)"/>
+              <stop offset="100%" stop-color="rgba(255,255,255,.3)"/>
+            </linearGradient>
+            <!-- 杯碗內緣，酒液只在這個範圍內 -->
+            <clipPath id="swBowl">
+              <path d="M32,26 L88,26 C88,62 76,80 62,84 L58,84 C44,80 32,62 32,26 Z"/>
             </clipPath>
-            <!-- 搖酒器外形，主體與殘影共用 -->
-            <g id="shShape">
-              <rect x="82" y="44" width="36" height="20" rx="6" fill="url(#shMetal)"/>
-              <path d="M72,64 L128,64 L134,96 L66,96 Z" fill="url(#shMetal)"/>
-              <path d="M66,96 L134,96 L128,232 Q100,246 72,232 Z" fill="url(#shMetal)"/>
-              <path d="M66,96 L134,96 L133,104 L67,104 Z" fill="rgba(255,255,255,.55)"/>
-            </g>
           </defs>
 
-          <use href="#shShape" class="sh-ghost g2"/>
-          <use href="#shShape" class="sh-ghost g1"/>
-
-          <g class="sh-body">
-            <use href="#shShape"/>
-            <g clip-path="url(#shInner)">
-              <g class="sh-content">
-                <rect x="40" y="168" width="130" height="110" fill="url(#shDrink)" opacity="0.92"/>
-                <rect class="sh-ice i1" x="80"  y="176" width="20" height="20" rx="5" fill="rgba(255,255,255,.72)"/>
-                <rect class="sh-ice i2" x="106" y="192" width="16" height="16" rx="4" fill="rgba(255,255,255,.6)"/>
-                <rect class="sh-ice i3" x="86"  y="206" width="14" height="14" rx="4" fill="rgba(255,255,255,.5)"/>
+          <g class="sw-glass">
+            <!-- 酒液 -->
+            <g clip-path="url(#swBowl)">
+              <g class="sw-liquid">
+                <rect x="18" y="56" width="84" height="48" fill="url(#swDrink)"/>
+                <!-- 酒面 -->
+                <ellipse class="sw-surface" cx="60" cy="57" rx="30" ry="6"
+                         fill="#FFD9A0" opacity="0.85"/>
               </g>
+              <!-- 掛杯痕跡 -->
+              <rect class="sw-leg"    x="41" y="40" width="1.6" height="18" rx="1" fill="rgba(255,214,170,.9)"/>
+              <rect class="sw-leg l2" x="60" y="36" width="1.6" height="22" rx="1" fill="rgba(255,214,170,.9)"/>
+              <rect class="sw-leg l3" x="76" y="42" width="1.6" height="16" rx="1" fill="rgba(255,214,170,.9)"/>
             </g>
-            <rect class="sh-sheen" x="74" y="100" width="14" height="60" rx="7" fill="rgba(255,255,255,.5)"/>
-          </g>
 
-          <circle class="sh-drop"    cx="140" cy="120" r="4"   fill="#FFD9A0" style="--dx:34px;--dy:-26px"/>
-          <circle class="sh-drop d2" cx="62"  cy="140" r="3.4" fill="#FF9AC4" style="--dx:-32px;--dy:-18px"/>
-          <circle class="sh-drop d3" cx="146" cy="170" r="3"   fill="#C0A6FF" style="--dx:30px;--dy:22px"/>
-          <circle class="sh-drop d4" cx="58"  cy="182" r="3.6" fill="#FFD9A0" style="--dx:-28px;--dy:26px"/>
+            <!-- 杯體 -->
+            <path d="M32,26 L88,26 C88,62 76,80 62,84 L58,84 C44,80 32,62 32,26 Z"
+                  fill="url(#swGlass)" stroke="rgba(255,245,225,.7)" stroke-width="1.6" stroke-linejoin="round"/>
+            <!-- 杯口 -->
+            <ellipse cx="60" cy="26" rx="28" ry="5" fill="none" stroke="rgba(255,245,225,.8)" stroke-width="1.6"/>
+            <!-- 杯壁高光 -->
+            <path class="sw-sheen" d="M40,32 C40,54 46,68 54,76" fill="none"
+                  stroke="rgba(255,255,255,.55)" stroke-width="2" stroke-linecap="round"/>
+            <!-- 杯腳與底座 -->
+            <rect x="58.6" y="84" width="2.8" height="44" fill="rgba(255,245,225,.55)"/>
+            <ellipse cx="60" cy="130" rx="20" ry="4.5" fill="rgba(255,245,225,.45)"/>
+          </g>
         </svg>
-        <div class="shaker-beat"><i></i><i></i><i></i></div>
+        <div class="swirl-beat"><i></i><i></i><i></i></div>
       </div>
       <h2 class="loading-title gradient-text" data-i18n="ck.loading">調配中</h2>
       <p class="loading-sub" id="loadingSub" data-i18n="ck.tip1">融合風味的分子...</p>

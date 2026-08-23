@@ -1,0 +1,128 @@
+/* ===== 晃杯醒酒載入動畫 ===== */
+/* 跟搖酒器相反：這裡要慢、要連續、不要有衝擊感。
+   杯子沿一個小圓周繞行，杯裡的酒面用更大的傾角、慢半拍跟上，就是醒酒的樣子。 */
+
+.swirl-stage {
+  position: relative;
+  width: min(150px, 38vw);
+  height: min(190px, 46vw);
+  margin: 0 auto 26px;
+  display: grid;
+  place-items: center;
+}
+
+.swirl-glow {
+  position: absolute;
+  width: 70%;
+  height: 34%;
+  bottom: 6%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,
+    rgba(255, 77, 141, 0.42), rgba(123, 92, 255, 0.2) 48%, transparent 74%);
+  filter: blur(14px);
+  animation: swGlow 3.6s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+@keyframes swGlow {
+  0%, 100% { transform: translateX(-4px) scale(0.94); opacity: 0.6; }
+  50%      { transform: translateX(4px) scale(1.06); opacity: 0.85; }
+}
+
+.swirl-svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* 杯身：沿小圓周繞行，本身幾乎不轉，才像手腕在畫圈 */
+.sw-glass {
+  transform-origin: 60px 140px;
+  animation: swOrbit 3.6s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+  will-change: transform;
+}
+@keyframes swOrbit {
+  0%   { transform: translate(-5px, 0) rotate(-3deg); }
+  25%  { transform: translate(0, -3px) rotate(0deg); }
+  50%  { transform: translate(5px, 0) rotate(3deg); }
+  75%  { transform: translate(0, 3px) rotate(0deg); }
+  100% { transform: translate(-5px, 0) rotate(-3deg); }
+}
+
+/* 酒液：傾角更大、慢半拍，看起來才像被甩上杯壁 */
+.sw-liquid {
+  transform-origin: 60px 74px;
+  animation: swTilt 3.6s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+  animation-delay: -0.55s;
+  will-change: transform;
+}
+@keyframes swTilt {
+  0%   { transform: rotate(-8deg) translateX(-2px); }
+  50%  { transform: rotate(8deg) translateX(2px); }
+  100% { transform: rotate(-8deg) translateX(-2px); }
+}
+
+/* 酒面：跟著晃，幅度再大一點，並且上下起伏 */
+.sw-surface {
+  transform-origin: 60px 58px;
+  animation: swSurface 3.6s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+  animation-delay: -0.7s;
+  will-change: transform;
+}
+@keyframes swSurface {
+  0%   { transform: rotate(-11deg) translateY(1px); }
+  50%  { transform: rotate(11deg) translateY(-1px); }
+  100% { transform: rotate(-11deg) translateY(1px); }
+}
+
+/* 掛杯：酒液沿杯壁流下的痕跡，緩慢淡入淡出 */
+.sw-leg {
+  opacity: 0;
+  transform-origin: top;
+  animation: swLeg 3.6s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+.sw-leg.l2 { animation-delay: -1.2s; }
+.sw-leg.l3 { animation-delay: -2.4s; }
+@keyframes swLeg {
+  0%, 100% { opacity: 0; transform: scaleY(0.3); }
+  30%      { opacity: 0.5; }
+  70%      { opacity: 0; transform: scaleY(1); }
+}
+
+/* 杯緣高光緩慢移動 */
+.sw-sheen {
+  animation: swSheen 3.6s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+@keyframes swSheen {
+  0%, 100% { opacity: 0.25; transform: translateX(-3px); }
+  50%      { opacity: 0.7; transform: translateX(3px); }
+}
+
+/* 節奏點：比搖酒器慢，呼吸感 */
+.swirl-beat {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+.swirl-beat i {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent-gold, #FFB547);
+  opacity: 0.22;
+  animation: swBeat 3.6s ease-in-out infinite;
+}
+.swirl-beat i:nth-child(2) { animation-delay: 0.4s; }
+.swirl-beat i:nth-child(3) { animation-delay: 0.8s; }
+@keyframes swBeat {
+  0%, 100% { opacity: 0.2; transform: scale(0.9); }
+  40%      { opacity: 0.9; transform: scale(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sw-glass, .sw-liquid, .sw-surface, .sw-leg, .sw-sheen,
+  .swirl-glow, .swirl-beat i { animation: none; }
+}

@@ -4,9 +4,9 @@
 
 .shaker-stage {
   position: relative;
-  width: min(300px, 68vw);
-  height: min(330px, 74vw);
-  margin: 0 auto 34px;
+  width: min(150px, 38vw);
+  height: min(180px, 44vw);
+  margin: 0 auto 26px;
   display: grid;
   place-items: center;
 }
@@ -14,13 +14,13 @@
 /* 底下的光暈跟著節奏縮放，讓搖動有重量感 */
 .shaker-glow {
   position: absolute;
-  width: 78%;
-  height: 42%;
-  bottom: 6%;
+  width: 72%;
+  height: 38%;
+  bottom: 8%;
   border-radius: 50%;
   background: radial-gradient(ellipse at center,
     rgba(255, 77, 141, 0.5), rgba(123, 92, 255, 0.22) 45%, transparent 72%);
-  filter: blur(18px);
+  filter: blur(14px);
   animation: shGlow 1.04s ease-in-out infinite;
   will-change: transform, opacity;
 }
@@ -48,15 +48,15 @@
   will-change: transform;
   pointer-events: none;
 }
-.sh-ghost.g1 { animation-delay: -0.045s; opacity: 0.26; }
-.sh-ghost.g2 { animation-delay: -0.09s;  opacity: 0.13; }
+.sh-ghost.g1 { animation-delay: -0.04s; opacity: 0.2; }
+.sh-ghost.g2 { animation-delay: -0.08s;  opacity: 0.09; }
 
 @keyframes shShake {
-  0%   { transform: rotate(-17deg) translate(-7px, 3px); }
-  25%  { transform: rotate(-3deg)  translate(0, -5px); }
-  50%  { transform: rotate(17deg)  translate(7px, 3px); }
-  75%  { transform: rotate(3deg)   translate(0, -5px); }
-  100% { transform: rotate(-17deg) translate(-7px, 3px); }
+  0%   { transform: rotate(-11deg) translate(-4px, 2px); }
+  25%  { transform: rotate(-2deg)  translate(0, -3px); }
+  50%  { transform: rotate(11deg)  translate(4px, 2px); }
+  75%  { transform: rotate(2deg)   translate(0, -3px); }
+  100% { transform: rotate(-11deg) translate(-4px, 2px); }
 }
 
 /* 內容物：跟著搖但相位落後，看起來像液體在裡面被甩 */
@@ -128,7 +128,7 @@
   margin-top: 4px;
 }
 .shaker-beat i {
-  width: 6px; height: 6px;
+  width: 5px; height: 5px;
   border-radius: 50%;
   background: var(--accent-gold, #FFB547);
   opacity: 0.25;
