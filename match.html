@@ -58,15 +58,15 @@
 
   <main class="social-main">
     <div class="social-header">
-      <h1 class="gradient-text">AI 酒友配對</h1>
-      <p>依你的品味測驗找出味覺重疊度最高的人。雙方都想認識，才會開啟聊天室。</p>
+      <h1 class="gradient-text" data-i18n="m.title">AI 酒友配對</h1>
+      <p data-i18n="m.sub">依你的品味測驗找出味覺重疊度最高的人。雙方都想認識，才會開啟聊天室。</p>
     </div>
 
     <div class="tabs" id="tabs">
-      <button class="tab active" data-tab="online">在線推薦</button>
-      <button class="tab" data-tab="all">離線推薦</button>
-      <button class="tab" data-tab="group">群組配對</button>
-      <button class="tab" data-tab="rooms">我的配對<span class="tab-badge" id="roomsBadge" hidden>0</span></button>
+      <button class="tab active" data-tab="online" data-i18n="m.tab_online">在線推薦</button>
+      <button class="tab" data-tab="all" data-i18n="m.tab_all">離線推薦</button>
+      <button class="tab" data-tab="group" data-i18n="m.tab_group">群組配對</button>
+      <button class="tab" data-tab="rooms"><span data-i18n="m.tab_rooms">我的配對</span><span class="tab-badge" id="roomsBadge" hidden>0</span></button>
     </div>
 
     <div id="matchBody"></div>
@@ -76,7 +76,7 @@
   <div class="mm-overlay" id="matchModal" hidden>
     <div class="mm-card">
       <div class="mm-spark"></div>
-      <div class="mm-title gradient-text">配對成功</div>
+      <div class="mm-title gradient-text" data-i18n="m.matched">配對成功</div>
       <div class="mm-avatars">
         <img class="mm-avatar" id="mmMe" alt="" referrerpolicy="no-referrer" />
         <div class="mm-link">🍸</div>
@@ -85,16 +85,16 @@
       <div class="mm-name" id="mmName"></div>
       <div class="mm-sub" id="mmSub"></div>
       <div class="mm-actions">
-        <button class="btn-primary" id="mmChat">開始聊天</button>
-        <button class="btn-ghost" id="mmLater">繼續看其他人</button>
+        <button class="btn-primary" id="mmChat" data-i18n="m.start_chat">開始聊天</button>
+        <button class="btn-ghost" id="mmLater" data-i18n="m.keep_looking">繼續看其他人</button>
       </div>
     </div>
   </div>
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="i18n.js?v=3"></script>
+  <script src="i18n.js?v=4"></script>
   <script src="particles.js?v=10"></script>
   <script src="auth.js?v=11"></script>
-  <script src="match.js?v=12"></script>
+  <script src="match.js?v=13"></script>
 </body>
 </html>
