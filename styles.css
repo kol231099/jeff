@@ -556,14 +556,16 @@ body {
   50% { opacity: 0.5; }
 }
 
-.bubble {
+/* 全息酒杯裡的裝飾氣泡。原本叫 .bubble，跟聊天訊息的 .bubble 撞名，
+   聊天室的每一則訊息都被套上這段上升動畫，訊息才會散落又半透明。 */
+.hg-bubble {
   animation: bubbleRise 4.5s ease-in infinite;
 }
-.bubble.b1 { animation-delay: 0s; }
-.bubble.b2 { animation-delay: -1.1s; }
-.bubble.b3 { animation-delay: -2.2s; }
-.bubble.b4 { animation-delay: -3.1s; }
-.bubble.b5 { animation-delay: -3.8s; }
+.hg-bubble.b1 { animation-delay: 0s; }
+.hg-bubble.b2 { animation-delay: -1.1s; }
+.hg-bubble.b3 { animation-delay: -2.2s; }
+.hg-bubble.b4 { animation-delay: -3.1s; }
+.hg-bubble.b5 { animation-delay: -3.8s; }
 
 /* 氣泡上升時略微橫移並放大，接近真實液體中的軌跡 */
 @keyframes bubbleRise {
