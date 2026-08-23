@@ -112,6 +112,17 @@
     await wait(1500);
   }
 
+  // 換頁：先蓋住畫面，再導向，讓下一頁接著播揭開。
+  // 蓋住的這段時間順便用 cache: 'reload' 重抓目的地，
+  // 否則瀏覽器可能沿用舊快取，使用者會落在過期的頁面上。
+  async function pourTo(url, word) {
+    sessionStorage.setItem(FLAG, '1');
+    const warm = fetch(url, { cache: 'reload' }).catch(() => {});
+    await pourOut(word);
+    await Promise.race([warm, wait(1200)]);
+    location.href = url;
+  }
+
   window.pourOut = pourOut;
   window.pourIn = pourIn;
   window.pourTo = pourTo;
