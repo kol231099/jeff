@@ -23,6 +23,19 @@
     veil.setAttribute('aria-hidden', 'true');
     document.body.appendChild(veil);
 
+    const motes = document.createElement('div');
+    motes.className = 'pour-motes';
+    motes.setAttribute('aria-hidden', 'true');
+    for (let i = 0; i < 16; i++) {
+      const b = document.createElement('span');
+      const size = 4 + Math.random() * 12;
+      b.className = 'pour-mote';
+      b.style.cssText = `left:${Math.random() * 100}%;width:${size}px;height:${size}px;` +
+        `animation-duration:${6 + Math.random() * 6}s;animation-delay:${-Math.random() * 8}s;`;
+      motes.appendChild(b);
+    }
+    document.body.appendChild(motes);
+
     const scene = document.createElement('div');
     scene.className = 'pour-scene';
     scene.setAttribute('aria-hidden', 'true');
@@ -53,6 +66,7 @@
     overlay: document.querySelector('.pour-overlay'),
     veil: document.querySelector('.pour-veil'),
     scene: document.querySelector('.pour-scene'),
+    motes: document.querySelector('.pour-motes'),
   });
 
   function setWord(text) {
@@ -66,12 +80,13 @@
   // 離開：整片顏色淡入蓋住畫面。沒有移動中的邊界，就不會有對不齊的縫。
   async function pourOut(word) {
     build();
-    const { overlay, veil, scene } = parts();
+    const { overlay, veil, scene, motes } = parts();
     setWord(word || label('tr.pouring'));
 
     overlay.classList.remove('reveal');
     overlay.classList.add('active');
     veil.classList.add('on');
+    motes.classList.add('on');
     await wait(120);
     scene.classList.add('on');
     if (reduce) return;
@@ -79,17 +94,18 @@
     const fill = document.querySelector('.pg-fill');
     if (fill) {
       fill.animate([{ transform: 'scaleY(0.15)' }, { transform: 'scaleY(1)' }],
-        { duration: 700, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
+        { duration: 820, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
     }
-    await wait(700);
+    await wait(900);
   }
 
   // 抵達：顏色先退，薄紗慢一步，內容因此像從底色裡浮出來
   async function pourIn() {
     build();
-    const { overlay, veil, scene } = parts();
+    const { overlay, veil, scene, motes } = parts();
     overlay.classList.add('active');
     veil.classList.add('on');
+    motes.classList.add('on');
     setWord(label('tr.settling'));
 
     // 這一格先把畫面蓋住，再交給行內遮罩下班
@@ -103,11 +119,13 @@
     }
 
     scene.classList.add('on');
-    await wait(340);
+    await wait(620);
+    // 杯子與顏色一起退場，才不會只閃一下就不見
     scene.classList.remove('on');
+    motes.classList.remove('on');
     overlay.classList.add('reveal');
     overlay.classList.remove('active');
-    await wait(420);
+    await wait(520);
     veil.classList.remove('on');
     await wait(1500);
   }

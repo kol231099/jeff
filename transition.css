@@ -83,6 +83,33 @@
 }
 .pour-veil.on { opacity: 1; }
 
+/* 緩慢飄升的光點。它們是各自獨立的圓，沒有需要跟誰對齊的邊，
+   所以不會重蹈波浪那種次像素露縫的問題。 */
+.pour-motes {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+}
+.pour-motes.on { opacity: 1; }
+.pour-mote {
+  position: absolute;
+  bottom: -8%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 245, 225, 0.55);
+  background: rgba(255, 255, 255, 0.12);
+  animation: moteRise linear infinite;
+  will-change: transform, opacity;
+}
+@keyframes moteRise {
+  0%   { transform: translateY(0) scale(0.65); opacity: 0; }
+  14%  { opacity: 0.7; }
+  76%  { opacity: 0.5; }
+  100% { transform: translateY(-118vh) scale(1.1); opacity: 0; }
+}
+
 /* 中央的杯子與字樣 */
 .pour-scene {
   position: fixed;
@@ -96,7 +123,7 @@
   pointer-events: none;
   opacity: 0;
   transform: scale(0.96);
-  transition: opacity 0.5s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.85s ease-out, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .pour-scene.on { opacity: 1; transform: none; }
 
@@ -119,6 +146,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pour-overlay, .pour-veil, .pour-scene { transition: none; }
-  .pour-word span { animation: none; }
+  .pour-overlay, .pour-veil, .pour-scene, .pour-motes { transition: none; }
+  .pour-word span, .pour-mote { animation: none; }
+  .pour-motes { display: none; }
 }
