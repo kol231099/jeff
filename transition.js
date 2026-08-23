@@ -4,7 +4,6 @@
 // 兩段之間靠 sessionStorage 傳遞，換頁後才知道要不要接續播放。
 (function () {
   const FLAG = 'pourmatch_transition';
-  const INTRO = 'pourmatch_intro';
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const WAVE = 'M0,40 C150,90 350,-10 600,40 C850,90 1050,-10 1200,40 L1200,140 L0,140 Z';
@@ -21,10 +20,7 @@
       <div class="pour-scene">
         <svg class="pour-glass" viewBox="0 0 120 150" aria-hidden="true">
           <defs>
-            <!-- userSpaceOnUse：漸層固定在杯碗的座標上。
-                 預設的 objectBoundingBox 會讓顏色跟著縮放一起壓扁，
-                 那樣看起來是整塊色彩在變形，而不是酒液累積上來。 -->
-            <linearGradient id="pgLiquid" gradientUnits="userSpaceOnUse" x1="60" y1="16" x2="60" y2="76">
+            <linearGradient id="pgLiquid" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="#FFC46B"/>
               <stop offset="55%" stop-color="#FF4D8D"/>
               <stop offset="100%" stop-color="#7B5CFF"/>
@@ -128,18 +124,10 @@
   window.pourIn = pourIn;
   window.pourTo = pourTo;
 
-  const isHome = /(^\/$|\/index\.html$)/.test(location.pathname);
-
+  // 抵達時若帶著旗標就接續播放退場
   window.addEventListener('DOMContentLoaded', () => {
-    // 從過場換頁抵達：接續播放退場
     if (sessionStorage.getItem(FLAG)) {
       sessionStorage.removeItem(FLAG);
-      pourIn();
-      return;
-    }
-    // 每個 session 第一次進首頁：先蓋住，再揭開
-    if (isHome && !sessionStorage.getItem(INTRO)) {
-      sessionStorage.setItem(INTRO, '1');
       pourIn();
     }
   });

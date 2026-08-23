@@ -8,7 +8,11 @@
   z-index: 0;
   pointer-events: none;
   opacity: 0;
-  background-image: var(--drink-light), var(--drink-ramp);
+  background-image:
+    radial-gradient(ellipse 78% 46% at 50% -6%,
+      rgba(255, 246, 224, 0.4), rgba(255, 246, 224, 0) 68%),
+    linear-gradient(180deg,
+      #FFC46B 0%, #FF8A5B 18%, #FF4D8D 48%, #A05CFF 78%, #7B5CFF 100%);
   animation: floodFade 5.5s ease-out forwards;
   will-change: opacity;
 }
@@ -32,7 +36,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background-image: var(--drink-noise);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 160px 160px;
   opacity: 0.13;
   mix-blend-mode: overlay;
