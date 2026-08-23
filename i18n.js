@@ -1291,22 +1291,32 @@
     });
   }
 
-  // 語言切換鈕插在登入鈕旁邊
+  // 語言切換：放在導覽列「關於」右邊，成為選單的一部分。
+  // 這個位置在 .nav-links 裡，登入後 auth.js 重建右側時碰不到它。
   function mountToggle() {
-    const nav = document.querySelector('.navbar') || document.querySelector('.sc-top');
-    if (!nav || nav.querySelector('.lang-switch')) return;
+    if (document.querySelector('.lang-switch')) return;
+
     const wrap = document.createElement('div');
     wrap.className = 'lang-switch';
     wrap.innerHTML = `
-      <button class="lang-btn" data-lang="zh" type="button">中</button>
+      <button class="lang-btn" data-lang="zh" type="button">中文</button>
       <button class="lang-btn" data-lang="en" type="button">EN</button>`;
     wrap.addEventListener('click', e => {
       const b = e.target.closest('.lang-btn');
       if (b) setLang(b.dataset.lang);
     });
-    const loginBtn = nav.querySelector('.btn-login, .user-chip, #userArea');
-    if (loginBtn) nav.insertBefore(wrap, loginBtn);
-    else nav.appendChild(wrap);
+
+    const navList = document.querySelector('.nav-links');
+    if (navList) {
+      const li = document.createElement('li');
+      li.className = 'nav-lang';
+      li.appendChild(wrap);
+      navList.appendChild(li);
+    } else {
+      // 展示頁沒有主導覽列，改掛到它自己的頂部列
+      const bar = document.querySelector('.sc-top') || document.querySelector('.navbar');
+      if (bar) bar.appendChild(wrap);
+    }
     syncToggle();
   }
 
