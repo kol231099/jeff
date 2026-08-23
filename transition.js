@@ -27,9 +27,9 @@
               <stop offset="100%" stop-color="#7B5CFF"/>
             </linearGradient>
             <linearGradient id="pgStream" gradientUnits="userSpaceOnUse" x1="60" y1="-20" x2="60" y2="40">
-              <stop offset="0%" stop-color="#FFD9A0" stop-opacity="0"/>
-              <stop offset="35%" stop-color="#FFC46B"/>
-              <stop offset="100%" stop-color="#FF8A5B"/>
+              <stop offset="0%" stop-color="#FFF8EC" stop-opacity="0"/>
+              <stop offset="30%" stop-color="#FFF6E6"/>
+              <stop offset="100%" stop-color="#FFE3B4"/>
             </linearGradient>
           </defs>
 
@@ -43,9 +43,9 @@
 
           <!-- 撞擊點的水花 -->
           <g class="pg-splash">
-            <circle class="pg-drop d1" r="1.8" fill="#FFD9A0"/>
-            <circle class="pg-drop d2" r="1.4" fill="#FFC46B"/>
-            <circle class="pg-drop d3" r="1.6" fill="#FFE0B0"/>
+            <circle class="pg-drop d1" r="1.8" fill="#FFF6E6"/>
+            <circle class="pg-drop d2" r="1.4" fill="#FFEFD2"/>
+            <circle class="pg-drop d3" r="1.6" fill="#FFFBF2"/>
           </g>
 
           <!-- 杯體 -->

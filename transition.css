@@ -127,11 +127,11 @@ html.pour-arriving::before {
 .pour-glass { width: min(160px, 34vw); filter: drop-shadow(0 12px 40px rgba(255, 77, 141, 0.5)); }
 .pour-glass .pg-liquid { filter: drop-shadow(0 0 6px rgba(255, 120, 150, .35)); }
 
-.pour-glass .pg-stream { opacity: .88; filter: blur(.3px) drop-shadow(0 0 4px rgba(255, 180, 110, .5)); }
+.pour-glass .pg-stream { opacity: .95; filter: blur(.3px) drop-shadow(0 0 5px rgba(255, 240, 210, .75)); }
 
 /* 撞擊點濺起的酒滴 */
 .pour-glass .pg-splash { opacity: 0; transition: opacity .12s linear; }
-.pour-glass .pg-drop { animation: pgDrop .42s ease-out infinite; }
+.pour-glass .pg-drop { animation: pgDrop .42s ease-out infinite; filter: drop-shadow(0 0 3px rgba(255, 245, 220, .8)); }
 .pour-glass .pg-drop.d1 { --dx: -7px; animation-delay: 0s; }
 .pour-glass .pg-drop.d2 { --dx: 6px;  animation-delay: .14s; }
 .pour-glass .pg-drop.d3 { --dx: -2px; animation-delay: .27s; }
