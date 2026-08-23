@@ -1,23 +1,8 @@
 /* ===== 酒液的共用色彩 ===== */
-/* 定義在這裡是因為 transition.css 每一頁都會載入（含沒有 styles.css 的展示頁），
-   flood.css 直接沿用同一組，兩個動畫的顏色才不會各走各的。
-
-   三個層面處理漸層的「粗糙」：
-   1. 色停加到九個並且間距不均 —— 相鄰色距縮短，感知上的斷層才會消失
-   2. 頂部疊一層暖光 —— 真實的酒液是被光穿過，不是一片平塗
-   3. 疊上極細顆粒 —— 大面積漸層在 8 位元色深必然有帶狀分佈，
-      加入雜訊把邊界打散是唯一有效的解法，比增加色停更有用 */
 :root {
   --drink-ramp: linear-gradient(180deg,
-    #FFE0B0 0%,
-    #FFC97F 9%,
-    #FFAE72 20%,
-    #FF8F73 32%,
-    #FF6E88 45%,
-    #F2559B 57%,
-    #C95BC4 70%,
-    #9B5AE0 84%,
-    #7A54D6 100%);
+    #FFE0B0 0%, #FFC97F 9%, #FFAE72 20%, #FF8F73 32%, #FF6E88 45%,
+    #F2559B 57%, #C95BC4 70%, #9B5AE0 84%, #7A54D6 100%);
   --drink-light: radial-gradient(ellipse 78% 46% at 50% -6%,
     rgba(255, 246, 224, 0.42), rgba(255, 246, 224, 0) 68%);
   --drink-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -25,7 +10,8 @@
   --drink-top-2: #FFAE72;
 }
 
-/* 顆粒層：載入畫面的薄紗也要，避免大面積漸層帶狀 */
+/* 顆粒：打散大面積漸層的帶狀分佈 */
+.pour-liquid::after,
 .shake-flood::after {
   content: '';
   position: absolute;
@@ -37,116 +23,145 @@
   pointer-events: none;
 }
 
-/* ===== 過場：淡入淡出 ===== */
-/* 原本是酒液往上漲，靠一層波浪 SVG 貼在液面。那條邊在次像素捨入下會露出縫，
-   底下的深色頁面就透出來變成黑線。改成整片色彩用 opacity 淡出後，
-   沒有需要對齊的邊，那類破圖從結構上就不可能發生。 */
+/* ===== 倒酒過場 ===== */
+/* 換頁後，覆蓋層要等腳本執行才存在，那之前新頁面已經畫出來了 —— 就是那一下閃爍。
+   head 裡的行內腳本會在第一個影格前掛上這個 class，用同一組漸層先蓋住畫面，
+   等 pourIn() 接手後再拿掉，兩者顏色相同所以看不出交接。 */
+html.pour-arriving::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background-image: var(--drink-light), var(--drink-ramp);
+}
+
+/* 兩段式：離開頁面時酒液漲滿畫面，抵達新頁面後退去。
+   兩段拼起來像同一個連續動作，中間的換頁被藏在滿版的酒液底下。 */
 
 .pour-overlay {
   position: fixed;
   inset: 0;
   z-index: 9999;
   pointer-events: none;
+  overflow: hidden;
   opacity: 0;
   visibility: hidden;
-  background-image: var(--drink-light), var(--drink-ramp);
-  transition: opacity 0.62s ease-out, visibility 0.62s ease-out;
 }
 .pour-overlay.active { opacity: 1; visibility: visible; pointer-events: all; }
-/* 揭開時放慢，才有「慢慢顯現」的餘裕 */
-.pour-overlay.reveal { transition: opacity 1.15s ease-out, visibility 1.15s ease-out; }
 
-/* 顆粒疊在色彩上，避免大面積漸層出現帶狀 */
-.pour-overlay::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: var(--drink-noise);
-  background-size: 160px 160px;
-  opacity: 0.13;
-  mix-blend-mode: overlay;
-  pointer-events: none;
-}
-
-/* 內容從底色裡浮出來：這層薄紗比主色慢一步退場，
-   所以邊緣還留著顏色時，中間的東西已經看得見了 */
+/* 底幕：先壓暗畫面，酒液才不會像浮在亮處 */
 .pour-veil {
-  position: fixed;
-  inset: 0;
-  z-index: 9998;
-  pointer-events: none;
-  opacity: 0;
-  background:
-    radial-gradient(ellipse 70% 55% at 50% 50%, rgba(255, 190, 150, 0) 30%, rgba(255, 140, 140, 0.5) 100%),
-    linear-gradient(180deg, rgba(255, 208, 150, 0.45), rgba(150, 100, 220, 0.45));
-  transition: opacity 1.5s ease-out;
-}
-.pour-veil.on { opacity: 1; }
-
-/* 緩慢飄升的光點。它們是各自獨立的圓，沒有需要跟誰對齊的邊，
-   所以不會重蹈波浪那種次像素露縫的問題。 */
-.pour-motes {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.8s ease-out;
-}
-.pour-motes.on { opacity: 1; }
-.pour-mote {
   position: absolute;
-  bottom: -8%;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 245, 225, 0.55);
-  background: rgba(255, 255, 255, 0.12);
-  animation: moteRise linear infinite;
-  will-change: transform, opacity;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 60%, rgba(10, 11, 26, 0.72), rgba(5, 6, 13, 0.94));
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
-@keyframes moteRise {
-  0%   { transform: translateY(0) scale(0.65); opacity: 0; }
-  14%  { opacity: 0.7; }
-  76%  { opacity: 0.5; }
-  100% { transform: translateY(-118vh) scale(1.1); opacity: 0; }
+.pour-overlay.active .pour-veil { opacity: 1; }
+
+/* 酒液本體，高度由 JS 驅動 */
+.pour-liquid {
+  position: absolute;
+  z-index: 1;
+  left: -5vw;
+  right: -5vw;
+  bottom: 0;
+  height: 0;
+  background-image: var(--drink-light), var(--drink-ramp);
+  box-shadow: 0 -18px 60px rgba(255, 110, 136, 0.4);
+  will-change: height;
 }
 
-/* 中央的杯子與字樣 */
+/* 液面波浪：兩層不同速度與相位，看起來才有厚度。
+   bottom 用 calc(100% - 1px) 讓它與液面重疊一個像素 —— 液面高度是帶小數的 vh，
+   剛好貼齊時次像素捨入會露出一條縫，底下的深色頁面就變成黑線。 */
+.pour-wave {
+  position: absolute;
+  bottom: calc(100% - 1px);
+  left: 0;
+  width: 200%;
+  height: 90px;
+  fill: var(--drink-top);
+}
+.pour-wave.w2 {
+  fill: var(--drink-top-2);
+  opacity: 0.5;
+  height: 70px;
+  animation-delay: -1.4s;
+}
+.pour-wave { animation: waveSlide 2.6s linear infinite; }
+.pour-wave.w2 { animation-duration: 3.4s; animation-direction: reverse; }
+@keyframes waveSlide {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* 液面高光，讓邊緣像真的液體而不是色塊 */
+.pour-glint {
+  position: absolute;
+  bottom: calc(100% - 1px);
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(255, 245, 220, 0.9), transparent);
+  filter: blur(1px);
+  opacity: 0.8;
+}
+
+/* 氣泡 */
+.pour-bubble {
+  position: absolute;
+  bottom: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 240, 210, 0.75);
+  background: rgba(255, 255, 255, 0.14);
+  animation: bubbleUp linear infinite;
+}
+@keyframes bubbleUp {
+  0%   { transform: translateY(0) scale(0.6); opacity: 0; }
+  12%  { opacity: 0.85; }
+  100% { transform: translateY(-78vh) scale(1.15); opacity: 0; }
+}
+
+/* 中央的杯子與字樣。要疊在酒液之上，否則畫面被淹沒時只剩一片色塊 */
 .pour-scene {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  z-index: 10000;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 22px;
-  pointer-events: none;
+  gap: 26px;
   opacity: 0;
-  transform: scale(0.96);
-  transition: opacity 0.85s ease-out, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(14px);
+  transition: opacity 0.45s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.pour-scene.on { opacity: 1; transform: none; }
+.pour-overlay.active .pour-scene { opacity: 1; transform: none; }
 
-.pour-glass { width: min(96px, 22vw); filter: drop-shadow(0 8px 26px rgba(120, 40, 70, 0.35)); }
+.pour-glass { width: min(160px, 34vw); filter: drop-shadow(0 12px 40px rgba(255, 77, 141, 0.5)); }
 .pour-glass .pg-fill { transform-origin: 50% 100%; }
 
 .pour-word {
   font-family: 'Orbitron', sans-serif;
-  font-size: clamp(11px, 1.3vw, 14px);
+  font-size: clamp(13px, 1.6vw, 17px);
   font-weight: 700;
-  letter-spacing: 6px;
+  letter-spacing: 7px;
   text-transform: uppercase;
   color: #FFF6E6;
-  text-shadow: 0 1px 3px rgba(70, 24, 12, 0.45);
+  /* 深色底與亮酒液上都要讀得清楚，所以同時給光暈與暗邊 */
+  text-shadow:
+    0 2px 20px rgba(255, 181, 71, 0.7),
+    0 1px 3px rgba(60, 20, 10, 0.75);
 }
-.pour-word span { animation: wordPulse 1.6s ease-in-out infinite; display: inline-block; }
+.pour-word span { animation: wordPulse 1.5s ease-in-out infinite; display: inline-block; }
 @keyframes wordPulse {
-  0%, 100% { opacity: 0.5; }
-  50%      { opacity: 1; }
+  0%, 100% { opacity: 0.45; transform: translateY(0); }
+  50%      { opacity: 1; transform: translateY(-2px); }
 }
 
+/* 減少動態偏好：直接切換，不做動畫 */
 @media (prefers-reduced-motion: reduce) {
-  .pour-overlay, .pour-veil, .pour-scene, .pour-motes { transition: none; }
-  .pour-word span, .pour-mote { animation: none; }
-  .pour-motes { display: none; }
+  .pour-wave, .pour-bubble, .pour-word span { animation: none; }
+  .pour-overlay, .pour-veil, .pour-scene { transition: none; }
 }

@@ -16,123 +16,103 @@
     el = document.createElement('div');
     el.className = 'pour-overlay';
     el.setAttribute('aria-hidden', 'true');
+    el.innerHTML = `
+      <div class="pour-veil"></div>
+      <div class="pour-scene">
+        <svg class="pour-glass" viewBox="0 0 120 150" aria-hidden="true">
+          <defs>
+            <linearGradient id="pgLiquid" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#FFC46B"/>
+              <stop offset="55%" stop-color="#FF4D8D"/>
+              <stop offset="100%" stop-color="#7B5CFF"/>
+            </linearGradient>
+          </defs>
+          <clipPath id="pgClip">
+            <path d="M22,16 L98,16 L64,74 L56,74 Z"/>
+          </clipPath>
+          <rect class="pg-fill" x="20" y="16" width="80" height="60" fill="url(#pgLiquid)" clip-path="url(#pgClip)"/>
+          <path d="M22,16 L98,16 L64,74 L56,74 Z" fill="none" stroke="rgba(255,240,214,.85)" stroke-width="2.5" stroke-linejoin="round"/>
+          <line x1="60" y1="74" x2="60" y2="126" stroke="rgba(255,240,214,.85)" stroke-width="2.5"/>
+          <line x1="38" y1="130" x2="82" y2="130" stroke="rgba(255,240,214,.85)" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <div class="pour-word"></div>
+      </div>
+      <div class="pour-liquid">
+        <svg class="pour-wave" viewBox="0 0 1200 140" preserveAspectRatio="none"><path d="${WAVE}"/></svg>
+        <svg class="pour-wave w2" viewBox="0 0 1200 140" preserveAspectRatio="none"><path d="${WAVE}"/></svg>
+        <div class="pour-glint"></div>
+      </div>`;
     document.body.appendChild(el);
 
-    const veil = document.createElement('div');
-    veil.className = 'pour-veil';
-    veil.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(veil);
-
-    const motes = document.createElement('div');
-    motes.className = 'pour-motes';
-    motes.setAttribute('aria-hidden', 'true');
-    for (let i = 0; i < 16; i++) {
+    // 氣泡：大小、位置、速度都隨機，才不會看出是重複的
+    const liquid = el.querySelector('.pour-liquid');
+    for (let i = 0; i < 14; i++) {
       const b = document.createElement('span');
-      const size = 4 + Math.random() * 12;
-      b.className = 'pour-mote';
+      const size = 5 + Math.random() * 13;
+      b.className = 'pour-bubble';
       b.style.cssText = `left:${Math.random() * 100}%;width:${size}px;height:${size}px;` +
-        `animation-duration:${6 + Math.random() * 6}s;animation-delay:${-Math.random() * 8}s;`;
-      motes.appendChild(b);
+        `animation-duration:${2.6 + Math.random() * 2.6}s;animation-delay:${Math.random() * 2.4}s;`;
+      liquid.appendChild(b);
     }
-    document.body.appendChild(motes);
-
-    const scene = document.createElement('div');
-    scene.className = 'pour-scene';
-    scene.setAttribute('aria-hidden', 'true');
-    scene.innerHTML = `
-      <svg class="pour-glass" viewBox="0 0 120 150" aria-hidden="true">
-        <defs>
-          <linearGradient id="pgLiquid" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#FFE0B0"/>
-            <stop offset="52%" stop-color="#FF6E88"/>
-            <stop offset="100%" stop-color="#8B5CE0"/>
-          </linearGradient>
-        </defs>
-        <clipPath id="pgClip"><path d="M24,18 L96,18 L64,72 L56,72 Z"/></clipPath>
-        <rect class="pg-fill" x="22" y="18" width="76" height="56" fill="url(#pgLiquid)" clip-path="url(#pgClip)"/>
-        <path d="M24,18 L96,18 L64,72 L56,72 Z" fill="none" stroke="rgba(255,246,230,.9)" stroke-width="2" stroke-linejoin="round"/>
-        <line x1="60" y1="72" x2="60" y2="124" stroke="rgba(255,246,230,.9)" stroke-width="2"/>
-        <line x1="40" y1="128" x2="80" y2="128" stroke="rgba(255,246,230,.9)" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-      <div class="pour-word"></div>`;
-    document.body.appendChild(scene);
-
     return el;
   }
 
   const wait = ms => new Promise(r => setTimeout(r, ms));
   const label = k => (window.t ? window.t(k) : k);
-  const parts = () => ({
-    overlay: document.querySelector('.pour-overlay'),
-    veil: document.querySelector('.pour-veil'),
-    scene: document.querySelector('.pour-scene'),
-    motes: document.querySelector('.pour-motes'),
-  });
 
-  function setWord(text) {
-    const w = document.querySelector('.pour-word');
-    if (!w) return;
-    w.innerHTML = [...text]
-      .map((c, i) => `<span style="animation-delay:${i * 0.06}s">${c === ' ' ? '&nbsp;' : c}</span>`)
-      .join('');
+  function setWord(el, text) {
+    el.querySelector('.pour-word').innerHTML =
+      [...text].map((c, i) =>
+        `<span style="animation-delay:${i * 0.06}s">${c === ' ' ? '&nbsp;' : c}</span>`).join('');
   }
 
-  // 離開：整片顏色淡入蓋住畫面。沒有移動中的邊界，就不會有對不齊的縫。
+  // 酒液漲滿。resolve 時畫面已被完全遮住，呼叫端才可以安全換頁。
   async function pourOut(word) {
-    build();
-    const { overlay, veil, scene, motes } = parts();
-    setWord(word || label('tr.pouring'));
+    const el = build();
+    setWord(el, word || label('tr.pouring'));
+    const liquid = el.querySelector('.pour-liquid');
+    const fill = el.querySelector('.pg-fill');
 
-    overlay.classList.remove('reveal');
-    overlay.classList.add('active');
-    veil.classList.add('on');
-    motes.classList.add('on');
-    await wait(120);
-    scene.classList.add('on');
-    if (reduce) return;
+    el.classList.add('active');
+    if (reduce) { liquid.style.height = '130vh'; await wait(120); return; }
 
-    const fill = document.querySelector('.pg-fill');
-    if (fill) {
-      fill.animate([{ transform: 'scaleY(0.15)' }, { transform: 'scaleY(1)' }],
-        { duration: 820, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
-    }
-    await wait(900);
+    // 杯中先注滿，再溢出成整片
+    fill.animate([{ transform: 'scaleY(0)' }, { transform: 'scaleY(1)' }],
+      { duration: 620, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' });
+    await wait(240);
+
+    liquid.animate([{ height: '0' }, { height: '130vh' }],
+      { duration: 900, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'forwards' });
+    await wait(980);
   }
 
-  // 抵達：顏色先退，薄紗慢一步，內容因此像從底色裡浮出來
+  // 酒液退去，露出新頁面
   async function pourIn() {
-    build();
-    const { overlay, veil, scene, motes } = parts();
-    overlay.classList.add('active');
-    veil.classList.add('on');
-    motes.classList.add('on');
-    setWord(label('tr.settling'));
-
-    // 這一格先把畫面蓋住，再交給行內遮罩下班
-    await wait(30);
+    const el = build();
+    const liquid = el.querySelector('.pour-liquid');
+    liquid.style.height = '130vh';
+    el.classList.add('active');
+    setWord(el, label('tr.settling'));
+    // 覆蓋層已就位且顏色相同，這時才拿掉行內的臨時遮罩
     document.documentElement.classList.remove('pour-arriving');
 
-    if (reduce) {
-      overlay.classList.remove('active');
-      veil.classList.remove('on');
-      return;
-    }
+    if (reduce) { el.classList.remove('active'); liquid.style.height = '0'; return; }
 
-    scene.classList.add('on');
-    await wait(620);
-    // 杯子與顏色一起退場，才不會只閃一下就不見
-    scene.classList.remove('on');
-    motes.classList.remove('on');
-    overlay.classList.add('reveal');
-    overlay.classList.remove('active');
-    await wait(520);
-    veil.classList.remove('on');
-    await wait(1500);
+    await wait(260);
+    el.querySelector('.pour-scene').style.opacity = '0';
+    liquid.animate([{ height: '130vh' }, { height: '0' }],
+      { duration: 1000, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'forwards' });
+    await wait(760);
+    el.querySelector('.pour-veil').style.opacity = '0';
+    await wait(340);
+    el.classList.remove('active');
+    liquid.style.height = '0';
   }
 
-  // 換頁：先蓋住畫面，再導向，讓下一頁接著播揭開。
-  // 蓋住的這段時間順便用 cache: 'reload' 重抓目的地，
-  // 否則瀏覽器可能沿用舊快取，使用者會落在過期的頁面上。
+  // 換頁：先倒滿，再導向，讓下一頁接著播退場。
+  // 倒酒的這一秒順便把目的地重新抓一次（cache: 'reload'），
+  // 強制更新該網址的快取條目 —— 否則瀏覽器可能拿舊的 HTML，
+  // 使用者就會看到過期的頁面而且無從察覺。
   async function pourTo(url, word) {
     sessionStorage.setItem(FLAG, '1');
     const warm = fetch(url, { cache: 'reload' }).catch(() => {});
@@ -154,7 +134,7 @@
       pourIn();
       return;
     }
-    // 每個 session 第一次進首頁：先滿版蓋住，再揭開
+    // 每個 session 第一次進首頁：先蓋住，再揭開
     if (isHome && !sessionStorage.getItem(INTRO)) {
       sessionStorage.setItem(INTRO, '1');
       pourIn();
