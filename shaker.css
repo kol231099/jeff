@@ -186,9 +186,11 @@
   will-change: transform, opacity;
   animation: shDrop var(--sh-cycle) cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
 }
-.sh-drop.d2 { animation-delay: -0.2s; }
-.sh-drop.d3 { animation-delay: -0.4s; }
-.sh-drop.d4 { animation-delay: -0.6s; }
+/* 正的延遲才是「晚一點才甩出去」。負的是把動畫往前快轉，
+   會讓三顆水珠全落在急搖開始之前。 */
+.sh-drop.d2 { animation-delay: 0.2s; }
+.sh-drop.d3 { animation-delay: 0.42s; }
+.sh-drop.d4 { animation-delay: 0.64s; }
 @keyframes shDrop {
   0%, 4%  { transform: translate(0, 0) scale(0.45); opacity: 0; }
   8%      { opacity: 0.95; }
