@@ -26,6 +26,7 @@
 /* 酒液本體，高度由 JS 驅動 */
 .pour-liquid {
   position: absolute;
+  z-index: 1;
   left: -5vw;
   right: -5vw;
   bottom: 0;
@@ -90,10 +91,11 @@
   100% { transform: translateY(-78vh) scale(1.15); opacity: 0; }
 }
 
-/* 中央的杯子與字樣 */
+/* 中央的杯子與字樣。要疊在酒液之上，否則畫面被淹沒時只剩一片色塊 */
 .pour-scene {
   position: absolute;
   inset: 0;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -110,6 +112,7 @@
 
 .pour-word {
   font-family: 'Orbitron', sans-serif;
+  mix-blend-mode: difference;
   font-size: clamp(13px, 1.6vw, 17px);
   font-weight: 700;
   letter-spacing: 7px;
