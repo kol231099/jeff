@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="styles.css?v=18" />
 <link rel="stylesheet" href="transition.css?v=16" />
 <link rel="stylesheet" href="quiz.css?v=15" />
-<link rel="stylesheet" href="shaker.css?v=6" />
+<link rel="stylesheet" href="shaker.css?v=7" />
 <link rel="stylesheet" href="flood.css?v=4" />
 <link rel="stylesheet" href="social.css?v=11" />
 <script>
@@ -116,6 +116,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
       <div class="shake-flood" aria-hidden="true">
       </div>
       <div class="shaker-stage">
+        <div class="shaker-shadow"></div>
         <div class="shaker-glow"></div>
         <svg class="shaker-svg" viewBox="46 26 108 214" aria-hidden="true">
           <defs>
@@ -135,6 +136,17 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
               <stop offset="42%"  stop-color="#FF6E88"/>
               <stop offset="100%" stop-color="#8B5CE0"/>
             </linearGradient>
+            <linearGradient id="shEdge" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="#0A040E" stop-opacity=".55"/>
+              <stop offset="13%"  stop-color="#0A040E" stop-opacity="0"/>
+              <stop offset="87%"  stop-color="#0A040E" stop-opacity="0"/>
+              <stop offset="100%" stop-color="#0A040E" stop-opacity=".5"/>
+            </linearGradient>
+            <linearGradient id="shBounce" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#FF6E88" stop-opacity="0"/>
+              <stop offset="60%"  stop-color="#FF6E88" stop-opacity=".26"/>
+              <stop offset="100%" stop-color="#8B5CE0" stop-opacity=".42"/>
+            </linearGradient>
             <clipPath id="shInner">
               <path d="M74,116 L126,116 L122,206 Q100,215 78,206 Z"/>
             </clipPath>
@@ -151,6 +163,15 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
               <!-- 杯身：微弧的側壁 -->
               <path d="M74,96.5 L126,96.5 Q128,150 122,206 Q100,216 78,206 Q72,150 74,96.5 Z"
                     fill="url(#shMetal)"/>
+              <!-- 拋光金屬會映到周圍的環境色，下半身帶一點粉紫 -->
+              <path d="M74,96.5 L126,96.5 Q128,150 122,206 Q100,216 78,206 Q72,150 74,96.5 Z" fill="url(#shBounce)"/>
+              <!-- 兩側壓暗，圓柱的體積是從這裡來的 -->
+              <path d="M74,96.5 L126,96.5 Q128,150 122,206 Q100,216 78,206 Q72,150 74,96.5 Z" fill="url(#shEdge)"/>
+              <!-- 頸環的滾花 -->
+              <g stroke="#3E4560" stroke-opacity=".45" stroke-width="1">
+                <path d="M92,49 L92,54"/><path d="M96,49 L96,54"/><path d="M100,49 L100,54"/>
+                <path d="M104,49 L104,54"/><path d="M108,49 L108,54"/>
+              </g>
               <!-- 窄而亮的鏡面高光 -->
               <path d="M84,102 Q82,152 87,199" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="2.6" stroke-linecap="round"/>
               <path d="M112,104 Q114,150 110,196" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.4" stroke-linecap="round"/>

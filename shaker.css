@@ -1,17 +1,47 @@
 /* ===== 搖酒器載入動畫 ===== */
 /* 只用 transform 與 opacity，交給合成器處理，不觸發版面重算。
-   殘影是三層同樣的圖形錯開時間播放，疊出動態模糊，不用 filter: blur（那個很貴）。 */
+   殘影是三層同樣的圖形錯開時間播放，疊出動態模糊，不用 filter: blur（那個很貴）。
+
+   節奏是整支動畫的骨架：一個 2 秒的循環裡，前半是八下急搖，接著過衝、回穩，
+   最後留一小段幾乎靜止的呼吸。等速來回看起來像節拍器，不像有人在搖。 */
 
 .shaker-stage {
+  --sh-cycle: 2s;
   position: relative;
-  width: min(112px, 28vw);
-  height: min(140px, 34vw);
+  width: min(124px, 30vw);
+  height: min(154px, 37vw);
   margin: 0 auto 22px;
   display: grid;
   place-items: center;
 }
 
-/* 底下的光暈跟著節奏縮放，讓搖動有重量感 */
+/* 地面接觸陰影。跟著搖的節奏被壓扁又彈回，重量從這裡讀出來 */
+.shaker-shadow {
+  position: absolute;
+  width: 58%;
+  height: 9%;
+  bottom: 2%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(24, 6, 20, 0.55), transparent 70%);
+  filter: blur(5px);
+  animation: shShadow var(--sh-cycle) linear infinite;
+  will-change: transform, opacity;
+}
+@keyframes shShadow {
+  0%, 3%   { transform: scale(1, 1);      opacity: 0.5; }
+  8%       { transform: scale(1.3, 0.7);  opacity: 0.72; }
+  13%      { transform: scale(0.85, 1.1); opacity: 0.42; }
+  18%      { transform: scale(1.28, 0.7); opacity: 0.7; }
+  23%      { transform: scale(0.86, 1.1); opacity: 0.42; }
+  28%      { transform: scale(1.24, 0.74);opacity: 0.68; }
+  33%      { transform: scale(0.88, 1.08);opacity: 0.44; }
+  38%      { transform: scale(1.2, 0.78); opacity: 0.64; }
+  43%      { transform: scale(0.92, 1.05);opacity: 0.46; }
+  50%      { transform: scale(1.08, 0.92);opacity: 0.56; }
+  68%, 100%{ transform: scale(1, 1);      opacity: 0.5; }
+}
+
+/* 底下的光暈在急搖那段猛跳，收勢之後緩下來 */
 .shaker-glow {
   position: absolute;
   width: 72%;
@@ -21,12 +51,19 @@
   background: radial-gradient(ellipse at center,
     rgba(255, 77, 141, 0.5), rgba(123, 92, 255, 0.22) 45%, transparent 72%);
   filter: blur(14px);
-  animation: shGlow 1.04s ease-in-out infinite;
+  animation: shGlow var(--sh-cycle) linear infinite;
   will-change: transform, opacity;
 }
 @keyframes shGlow {
-  0%, 100% { transform: scale(0.9); opacity: 0.55; }
-  50%      { transform: scale(1.12); opacity: 0.9; }
+  0%       { transform: scale(0.92); opacity: 0.5; }
+  8%       { transform: scale(1.16); opacity: 0.95; }
+  18%      { transform: scale(1.14); opacity: 0.92; }
+  28%      { transform: scale(1.12); opacity: 0.88; }
+  38%      { transform: scale(1.08); opacity: 0.8; }
+  50%      { transform: scale(1.02); opacity: 0.68; }
+  68%      { transform: scale(0.94); opacity: 0.54; }
+  84%      { transform: scale(0.98); opacity: 0.6; }
+  100%     { transform: scale(0.92); opacity: 0.5; }
 }
 
 .shaker-svg {
@@ -37,73 +74,126 @@
 }
 
 /* 主體與殘影共用同一組關鍵影格，只差在延遲與透明度 */
-.sh-body {
-  transform-origin: 100px 232px;
-  animation: shShake 0.52s cubic-bezier(0.45, 0, 0.55, 1) infinite;
-  will-change: transform;
-}
+.sh-body,
 .sh-ghost {
-  transform-origin: 100px 232px;
-  animation: shShake 0.52s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  transform-origin: 100px 236px;   /* 手腕的位置，不是圖形中心 */
+  animation: shShake var(--sh-cycle) cubic-bezier(0.42, 0, 0.58, 1) infinite;
   will-change: transform;
-  pointer-events: none;
 }
-.sh-ghost.g1 { animation-delay: -0.04s; opacity: 0.2; }
-.sh-ghost.g2 { animation-delay: -0.08s;  opacity: 0.09; }
+.sh-ghost { pointer-events: none; opacity: 0; }
+/* 殘影只在急搖那段出現。靜止時三層疊著會糊成一團 */
+.sh-ghost.g1 {
+  animation: shShake var(--sh-cycle) cubic-bezier(0.42, 0, 0.58, 1) infinite,
+             shGhost1 var(--sh-cycle) linear infinite;
+  animation-delay: -0.045s;
+}
+.sh-ghost.g2 {
+  animation: shShake var(--sh-cycle) cubic-bezier(0.42, 0, 0.58, 1) infinite,
+             shGhost2 var(--sh-cycle) linear infinite;
+  animation-delay: -0.09s;
+}
+@keyframes shGhost1 { 0%,2% { opacity: 0; } 6%,44% { opacity: 0.26; } 56%,100% { opacity: 0; } }
+@keyframes shGhost2 { 0%,2% { opacity: 0; } 6%,44% { opacity: 0.12; } 56%,100% { opacity: 0; } }
 
+/* 八下急搖，沿著前臂的斜軸來回；不是純旋轉，也不是純平移。
+   3% 那一格是反向蓄力 —— 沒有預備動作，爆發就沒有力道。 */
 @keyframes shShake {
-  0%   { transform: rotate(-11deg) translate(-4px, 2px); }
-  25%  { transform: rotate(-2deg)  translate(0, -3px); }
-  50%  { transform: rotate(11deg)  translate(4px, 2px); }
-  75%  { transform: rotate(2deg)   translate(0, -3px); }
-  100% { transform: rotate(-11deg) translate(-4px, 2px); }
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  3%   { transform: translate(3px, 4px) rotate(6.5deg); }
+  8%   { transform: translate(-8px, -9px) rotate(-16deg); }
+  13%  { transform: translate(8px, 8px) rotate(15deg); }
+  18%  { transform: translate(-8px, -9px) rotate(-16deg); }
+  23%  { transform: translate(8px, 8px) rotate(15deg); }
+  28%  { transform: translate(-7px, -8px) rotate(-14.5deg); }
+  33%  { transform: translate(7px, 7px) rotate(13.5deg); }
+  38%  { transform: translate(-6px, -6px) rotate(-12deg); }
+  43%  { transform: translate(5px, 5px) rotate(10deg); }
+  /* 收勢：過衝，再兩下遞減的回彈 */
+  50%  { transform: translate(-3.4px, -3px) rotate(-6deg); }
+  56%  { transform: translate(1.6px, 1.4px) rotate(3deg); }
+  62%  { transform: translate(-0.7px, -0.6px) rotate(-1.3deg); }
+  68%  { transform: translate(0, 0) rotate(0deg); }
+  /* 靜止那段仍留一點呼吸，載入指示不能看起來當掉 */
+  84%  { transform: translate(0, -1.5px) rotate(0.5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
 }
 
-/* 內容物：跟著搖但相位落後，看起來像液體在裡面被甩 */
+/* 內容物：相位落後於瓶身，而且急搖時甩得比瓶身更遠 —— 慣性 */
 .sh-content {
   transform-origin: 100px 200px;
-  animation: shSlosh 0.52s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  animation-delay: -0.13s;
+  animation: shSlosh var(--sh-cycle) cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation-delay: -0.075s;
   will-change: transform;
 }
 @keyframes shSlosh {
-  0%   { transform: rotate(9deg) translateX(-4px); }
-  50%  { transform: rotate(-9deg) translateX(4px); }
-  100% { transform: rotate(9deg) translateX(-4px); }
+  0%   { transform: rotate(0deg) translate(0, 0); }
+  8%   { transform: rotate(13deg) translate(6px, 3px); }
+  13%  { transform: rotate(-12deg) translate(-6px, -3px); }
+  18%  { transform: rotate(13deg) translate(6px, 3px); }
+  23%  { transform: rotate(-12deg) translate(-6px, -3px); }
+  28%  { transform: rotate(11deg) translate(5px, 2px); }
+  33%  { transform: rotate(-10deg) translate(-5px, -2px); }
+  38%  { transform: rotate(9deg) translate(4px, 2px); }
+  43%  { transform: rotate(-7deg) translate(-3px, -1px); }
+  /* 瓶身停了，裡面還在晃 */
+  52%  { transform: rotate(5deg) translate(2px, 1px); }
+  60%  { transform: rotate(-3deg) translate(-1px, 0); }
+  68%  { transform: rotate(1.4deg) translate(0, 0); }
+  76%  { transform: rotate(-0.6deg) translate(0, 0); }
+  100% { transform: rotate(0deg) translate(0, 0); }
 }
 
-/* 冰塊：各自不同的節奏，才不會像整塊一起動 */
+/* 冰塊：各自不同的節奏，才不會像整塊一起動。急搖時撞得凶，之後沉下去 */
 .sh-ice { transform-origin: center; will-change: transform; }
-.sh-ice.i1 { animation: shIce1 0.52s ease-in-out infinite; }
-.sh-ice.i2 { animation: shIce2 0.52s ease-in-out infinite; animation-delay: -0.17s; }
-.sh-ice.i3 { animation: shIce3 0.52s ease-in-out infinite; animation-delay: -0.31s; }
+.sh-ice.i1 { animation: shIce1 var(--sh-cycle) cubic-bezier(0.3, 0, 0.6, 1) infinite; }
+.sh-ice.i2 { animation: shIce2 var(--sh-cycle) cubic-bezier(0.3, 0, 0.6, 1) infinite; animation-delay: -0.06s; }
+.sh-ice.i3 { animation: shIce3 var(--sh-cycle) cubic-bezier(0.3, 0, 0.6, 1) infinite; animation-delay: -0.11s; }
 @keyframes shIce1 {
-  0%, 100% { transform: translate(-5px, 2px) rotate(-14deg); }
-  50%      { transform: translate(6px, -4px) rotate(16deg); }
+  0%   { transform: translate(0, 3px) rotate(-4deg); }
+  9%   { transform: translate(-8px, -6px) rotate(-26deg); }
+  19%  { transform: translate(9px, 4px) rotate(22deg); }
+  29%  { transform: translate(-7px, -7px) rotate(-30deg); }
+  39%  { transform: translate(7px, 3px) rotate(18deg); }
+  50%  { transform: translate(-3px, 0) rotate(-9deg); }
+  64%  { transform: translate(1px, 3px) rotate(3deg); }
+  100% { transform: translate(0, 3px) rotate(-4deg); }
 }
 @keyframes shIce2 {
-  0%, 100% { transform: translate(5px, -3px) rotate(12deg); }
-  50%      { transform: translate(-6px, 3px) rotate(-18deg); }
+  0%   { transform: translate(0, 2px) rotate(6deg); }
+  9%   { transform: translate(8px, -5px) rotate(28deg); }
+  19%  { transform: translate(-9px, 5px) rotate(-24deg); }
+  29%  { transform: translate(8px, -6px) rotate(32deg); }
+  39%  { transform: translate(-6px, 4px) rotate(-16deg); }
+  50%  { transform: translate(3px, 1px) rotate(8deg); }
+  64%  { transform: translate(-1px, 2px) rotate(-2deg); }
+  100% { transform: translate(0, 2px) rotate(6deg); }
 }
 @keyframes shIce3 {
-  0%, 100% { transform: translate(2px, 4px) rotate(20deg); }
-  50%      { transform: translate(-4px, -3px) rotate(-10deg); }
+  0%   { transform: translate(0, 1px) rotate(-2deg); }
+  9%   { transform: translate(6px, -7px) rotate(34deg); }
+  19%  { transform: translate(-5px, -3px) rotate(-20deg); }
+  29%  { transform: translate(6px, -6px) rotate(26deg); }
+  39%  { transform: translate(-4px, 2px) rotate(-14deg); }
+  50%  { transform: translate(2px, 2px) rotate(6deg); }
+  64%  { transform: translate(0, 1px) rotate(-1deg); }
+  100% { transform: translate(0, 1px) rotate(-2deg); }
 }
 
-/* 甩出來的水珠 */
+/* 甩出來的水珠。只在急搖那段飛，停下來還在噴會很假 */
 .sh-drop {
   transform-origin: center;
   opacity: 0;
   will-change: transform, opacity;
-  animation: shDrop 1.04s ease-out infinite;
+  animation: shDrop var(--sh-cycle) cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
 }
-.sh-drop.d2 { animation-delay: -0.26s; }
-.sh-drop.d3 { animation-delay: -0.52s; }
-.sh-drop.d4 { animation-delay: -0.78s; }
+.sh-drop.d2 { animation-delay: -0.2s; }
+.sh-drop.d3 { animation-delay: -0.4s; }
+.sh-drop.d4 { animation-delay: -0.6s; }
 @keyframes shDrop {
-  0%   { transform: translate(0, 0) scale(0.5); opacity: 0; }
-  14%  { opacity: 0.95; }
-  100% { transform: translate(var(--dx), var(--dy)) scale(0.85); opacity: 0; }
+  0%, 4%  { transform: translate(0, 0) scale(0.45); opacity: 0; }
+  8%      { opacity: 0.95; }
+  22%     { transform: translate(var(--dx), var(--dy)) scale(0.8); opacity: 0; }
+  100%    { transform: translate(var(--dx), var(--dy)) scale(0.8); opacity: 0; }
 }
 
 /* 高光掃過金屬表面 */
@@ -114,11 +204,11 @@
 @keyframes shSheen {
   0%, 100% { transform: translateY(-40px); opacity: 0; }
   40%      { opacity: 0.85; }
-  60%      { opacity: 0.85; }
   50%      { transform: translateY(70px); }
+  60%      { opacity: 0.85; }
 }
 
-/* 節奏點：三顆小圓點跟著搖的節拍亮起 */
+/* 節奏點：維持自己穩定的心跳。搖杯停下那一拍，靠它們表示還在跑 */
 .shaker-beat {
   position: absolute;
   bottom: 0;
@@ -132,10 +222,10 @@
   border-radius: 50%;
   background: var(--accent-gold, #FFB547);
   opacity: 0.25;
-  animation: shBeat 1.04s ease-in-out infinite;
+  animation: shBeat 1s ease-in-out infinite;
 }
-.shaker-beat i:nth-child(2) { animation-delay: 0.13s; }
-.shaker-beat i:nth-child(3) { animation-delay: 0.26s; }
+.shaker-beat i:nth-child(2) { animation-delay: 0.125s; }
+.shaker-beat i:nth-child(3) { animation-delay: 0.25s; }
 @keyframes shBeat {
   0%, 100% { opacity: 0.22; transform: scale(0.85); }
   30%      { opacity: 1; transform: scale(1.25); }
@@ -143,6 +233,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .sh-body, .sh-ghost, .sh-content, .sh-ice, .sh-drop, .sh-sheen,
-  .shaker-glow, .shaker-beat i { animation: none; }
+  .shaker-glow, .shaker-shadow, .shaker-beat i { animation: none; }
   .sh-ghost { display: none; }
 }
