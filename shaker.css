@@ -4,8 +4,8 @@
 
 .shaker-stage {
   position: relative;
-  width: min(260px, 62vw);
-  height: min(300px, 70vw);
+  width: min(300px, 68vw);
+  height: min(330px, 74vw);
   margin: 0 auto 34px;
   display: grid;
   place-items: center;
@@ -120,6 +120,8 @@
 
 /* 節奏點：三顆小圓點跟著搖的節拍亮起 */
 .shaker-beat {
+  position: absolute;
+  bottom: 0;
   display: flex;
   gap: 8px;
   justify-content: center;
