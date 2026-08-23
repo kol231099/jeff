@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="i18n-title" content="title.home" />
 <title>PourMatch — AI 飲酒交友</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=13" />
+<link rel="stylesheet" href="styles.css?v=14" />
 <link rel="stylesheet" href="home.css?v=12" />
 </head>
 <body>
@@ -38,12 +39,12 @@
       <span class="logo-text">PourMatch</span>
     </div>
     <ul class="nav-links">
-      <li><a href="index.html">首頁</a></li>
-      <li><a href="quiz.html">品味測驗</a></li>
-      <li><a href="cocktail.html">調酒生成器</a></li>
-      <li><a href="community.html">社群</a></li>
-      <li><a href="match.html">AI 配對</a></li>
-      <li><a href="about.html">關於</a></li>
+      <li><a href="index.html" data-i18n="nav.home">首頁</a></li>
+      <li><a href="quiz.html" data-i18n="nav.quiz">品味測驗</a></li>
+      <li><a href="cocktail.html" data-i18n="nav.cocktail">調酒生成器</a></li>
+      <li><a href="community.html" data-i18n="nav.community">社群</a></li>
+      <li><a href="match.html" data-i18n="nav.match">AI 配對</a></li>
+      <li><a href="about.html" data-i18n="nav.about">關於</a></li>
     </ul>
     <button class="btn-login" id="loginBtn">
       <svg width="18" height="18" viewBox="0 0 48 48">
@@ -52,7 +53,7 @@
         <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
         <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
       </svg>
-      <span>使用 Google 登入</span>
+      <span data-i18n="nav.login">使用 Google 登入</span>
     </button>
   </nav>
 
@@ -61,38 +62,38 @@
     <div class="hero-content">
       <div class="badge">
         <span class="dot"></span>
-        <span>AI 智能配對 · 2026 新世代飲酒社群</span>
+        <span data-i18n="home.badge">AI 智能配對 · 2026 新世代飲酒社群</span>
       </div>
 
       <h1 class="hero-title">
-        <span class="gradient-text">喝一杯</span>
-        <span class="hero-sub-line">遇見對的人</span>
+        <span class="gradient-text" data-i18n="home.title_1">喝一杯</span>
+        <span class="hero-sub-line" data-i18n="home.title_2">遇見對的人</span>
       </h1>
 
-      <p class="hero-desc">
+      <p class="hero-desc" data-i18n-html="home.desc">
         用 <strong>AI</strong> 分析你的味覺偏好、個性與場合，<br/>
         為你量身打造專屬飲品，並推薦<strong>志同道合的酒友</strong>。
       </p>
 
       <div class="cta-row">
         <a href="quiz.html" class="btn-primary" id="startBtn" style="text-decoration:none;">
-          <span>開始我的品味測驗</span>
+          <span data-i18n="home.cta_quiz">開始我的品味測驗</span>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </a>
-        <a href="cocktail.html" class="btn-ghost" style="text-decoration:none;display:inline-flex;align-items:center;">🍹 調酒生成器</a>
+        <a href="cocktail.html" class="btn-ghost" style="text-decoration:none;display:inline-flex;align-items:center;" data-i18n="home.cta_cocktail">🍹 調酒生成器</a>
         <a href="showcase.html" class="btn-showcase">
           <span class="bs-dot"></span>
-          <span>THE POUR · 3D 展示</span>
+          <span data-i18n="home.cta_showcase">THE POUR · 3D 展示</span>
           <span class="bs-new">DEMO</span>
         </a>
       </div>
 
       <div class="stats">
-        <div class="stat"><div class="stat-num">12K+</div><div class="stat-label">活躍用戶</div></div>
+        <div class="stat"><div class="stat-num">12K+</div><div class="stat-label" data-i18n="home.stat_users">活躍用戶</div></div>
         <div class="divider"></div>
-        <div class="stat"><div class="stat-num">480+</div><div class="stat-label">精選酒款</div></div>
+        <div class="stat"><div class="stat-num">480+</div><div class="stat-label" data-i18n="home.stat_drinks">精選酒款</div></div>
         <div class="divider"></div>
-        <div class="stat"><div class="stat-num">97%</div><div class="stat-label">配對滿意度</div></div>
+        <div class="stat"><div class="stat-num">97%</div><div class="stat-label" data-i18n="home.stat_satisfaction">配對滿意度</div></div>
       </div>
     </div>
 
@@ -106,29 +107,29 @@
       <div class="float-card fc-1">
         <div class="fc-icon">🍷</div>
         <div class="fc-text">
-          <div class="fc-title">紅酒</div>
-          <div class="fc-tag">果香 · 濃郁</div>
+          <div class="fc-title" data-i18n="home.card_wine">紅酒</div>
+          <div class="fc-tag" data-i18n="home.card_wine_tag">果香 · 濃郁</div>
         </div>
       </div>
       <div class="float-card fc-2">
         <div class="fc-icon">🥃</div>
         <div class="fc-text">
-          <div class="fc-title">威士忌</div>
-          <div class="fc-tag">煙燻 · 深沉</div>
+          <div class="fc-title" data-i18n="home.card_whisky">威士忌</div>
+          <div class="fc-tag" data-i18n="home.card_whisky_tag">煙燻 · 深沉</div>
         </div>
       </div>
       <div class="float-card fc-3">
         <div class="fc-icon">🍸</div>
         <div class="fc-text">
-          <div class="fc-title">馬丁尼</div>
-          <div class="fc-tag">優雅 · 俐落</div>
+          <div class="fc-title" data-i18n="home.card_martini">馬丁尼</div>
+          <div class="fc-tag" data-i18n="home.card_martini_tag">優雅 · 俐落</div>
         </div>
       </div>
       <div class="float-card fc-4">
         <div class="fc-icon">🍺</div>
         <div class="fc-text">
-          <div class="fc-title">精釀啤酒</div>
-          <div class="fc-tag">清爽 · 隨興</div>
+          <div class="fc-title" data-i18n="home.card_beer">精釀啤酒</div>
+          <div class="fc-tag" data-i18n="home.card_beer_tag">清爽 · 隨興</div>
         </div>
       </div>
 
@@ -287,21 +288,21 @@
         <div class="data-label dl-top">
           <div class="dl-line"></div>
           <div class="dl-box">
-            <div class="dl-label">風味指數</div>
+            <div class="dl-label" data-i18n="home.flavor_index">風味指數</div>
             <div class="dl-value">92</div>
           </div>
         </div>
         <div class="data-label dl-right">
           <div class="dl-line"></div>
           <div class="dl-box">
-            <div class="dl-label">配對成功率</div>
+            <div class="dl-label" data-i18n="home.match_rate">配對成功率</div>
             <div class="dl-value">A+</div>
           </div>
         </div>
         <div class="data-label dl-left">
           <div class="dl-line"></div>
           <div class="dl-box">
-            <div class="dl-label">AI 推薦</div>
+            <div class="dl-label" data-i18n="home.ai_pick">AI 推薦</div>
             <div class="dl-value">Negroni</div>
           </div>
         </div>
@@ -316,55 +317,55 @@
   <section class="features" id="features">
     <div class="feat">
       <div class="feat-icon">🧠</div>
-      <div class="feat-title">AI 味覺分析</div>
-      <div class="feat-desc">12 題深入分析你的風味 DNA</div>
+      <div class="feat-title" data-i18n="home.feat1_t">AI 味覺分析</div>
+      <div class="feat-desc" data-i18n="home.feat1_d">12 題深入分析你的風味 DNA</div>
     </div>
     <div class="feat">
       <div class="feat-icon">💞</div>
-      <div class="feat-title">同好配對</div>
-      <div class="feat-desc">用酒單找到氣味相投的人</div>
+      <div class="feat-title" data-i18n="home.feat2_t">同好配對</div>
+      <div class="feat-desc" data-i18n="home.feat2_d">用酒單找到氣味相投的人</div>
     </div>
     <div class="feat">
       <div class="feat-icon">🌃</div>
-      <div class="feat-title">情境推薦</div>
-      <div class="feat-desc">心情、場合、天氣一鍵搭配</div>
+      <div class="feat-title" data-i18n="home.feat3_t">情境推薦</div>
+      <div class="feat-desc" data-i18n="home.feat3_d">心情、場合、天氣一鍵搭配</div>
     </div>
     <div class="feat">
       <div class="feat-icon">📖</div>
-      <div class="feat-title">品酒日記</div>
-      <div class="feat-desc">紀錄喝過的每一杯與心情</div>
+      <div class="feat-title" data-i18n="home.feat4_t">品酒日記</div>
+      <div class="feat-desc" data-i18n="home.feat4_d">紀錄喝過的每一杯與心情</div>
     </div>
   </section>
 
   <!-- 使用情境 -->
   <section class="home-section">
     <div class="home-eyebrow"><span class="dot"></span><span>WHEN TO POUR</span></div>
-    <h2>什麼時候，最適合來一杯？</h2>
-    <p class="home-lead">不是只有派對才需要酒。PourMatch 替你讀懂每一個微小情緒，把對的酒在對的時間遞到你手裡。</p>
+    <h2 data-i18n="home.when_t">什麼時候，最適合來一杯？</h2>
+    <p class="home-lead" data-i18n="home.when_lead">不是只有派對才需要酒。PourMatch 替你讀懂每一個微小情緒，把對的酒在對的時間遞到你手裡。</p>
     <div class="scene-grid">
       <div class="scene-card" style="--scene-color:#FFB547;">
         <div class="scene-icon">🌙</div>
-        <h3>失眠的深夜</h3>
-        <p>大腦關不掉的那種夜，AI 會推一杯柔軟、甜度剛好、能讓肩膀放下的調酒。</p>
-        <span class="scene-tag">低酒精 · 助眠系</span>
+        <h3 data-i18n="home.s1_t">失眠的深夜</h3>
+        <p data-i18n="home.s1_d">大腦關不掉的那種夜，AI 會推一杯柔軟、甜度剛好、能讓肩膀放下的調酒。</p>
+        <span class="scene-tag" data-i18n="home.s1_tag">低酒精 · 助眠系</span>
       </div>
       <div class="scene-card" style="--scene-color:#FF4D8D;">
         <div class="scene-icon">💌</div>
-        <h3>想為他/她調一杯</h3>
-        <p>輸入對方的個性，AI 替你譯成一杯只屬於兩人的飲品。比情書更難複製。</p>
-        <span class="scene-tag">禮物模式 · 客製</span>
+        <h3 data-i18n="home.s2_t">想為他/她調一杯</h3>
+        <p data-i18n="home.s2_d">輸入對方的個性，AI 替你譯成一杯只屬於兩人的飲品。比情書更難複製。</p>
+        <span class="scene-tag" data-i18n="home.s2_tag">禮物模式 · 客製</span>
       </div>
       <div class="scene-card" style="--scene-color:#7B5CFF;">
         <div class="scene-icon">🥂</div>
-        <h3>朋友臨時來家裡</h3>
-        <p>冰箱只有半瓶威士忌？告訴 AI 你有什麼，立刻給你一份能變出來的酒單。</p>
-        <span class="scene-tag">在家酒吧 · 即興</span>
+        <h3 data-i18n="home.s3_t">朋友臨時來家裡</h3>
+        <p data-i18n="home.s3_d">冰箱只有半瓶威士忌？告訴 AI 你有什麼，立刻給你一份能變出來的酒單。</p>
+        <span class="scene-tag" data-i18n="home.s3_tag">在家酒吧 · 即興</span>
       </div>
       <div class="scene-card" style="--scene-color:#00E5FF;">
         <div class="scene-icon">🎯</div>
-        <h3>結束一場硬仗後</h3>
-        <p>專案上線、考完試、簡報結束。給自己一杯像獎牌的酒，AI 懂這種儀式感。</p>
-        <span class="scene-tag">犒賞模式 · 強勁</span>
+        <h3 data-i18n="home.s4_t">結束一場硬仗後</h3>
+        <p data-i18n="home.s4_d">專案上線、考完試、簡報結束。給自己一杯像獎牌的酒，AI 懂這種儀式感。</p>
+        <span class="scene-tag" data-i18n="home.s4_tag">犒賞模式 · 強勁</span>
       </div>
     </div>
   </section>
@@ -372,84 +373,85 @@
   <!-- AI 調酒展示牆 -->
   <section class="home-section">
     <div class="home-eyebrow"><span class="dot"></span><span>RECENTLY POURED</span></div>
-    <h2>看看 AI 最近<span class="gradient-text">為大家調了什麼</span></h2>
-    <p class="home-lead">每一杯都是地球上獨一無二的配方。AI 沒重複過，也不會重複你的。</p>
+    <h2 data-i18n-html="home.recent_t">看看 AI 最近<span class="gradient-text">為大家調了什麼</span></h2>
+    <p class="home-lead" data-i18n="home.recent_lead">每一杯都是地球上獨一無二的配方。AI 沒重複過，也不會重複你的。</p>
     <div class="showcase-grid">
       <div class="show-card" style="--orb-a:#FFB547;--orb-b:#FF4D8D;--orb-glow:rgba(255,181,71,.45);">
         <div class="show-orb"></div>
         <h3 class="show-name">Solar Whisper</h3>
-        <div class="show-tags"><span>🍑 果香</span><span>🌸 花香</span><span>微醺</span></div>
-        <p class="show-story">為一個剛搬到新城市的人調的，像第一道從窗簾縫透進來的晨光。</p>
+        <div class="show-tags" data-i18n-html="home.c1_tags"><span>🍑 果香</span><span>🌸 花香</span><span>微醺</span></div>
+        <p class="show-story" data-i18n="home.c1_story">為一個剛搬到新城市的人調的，像第一道從窗簾縫透進來的晨光。</p>
       </div>
       <div class="show-card" style="--orb-a:#7B5CFF;--orb-b:#00E5FF;--orb-glow:rgba(123,92,255,.45);">
         <div class="show-orb"></div>
         <h3 class="show-name">Midnight Code</h3>
-        <div class="show-tags"><span>🔥 煙燻</span><span>🌿 草本</span><span>強勁</span></div>
-        <p class="show-story">寫給凌晨三點還在 debug 的工程師——苦得剛好，能把腦袋燒亮。</p>
+        <div class="show-tags" data-i18n-html="home.c2_tags"><span>🔥 煙燻</span><span>🌿 草本</span><span>強勁</span></div>
+        <p class="show-story" data-i18n="home.c2_story">寫給凌晨三點還在 debug 的工程師——苦得剛好，能把腦袋燒亮。</p>
       </div>
       <div class="show-card" style="--orb-a:#FF4D8D;--orb-b:#7B5CFF;--orb-glow:rgba(255,77,141,.45);">
         <div class="show-orb"></div>
         <h3 class="show-name">Velvet Lie</h3>
-        <div class="show-tags"><span>🍫 可可</span><span>🥛 奶香</span><span>濃郁</span></div>
-        <p class="show-story">給一個剛失戀的人，甜到讓你以為一切沒事，後勁卻說了實話。</p>
+        <div class="show-tags" data-i18n-html="home.c3_tags"><span>🍫 可可</span><span>🥛 奶香</span><span>濃郁</span></div>
+        <p class="show-story" data-i18n="home.c3_story">給一個剛失戀的人，甜到讓你以為一切沒事，後勁卻說了實話。</p>
       </div>
     </div>
 
     <div class="pulse-strip">
       <span class="pulse-dot"></span>
       <span class="pulse-label">LIVE</span>
-      <span class="pulse-text">過去 24 小時，AI 已替全球用戶調出 <strong>2,847</strong> 杯獨一無二的飲品 · 完成 <strong>193</strong> 次味蕾配對</span>
+      <span class="pulse-text" data-i18n-html="home.pulse">過去 24 小時，AI 已替全球用戶調出 <strong>2,847</strong> 杯獨一無二的飲品 · 完成 <strong>193</strong> 次味蕾配對</span>
     </div>
   </section>
 
   <!-- FAQ -->
   <section class="home-section">
     <div class="home-eyebrow"><span class="dot"></span><span>FAQ</span></div>
-    <h2>大家都在問</h2>
-    <p class="home-lead">第一次用 PourMatch？這幾題大概會替你解答 80% 的疑問。</p>
+    <h2 data-i18n="home.faq_t">大家都在問</h2>
+    <p class="home-lead" data-i18n="home.faq_lead">第一次用 PourMatch？這幾題大概會替你解答 80% 的疑問。</p>
     <div class="faq-list">
       <details class="faq-item">
-        <summary>不會喝酒，也能用嗎？</summary>
-        <div class="faq-body">完全可以。AI 調酒生成器可以把酒精強度調到「微醺」甚至生成 <strong>無酒精 mocktail</strong>。我們關心的是味覺與情緒，不是你的酒量。</div>
+        <summary data-i18n="home.q1">不會喝酒，也能用嗎？</summary>
+        <div class="faq-body" data-i18n-html="home.a1">完全可以。AI 調酒生成器可以把酒精強度調到「微醺」甚至生成 <strong>無酒精 mocktail</strong>。我們關心的是味覺與情緒，不是你的酒量。</div>
       </details>
       <details class="faq-item">
-        <summary>AI 給的調酒配方真的能在家做嗎？</summary>
-        <div class="faq-body">AI 會以家用酒吧能取得的材料優先生成配方，並附上分量、步驟與裝飾建議。如果碰到稀有材料，AI 也會提供常見替代品。</div>
+        <summary data-i18n="home.q2">AI 給的調酒配方真的能在家做嗎？</summary>
+        <div class="faq-body" data-i18n-html="home.a2">AI 會以家用酒吧能取得的材料優先生成配方，並附上分量、步驟與裝飾建議。如果碰到稀有材料，AI 也會提供常見替代品。</div>
       </details>
       <details class="faq-item">
-        <summary>配對到的酒友會看到我的個資嗎？</summary>
-        <div class="faq-body">不會。預設只顯示頭像、暱稱與你公開的味覺檔案。要不要進一步聯繫，由你決定。每位用戶都有獨一無二的 <strong>6 碼識別代碼</strong>，只在你願意分享時才會曝光。</div>
+        <summary data-i18n="home.q3">配對到的酒友會看到我的個資嗎？</summary>
+        <div class="faq-body" data-i18n-html="home.a3">不會。預設只顯示頭像、暱稱與你公開的味覺檔案。要不要進一步聯繫，由你決定。每位用戶都有獨一無二的 <strong>6 碼識別代碼</strong>，只在你願意分享時才會曝光。</div>
       </details>
       <details class="faq-item">
-        <summary>需要付費嗎？</summary>
-        <div class="faq-body">核心功能（風味測驗、AI 調酒、社群、配對、好友）<strong>完全免費</strong>。Google 一鍵登入即可開始，沒有訂閱門檻。</div>
+        <summary data-i18n="home.q4">需要付費嗎？</summary>
+        <div class="faq-body" data-i18n-html="home.a4">核心功能（風味測驗、AI 調酒、社群、配對、好友）<strong>完全免費</strong>。Google 一鍵登入即可開始，沒有訂閱門檻。</div>
       </details>
       <details class="faq-item">
-        <summary>我的測驗結果可以分享給沒註冊的朋友嗎？</summary>
-        <div class="faq-body">可以。每個測驗結果與 AI 調酒都能生成 <strong>公開分享連結</strong>，朋友不用註冊就能看到，貼到 IG、Threads、Discord 都行。</div>
+        <summary data-i18n="home.q5">我的測驗結果可以分享給沒註冊的朋友嗎？</summary>
+        <div class="faq-body" data-i18n-html="home.a5">可以。每個測驗結果與 AI 調酒都能生成 <strong>公開分享連結</strong>，朋友不用註冊就能看到，貼到 IG、Threads、Discord 都行。</div>
       </details>
       <details class="faq-item">
-        <summary>未滿法定飲酒年齡能用嗎？</summary>
-        <div class="faq-body">PourMatch 服務僅供 <strong>已達當地合法飲酒年齡</strong> 的使用者。未達標的朋友建議使用 mocktail（無酒精）模式，或先收藏起來，等到了再回來。</div>
+        <summary data-i18n="home.q6">未滿法定飲酒年齡能用嗎？</summary>
+        <div class="faq-body" data-i18n-html="home.a6">PourMatch 服務僅供 <strong>已達當地合法飲酒年齡</strong> 的使用者。未達標的朋友建議使用 mocktail（無酒精）模式，或先收藏起來，等到了再回來。</div>
       </details>
     </div>
   </section>
 
   <!-- 末段 CTA -->
   <section class="home-final">
-    <h2>下一杯，<span class="gradient-text">由 AI 替你倒</span></h2>
-    <p>60 秒解鎖你的風味 DNA · Google 一鍵登入 · 完全免費</p>
+    <h2 data-i18n-html="home.final_t">下一杯，<span class="gradient-text">由 AI 替你倒</span></h2>
+    <p data-i18n="home.final_sub">60 秒解鎖你的風味 DNA · Google 一鍵登入 · 完全免費</p>
     <div class="cta-row">
       <a href="quiz.html" class="btn-primary" style="text-decoration:none;">
-        <span>立即開始品味測驗</span>
+        <span data-i18n="home.final_cta1">立即開始品味測驗</span>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </a>
-      <a href="cocktail.html" class="btn-ghost" style="text-decoration:none;display:inline-flex;align-items:center;">🍹 直接調一杯</a>
+      <a href="cocktail.html" class="btn-ghost" style="text-decoration:none;display:inline-flex;align-items:center;" data-i18n="home.final_cta2">🍹 直接調一杯</a>
     </div>
   </section>
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="i18n.js?v=2"></script>
   <script src="particles.js?v=10"></script>
-  <script src="auth.js?v=10"></script>
+  <script src="auth.js?v=11"></script>
 </body>
 </html>

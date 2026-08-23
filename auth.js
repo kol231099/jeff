@@ -1,4 +1,6 @@
 // ===== PourMatch 共用登入 / 使用者狀態 =====
+// i18n.js 先載入，但仍留退路避免它失效時整個登入區壞掉
+const T = (k) => (window.t ? window.t(k) : k);
 const GOOGLE_CLIENT_ID = '988443784351-6agi102fhc4srccf2l4phi92hbu0jldt.apps.googleusercontent.com';
 
 let currentUser = null;
@@ -96,10 +98,10 @@ function renderAuthUI() {
           <img src="${currentUser.picture}" alt="" referrerpolicy="no-referrer" />
           <span class="user-name">${currentUser.name || currentUser.email}</span>
           <div class="user-menu">
-            <a href="profile.html">🧬 關於我</a>
-            <a href="friends.html">👥 朋友</a>
-            <a href="history.html">📚 我的歷史</a>
-            <button onclick="logout()">🚪 登出</button>
+            <a href="profile.html">${T('nav.profile')}</a>
+            <a href="friends.html">${T('nav.friends')}</a>
+            <a href="history.html">${T('nav.history')}</a>
+            <button onclick="logout()">${T('nav.logout_menu')}</button>
           </div>
         </div>
       `;
