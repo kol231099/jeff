@@ -14,6 +14,9 @@
       'title.history': '我的歷史 · PourMatch',
       'title.friends': '朋友 · PourMatch',
       'title.share': '分享 · PourMatch',
+      'nav.language': '語言',
+      'tr.pouring': '正在為你倒酒',
+      'tr.settling': '請享用',
       'nav.home': '首頁',
       'nav.quiz': '品味測驗',
       'nav.cocktail': '調酒生成器',
@@ -631,6 +634,9 @@
       'title.history': 'History · PourMatch',
       'title.friends': 'Friends · PourMatch',
       'title.share': 'Shared · PourMatch',
+      'nav.language': 'Language',
+      'tr.pouring': 'POURING',
+      'tr.settling': 'ENJOY',
       'nav.home': 'Home',
       'nav.quiz': 'Taste Quiz',
       'nav.cocktail': 'Cocktail Lab',
@@ -1286,36 +1292,31 @@
   }
 
   function syncToggle() {
-    document.querySelectorAll('.lang-btn').forEach(b => {
-      b.classList.toggle('active', b.dataset.lang === lang);
-    });
+    document.querySelectorAll('.lang-label').forEach(el => { el.textContent = t('nav.language'); });
   }
 
-  // 語言切換：放在導覽列「關於」右邊，成為選單的一部分。
-  // 這個位置在 .nav-links 裡，登入後 auth.js 重建右側時碰不到它。
+  // 導覽列的「語言」項目：連往獨立的語言頁，不在原地切換
   function mountToggle() {
-    if (document.querySelector('.lang-switch')) return;
-
-    const wrap = document.createElement('div');
-    wrap.className = 'lang-switch';
-    wrap.innerHTML = `
-      <button class="lang-btn" data-lang="zh" type="button">中文</button>
-      <button class="lang-btn" data-lang="en" type="button">EN</button>`;
-    wrap.addEventListener('click', e => {
-      const b = e.target.closest('.lang-btn');
-      if (b) setLang(b.dataset.lang);
-    });
+    if (document.querySelector('.nav-lang')) return;
+    if (location.pathname.endsWith('language.html')) return;
 
     const navList = document.querySelector('.nav-links');
+    const link = document.createElement('a');
+    link.href = 'language.html';
+    link.className = 'lang-link';
+    link.innerHTML = `<span class="lang-globe">🌐</span><span class="lang-label"></span>`;
+
     if (navList) {
       const li = document.createElement('li');
       li.className = 'nav-lang';
-      li.appendChild(wrap);
+      li.appendChild(link);
       navList.appendChild(li);
     } else {
-      // 展示頁沒有主導覽列，改掛到它自己的頂部列
+      // 展示頁沒有主選單
       const bar = document.querySelector('.sc-top') || document.querySelector('.navbar');
-      if (bar) bar.appendChild(wrap);
+      if (!bar) return;
+      link.classList.add('nav-lang');
+      bar.appendChild(link);
     }
     syncToggle();
   }
