@@ -1,3 +1,43 @@
+/* ===== 酒液的共用色彩 ===== */
+/* 定義在這裡是因為 transition.css 每一頁都會載入（含沒有 styles.css 的展示頁），
+   flood.css 直接沿用同一組，兩個動畫的顏色才不會各走各的。
+
+   三個層面處理漸層的「粗糙」：
+   1. 色停加到九個並且間距不均 —— 相鄰色距縮短，感知上的斷層才會消失
+   2. 頂部疊一層暖光 —— 真實的酒液是被光穿過，不是一片平塗
+   3. 疊上極細顆粒 —— 大面積漸層在 8 位元色深必然有帶狀分佈，
+      加入雜訊把邊界打散是唯一有效的解法，比增加色停更有用 */
+:root {
+  --drink-ramp: linear-gradient(180deg,
+    #FFE0B0 0%,
+    #FFC97F 9%,
+    #FFAE72 20%,
+    #FF8F73 32%,
+    #FF6E88 45%,
+    #F2559B 57%,
+    #C95BC4 70%,
+    #9B5AE0 84%,
+    #7A54D6 100%);
+  --drink-light: radial-gradient(ellipse 78% 46% at 50% -6%,
+    rgba(255, 246, 224, 0.42), rgba(255, 246, 224, 0) 68%);
+  --drink-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  --drink-top: #FFE0B0;
+  --drink-top-2: #FFAE72;
+}
+
+/* 顆粒層：兩個動畫共用 */
+.pour-liquid::after,
+.shake-flood::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--drink-noise);
+  background-size: 160px 160px;
+  opacity: 0.13;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
 /* ===== 倒酒過場 ===== */
 /* 換頁後，覆蓋層要等腳本執行才存在，那之前新頁面已經畫出來了 —— 就是那一下閃爍。
    head 裡的行內腳本會在第一個影格前掛上這個 class，用同一組漸層先蓋住畫面，
@@ -7,13 +47,7 @@ html.pour-arriving::before {
   position: fixed;
   inset: 0;
   z-index: 9998;
-  background:
-    linear-gradient(180deg,
-      #FFC46B 0%,
-      #FF8A5B 18%,
-      #FF4D8D 48%,
-      #A05CFF 78%,
-      #7B5CFF 100%);
+  background-image: var(--drink-light), var(--drink-ramp);
 }
 
 /* 兩段式：離開頁面時酒液漲滿畫面，抵達新頁面後退去。
@@ -48,14 +82,8 @@ html.pour-arriving::before {
   right: -5vw;
   bottom: 0;
   height: 0;
-  background:
-    linear-gradient(180deg,
-      #FFC46B 0%,
-      #FF8A5B 18%,
-      #FF4D8D 48%,
-      #A05CFF 78%,
-      #7B5CFF 100%);
-  box-shadow: 0 -18px 60px rgba(255, 77, 141, 0.45);
+  background-image: var(--drink-light), var(--drink-ramp);
+  box-shadow: 0 -18px 60px rgba(255, 110, 136, 0.4);
   will-change: height;
 }
 
@@ -66,11 +94,11 @@ html.pour-arriving::before {
   left: 0;
   width: 200%;
   height: 90px;
-  fill: #FFC46B;
+  fill: var(--drink-top);
 }
 .pour-wave.w2 {
-  fill: #FF8A5B;
-  opacity: 0.55;
+  fill: var(--drink-top-2);
+  opacity: 0.5;
   height: 70px;
   animation-delay: -1.4s;
 }

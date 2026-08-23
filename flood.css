@@ -9,14 +9,8 @@
   height: 0;
   z-index: 0;
   pointer-events: none;
-  background:
-    linear-gradient(180deg,
-      #FFC46B 0%,
-      #FF8A5B 18%,
-      #FF4D8D 48%,
-      #A05CFF 78%,
-      #7B5CFF 100%);
-  box-shadow: 0 -18px 60px rgba(255, 77, 141, 0.45);
+  background-image: var(--drink-light), var(--drink-ramp);
+  box-shadow: 0 -18px 60px rgba(255, 110, 136, 0.4);
   animation: floodRise 22s cubic-bezier(0.14, 0.72, 0.2, 1) forwards;
   will-change: height;
 }
@@ -32,12 +26,12 @@
   left: 0;
   width: 200%;
   height: 70px;
-  fill: #FFC46B;
+  fill: var(--drink-top);
   animation: waveSlide 3.2s linear infinite;
 }
 .shake-wave.w2 {
-  fill: #FF8A5B;
-  opacity: 0.55;
+  fill: var(--drink-top-2);
+  opacity: 0.5;
   height: 52px;
   animation-duration: 4.4s;
   animation-direction: reverse;
