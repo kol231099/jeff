@@ -238,9 +238,15 @@
     el.querySelector('.pg-bottle').style.display = '';
     setBottle(el, 112);
 
+    // rAF 在背景分頁會完全停住。真的有人倒到一半切走，這個 Promise 就永遠不會
+    // resolve，畫面卡在覆蓋層、也不會跳頁。所以另外掛一個以計時器為準的保險。
     await new Promise(done => {
+      let settled = false;
+      const finish = () => { if (settled) return; settled = true; clearTimeout(guard); done(); };
+      const guard = setTimeout(() => { setLevel(el, 1, 0); setStream(el, false); finish(); }, END + 600);
       const t0 = performance.now();
       (function frame(now) {
+        if (settled) return;
         const t = now - t0;
 
         // 瓶身角度：先傾下來，倒的過程越倒越斜，最後扶正
@@ -285,7 +291,7 @@
         }
 
         if (t < END) requestAnimationFrame(frame);
-        else done();
+        else finish();
       })(performance.now());
     });
 
