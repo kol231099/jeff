@@ -52,7 +52,9 @@ const COCKTAIL_ANGLES = [
 // 回覆語言：前端把介面語言一起送上來，AI 產出才不會跟介面對不上
 const LANG_RULE = {
   zh: '整份回覆請使用繁體中文。',
-  en: 'Write the entire response in natural, idiomatic English. Do not use any Chinese.',
+  en: 'Write the entire response in natural, idiomatic English — including drink names, '
+    + 'categories, origins and every label. Use the name each drink is known by in English. '
+    + 'Do not output Chinese characters anywhere.',
 };
 const langRule = l => LANG_RULE[l === 'en' ? 'en' : 'zh'];
 
@@ -200,11 +202,11 @@ ${langRule(lang)}
 
 請以 JSON 回覆，格式：
 {
-  "nickname": "給他的風味人格取一個 4-8 字的稱號，要有畫面感，例如「深夜煙燻旅人」",
+  "nickname": "a short, vivid title for their drinking persona (4-8 characters in Chinese, or 2-4 words in English)",
   "profile": "一段 2-3 句話描述用戶的飲酒人格與偏好",
-  "traits": ["3-5 個形容他品味的短標籤，每個 2-6 字"],
+  "traits": ["3-5 short tags describing their taste, a couple of words each"],
   "recommendations": [
-    { "name": "酒名（中文，可附原文）", "category": "類別", "origin": "產地或發源地",
+    { "name": "drink name, written in the reply language", "category": "category", "origin": "where it comes from",
       "match_score": 95, "flavor_tags": ["標籤1","標籤2","標籤3"],
       "reason": "為什麼推薦給他，1-2 句，要對應他的具體答案",
       "serving_tip": "品飲建議", "food_pairing": "適合搭配的食物" }
@@ -265,9 +267,9 @@ ${JSON.stringify(advanced)}
     // 進階欄位要寫進 JSON 範本本身，只放在說明區塊模型會忽略
     const advSchema = advanced ? `,
   "technique": "主要調製技法",
-  "difficulty": "新手 / 進階 / 專業 其中之一",
-  "prep_time": "預估製作時間，例如「約 5 分鐘」",
-  "abv_estimate": "推估酒精濃度，例如「約 18% ABV」",
+  "difficulty": "one of: beginner / intermediate / pro — written in the reply language",
+  "prep_time": "estimated time, e.g. about 5 minutes, in the reply language",
+  "abv_estimate": "estimated strength, e.g. around 18% ABV",
   "pro_tips": ["2-3 個讓成品更好的實作要訣"],
   "variations": [{"name":"變化版名稱","description":"改動了什麼，一句話"}],
   "mocktail_version": "無酒精版本要怎麼調（沒有這個需求時給空字串）"` : '';
