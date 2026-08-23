@@ -16,9 +16,9 @@ async function loadHistory() {
   if (!currentUser) {
     body.innerHTML = `
       <div class="login-prompt">
-        <h2 class="gradient-text">請先登入</h2>
-        <p style="color:var(--text-dim);margin-bottom:20px;">登入後即可查看你所有的品味測驗結果與 AI 調酒紀錄。</p>
-        <p style="color:var(--text-dim);font-size:13px;">點擊右上角「使用 Google 登入」。</p>
+        <h2 class="gradient-text">${t('common.login_first')}</h2>
+        <p style="color:var(--text-dim);margin-bottom:20px;">${t('hs.login_sub')}</p>
+        <p style="color:var(--text-dim);font-size:13px;">${t('hs.login_hint')}</p>
       </div>
     `;
     return;
@@ -26,11 +26,11 @@ async function loadHistory() {
 
   body.innerHTML = `
     <div class="history-tabs">
-      <button class="history-tab ${activeTab==='quiz'?'active':''}" data-tab="quiz">🍷 品味測驗</button>
-      <button class="history-tab ${activeTab==='cocktail'?'active':''}" data-tab="cocktail">🍹 調酒生成</button>
+      <button class="history-tab ${activeTab==='quiz'?'active':''}" data-tab="quiz">${t('hs.tab_quiz')}</button>
+      <button class="history-tab ${activeTab==='cocktail'?'active':''}" data-tab="cocktail">${t('hs.tab_cocktail')}</button>
     </div>
     <div class="history-list" id="historyList">
-      <div style="text-align:center;color:var(--text-dim);padding:40px;">載入中...</div>
+      <div style="text-align:center;color:var(--text-dim);padding:40px;">${t('cm.loading')}</div>
     </div>
   `;
 
@@ -47,7 +47,7 @@ async function loadHistory() {
     const list = await r.json();
     renderList(list);
   } catch (err) {
-    document.getElementById('historyList').innerHTML = `<div class="history-empty">載入失敗：${err.message}</div>`;
+    document.getElementById('historyList').innerHTML = `<div class="history-empty">${t('cm.load_failed')}：${err.message}</div>`;
   }
 }
 
@@ -57,9 +57,9 @@ function renderList(list) {
     wrap.innerHTML = `
       <div class="history-empty">
         <div class="big-emoji">${activeTab === 'quiz' ? '🍷' : '🍹'}</div>
-        <h3>還沒有任何紀錄</h3>
-        <p>${activeTab === 'quiz' ? '完成品味測驗後，結果會自動存到這裡' : '生成一杯專屬調酒後會自動存到這裡'}</p>
-        <a href="${activeTab === 'quiz' ? 'quiz.html' : 'cocktail.html'}" class="btn-primary">立即開始 →</a>
+        <h3>${t('hs.empty')}</h3>
+        <p>${activeTab === 'quiz' ? t('hs.empty_quiz') : t('hs.empty_cocktail')}</p>
+        <a href="${activeTab === 'quiz' ? 'quiz.html' : 'cocktail.html'}" class="btn-primary">${t('hs.start')}</a>
       </div>
     `;
     return;
@@ -73,10 +73,10 @@ function renderList(list) {
         <div class="history-item">
           <div class="history-row">
             <div>
-              <div class="history-name">風味 DNA 分析</div>
+              <div class="history-name">${t('hs.dna')}</div>
               <div class="history-meta">${fmtDate(item.created_at)}</div>
             </div>
-            <div class="history-meta">${recs.length} 款推薦</div>
+            <div class="history-meta">${t('hs.rec_count', { n: recs.length })}</div>
           </div>
           <div class="history-summary">${profile}</div>
           <div class="history-tags">
@@ -93,17 +93,17 @@ function renderList(list) {
         <div class="history-item">
           <div class="history-row">
             <div>
-              <div class="history-name">${r.cocktail_name || '未命名'}</div>
+              <div class="history-name">${r.cocktail_name || t('hs.untitled')}</div>
               <div class="history-meta">${fmtDate(item.created_at)} · ${r.glass || ''}</div>
             </div>
             <div class="history-meta" style="color:var(--accent-gold);">${r.tagline || ''}</div>
           </div>
           <div class="history-summary">${r.story || ''}</div>
           <div class="history-tags">
-            <span class="history-tag">甜 ${fp.sweet ?? '-'}</span>
-            <span class="history-tag">酸 ${fp.sour ?? '-'}</span>
-            <span class="history-tag">苦 ${fp.bitter ?? '-'}</span>
-            <span class="history-tag">烈 ${fp.strong ?? '-'}</span>
+            <span class="history-tag">${t('ck.f_sweet')} ${fp.sweet ?? '-'}</span>
+            <span class="history-tag">${t('ck.f_sour')} ${fp.sour ?? '-'}</span>
+            <span class="history-tag">${t('ck.f_bitter')} ${fp.bitter ?? '-'}</span>
+            <span class="history-tag">${t('ck.f_strong')} ${fp.strong ?? '-'}</span>
             ${r.color ? `<span class="history-tag">${r.color}</span>` : ''}
           </div>
         </div>
