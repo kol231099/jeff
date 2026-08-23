@@ -800,14 +800,9 @@ body {
 }
 
 /* ===== 導覽列的語言項目 ===== */
-/* 就是一般的選單項目，只是多一個地球圖示；樣式全部沿用 .nav-links a */
+/* 就是一般的選單項目，樣式全部沿用 .nav-links a */
 .nav-lang { display: flex; align-items: center; }
-.lang-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.lang-globe { font-size: 13px; opacity: 0.8; }
+.lang-link { display: inline-flex; align-items: center; }
 /* 展示頁沒有主選單，那裡才需要自己的外框 */
 .sc-top .lang-link {
   margin-left: 16px;

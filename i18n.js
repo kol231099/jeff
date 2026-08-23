@@ -1304,7 +1304,7 @@
     const link = document.createElement('a');
     link.href = 'language.html';
     link.className = 'lang-link';
-    link.innerHTML = `<span class="lang-globe">🌐</span><span class="lang-label"></span>`;
+    link.innerHTML = `<span class="lang-label"></span>`;
 
     if (navList) {
       const li = document.createElement('li');
