@@ -1,0 +1,146 @@
+/* ===== 搖酒器載入動畫 ===== */
+/* 只用 transform 與 opacity，交給合成器處理，不觸發版面重算。
+   殘影是三層同樣的圖形錯開時間播放，疊出動態模糊，不用 filter: blur（那個很貴）。 */
+
+.shaker-stage {
+  position: relative;
+  width: min(260px, 62vw);
+  height: min(300px, 70vw);
+  margin: 0 auto 34px;
+  display: grid;
+  place-items: center;
+}
+
+/* 底下的光暈跟著節奏縮放，讓搖動有重量感 */
+.shaker-glow {
+  position: absolute;
+  width: 78%;
+  height: 42%;
+  bottom: 6%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,
+    rgba(255, 77, 141, 0.5), rgba(123, 92, 255, 0.22) 45%, transparent 72%);
+  filter: blur(18px);
+  animation: shGlow 1.04s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+@keyframes shGlow {
+  0%, 100% { transform: scale(0.9); opacity: 0.55; }
+  50%      { transform: scale(1.12); opacity: 0.9; }
+}
+
+.shaker-svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* 主體與殘影共用同一組關鍵影格，只差在延遲與透明度 */
+.sh-body {
+  transform-origin: 100px 232px;
+  animation: shShake 0.52s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  will-change: transform;
+}
+.sh-ghost {
+  transform-origin: 100px 232px;
+  animation: shShake 0.52s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  will-change: transform;
+  pointer-events: none;
+}
+.sh-ghost.g1 { animation-delay: -0.045s; opacity: 0.26; }
+.sh-ghost.g2 { animation-delay: -0.09s;  opacity: 0.13; }
+
+@keyframes shShake {
+  0%   { transform: rotate(-17deg) translate(-7px, 3px); }
+  25%  { transform: rotate(-3deg)  translate(0, -5px); }
+  50%  { transform: rotate(17deg)  translate(7px, 3px); }
+  75%  { transform: rotate(3deg)   translate(0, -5px); }
+  100% { transform: rotate(-17deg) translate(-7px, 3px); }
+}
+
+/* 內容物：跟著搖但相位落後，看起來像液體在裡面被甩 */
+.sh-content {
+  transform-origin: 100px 200px;
+  animation: shSlosh 0.52s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation-delay: -0.13s;
+  will-change: transform;
+}
+@keyframes shSlosh {
+  0%   { transform: rotate(9deg) translateX(-4px); }
+  50%  { transform: rotate(-9deg) translateX(4px); }
+  100% { transform: rotate(9deg) translateX(-4px); }
+}
+
+/* 冰塊：各自不同的節奏，才不會像整塊一起動 */
+.sh-ice { transform-origin: center; will-change: transform; }
+.sh-ice.i1 { animation: shIce1 0.52s ease-in-out infinite; }
+.sh-ice.i2 { animation: shIce2 0.52s ease-in-out infinite; animation-delay: -0.17s; }
+.sh-ice.i3 { animation: shIce3 0.52s ease-in-out infinite; animation-delay: -0.31s; }
+@keyframes shIce1 {
+  0%, 100% { transform: translate(-5px, 2px) rotate(-14deg); }
+  50%      { transform: translate(6px, -4px) rotate(16deg); }
+}
+@keyframes shIce2 {
+  0%, 100% { transform: translate(5px, -3px) rotate(12deg); }
+  50%      { transform: translate(-6px, 3px) rotate(-18deg); }
+}
+@keyframes shIce3 {
+  0%, 100% { transform: translate(2px, 4px) rotate(20deg); }
+  50%      { transform: translate(-4px, -3px) rotate(-10deg); }
+}
+
+/* 甩出來的水珠 */
+.sh-drop {
+  transform-origin: center;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: shDrop 1.04s ease-out infinite;
+}
+.sh-drop.d2 { animation-delay: -0.26s; }
+.sh-drop.d3 { animation-delay: -0.52s; }
+.sh-drop.d4 { animation-delay: -0.78s; }
+@keyframes shDrop {
+  0%   { transform: translate(0, 0) scale(0.5); opacity: 0; }
+  14%  { opacity: 0.95; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.85); opacity: 0; }
+}
+
+/* 高光掃過金屬表面 */
+.sh-sheen {
+  animation: shSheen 2.1s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+@keyframes shSheen {
+  0%, 100% { transform: translateY(-40px); opacity: 0; }
+  40%      { opacity: 0.85; }
+  60%      { opacity: 0.85; }
+  50%      { transform: translateY(70px); }
+}
+
+/* 節奏點：三顆小圓點跟著搖的節拍亮起 */
+.shaker-beat {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 4px;
+}
+.shaker-beat i {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent-gold, #FFB547);
+  opacity: 0.25;
+  animation: shBeat 1.04s ease-in-out infinite;
+}
+.shaker-beat i:nth-child(2) { animation-delay: 0.13s; }
+.shaker-beat i:nth-child(3) { animation-delay: 0.26s; }
+@keyframes shBeat {
+  0%, 100% { opacity: 0.22; transform: scale(0.85); }
+  30%      { opacity: 1; transform: scale(1.25); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sh-body, .sh-ghost, .sh-content, .sh-ice, .sh-drop, .sh-sheen,
+  .shaker-glow, .shaker-beat i { animation: none; }
+  .sh-ghost { display: none; }
+}

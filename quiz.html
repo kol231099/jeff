@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="styles.css?v=17" />
 <link rel="stylesheet" href="transition.css?v=4" />
 <link rel="stylesheet" href="quiz.css?v=14" />
+<link rel="stylesheet" href="shaker.css?v=1" />
 <link rel="stylesheet" href="social.css?v=11" />
 <script>
 /* 換頁抵達時，在第一個影格之前就蓋住畫面，避免閃爍。
@@ -81,11 +82,55 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
 
     <!-- 載入動畫 -->
     <div class="loading-screen" id="loadingScreen" style="display:none;">
-      <div class="ai-core">
-        <div class="core-ring r1"></div>
-        <div class="core-ring r2"></div>
-        <div class="core-ring r3"></div>
-        <div class="core-center">AI</div>
+      <div class="shaker-stage">
+        <div class="shaker-glow"></div>
+        <svg class="shaker-svg" viewBox="0 0 200 300" aria-hidden="true">
+          <defs>
+            <linearGradient id="shMetal" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="#7C86B8"/>
+              <stop offset="18%"  stop-color="#EEF2FF"/>
+              <stop offset="42%"  stop-color="#AAB4E0"/>
+              <stop offset="66%"  stop-color="#F3F6FF"/>
+              <stop offset="100%" stop-color="#6A7299"/>
+            </linearGradient>
+            <linearGradient id="shDrink" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#FFC46B"/>
+              <stop offset="50%"  stop-color="#FF4D8D"/>
+              <stop offset="100%" stop-color="#7B5CFF"/>
+            </linearGradient>
+            <clipPath id="shInner">
+              <path d="M66,150 L134,150 L128,232 Q100,244 72,232 Z"/>
+            </clipPath>
+            <!-- 搖酒器外形，主體與殘影共用 -->
+            <g id="shShape">
+              <rect x="82" y="44" width="36" height="20" rx="6" fill="url(#shMetal)"/>
+              <path d="M72,64 L128,64 L134,96 L66,96 Z" fill="url(#shMetal)"/>
+              <path d="M66,96 L134,96 L128,232 Q100,246 72,232 Z" fill="url(#shMetal)"/>
+              <path d="M66,96 L134,96 L133,104 L67,104 Z" fill="rgba(255,255,255,.55)"/>
+            </g>
+          </defs>
+
+          <use href="#shShape" class="sh-ghost g2"/>
+          <use href="#shShape" class="sh-ghost g1"/>
+
+          <g class="sh-body">
+            <use href="#shShape"/>
+            <g clip-path="url(#shInner)">
+              <g class="sh-content">
+                <rect x="40" y="168" width="130" height="110" fill="url(#shDrink)" opacity="0.92"/>
+                <rect class="sh-ice i1" x="80"  y="176" width="20" height="20" rx="5" fill="rgba(255,255,255,.72)"/>
+                <rect class="sh-ice i2" x="106" y="192" width="16" height="16" rx="4" fill="rgba(255,255,255,.6)"/>
+                <rect class="sh-ice i3" x="86"  y="206" width="14" height="14" rx="4" fill="rgba(255,255,255,.5)"/>
+              </g>
+            </g>
+            <rect class="sh-sheen" x="74" y="100" width="14" height="60" rx="7" fill="rgba(255,255,255,.5)"/>
+          </g>
+
+          <circle class="sh-drop"    cx="140" cy="120" r="4"   fill="#FFD9A0" style="--dx:34px;--dy:-26px"/>
+          <circle class="sh-drop d2" cx="62"  cy="140" r="3.4" fill="#FF9AC4" style="--dx:-32px;--dy:-18px"/>
+          <circle class="sh-drop d3" cx="146" cy="170" r="3"   fill="#C0A6FF" style="--dx:30px;--dy:22px"/>
+          <circle class="sh-drop d4" cx="58"  cy="182" r="3.6" fill="#FFD9A0" style="--dx:-28px;--dy:26px"/>
+        </svg>
       </div>
       <h2 class="loading-title gradient-text" data-i18n="quiz.loading_title">分析中</h2>
       <p class="loading-sub" id="loadingSub" data-i18n="quiz.tip1">讀取你的風味 DNA…</p>
