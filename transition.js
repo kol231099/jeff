@@ -60,11 +60,11 @@
           <path class="pg-meniscus" d="" fill="none" stroke="#FFF0D8" stroke-width="0.9" stroke-linecap="round" opacity="0.55"/>
 
           <g class="pg-splash">
-            <circle class="pg-drop d1" r="1.9" fill="#FFF6E6"/>
+            <circle class="pg-drop d1" r="2.3" fill="#FFF6E6"/>
             <circle class="pg-drop d2" r="1.4" fill="#FFEFD2"/>
-            <circle class="pg-drop d3" r="1.7" fill="#FFFBF2"/>
+            <circle class="pg-drop d3" r="2.1" fill="#FFFBF2"/>
             <circle class="pg-drop d4" r="1.2" fill="#FFE3B4"/>
-            <circle class="pg-drop d5" r="1.5" fill="#FFF6E6"/>
+            <circle class="pg-drop d5" r="1.9" fill="#FFF6E6"/>
           </g>
 
           <path d="M22,18 L98,18 L64,74 L56,74 Z" fill="none" stroke="rgba(255,246,230,.9)" stroke-width="2" stroke-linejoin="round"/>
@@ -149,7 +149,7 @@
     };
   }
 
-  const W0 = 4.8;                         // 瓶口處的酒柱半寬
+  const W0 = 5.4;                         // 瓶口處的酒柱半寬
 
   // s0~s1 是目前畫出來的區間：落下時尾端固定、頭往前跑，收尾時反過來
   function setStream(el, on, targetY, s0, s1, t) {

@@ -126,10 +126,10 @@ html.pour-arriving::before {
 
 .pour-glass { width: min(300px, 66vw); filter: drop-shadow(0 12px 40px rgba(255, 77, 141, 0.45)); }
 .pour-glass .pg-bottle { filter: drop-shadow(0 8px 18px rgba(0, 0, 0, .45)); }
-.pour-glass .pg-stream-hi { opacity: .8; }
+.pour-glass .pg-stream-hi { opacity: .55; }
 .pour-glass .pg-liquid { filter: drop-shadow(0 0 6px rgba(255, 120, 150, .35)); }
 
-.pour-glass .pg-stream { opacity: .97; filter: blur(.3px) drop-shadow(0 0 5px rgba(255, 240, 210, .75)); }
+.pour-glass .pg-stream { opacity: .97; filter: blur(.25px) drop-shadow(0 1px 4px rgba(120, 20, 60, .5)) drop-shadow(0 0 8px rgba(255, 150, 120, .3)); }
 
 /* 撞擊點濺起的酒滴 */
 .pour-glass .pg-splash { opacity: 0; transition: opacity .12s linear; }
