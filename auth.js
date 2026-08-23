@@ -261,6 +261,8 @@ window.addEventListener('load', () => {
       client_id: GOOGLE_CLIENT_ID,
       callback: handleCredentialResponse,
       auto_select: false,
+      // 不指定的話 Google 會自己挑語言，覆蓋層的無障礙標籤就會跟介面不一致
+      locale: (window.getLang && getLang() === 'zh') ? 'zh_TW' : 'en',
     });
     // 切換語言時重繪 Google 按鈕，否則它會停在初次渲染時的語系
     window.addEventListener('pourmatch:langchange', () => {
