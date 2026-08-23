@@ -88,7 +88,7 @@ function renderCandidates(data) {
       <div class="cand-bar"><div class="cand-bar-fill" style="width:${c.match_percent}%"></div></div>
 
       ${c.shared?.length
-        ? `<div class="cand-shared">${t('m.agree_on')}${c.shared.map(s => `<span>${esc(s)}</span>`).join('')}</div>`
+        ? `<div class="cand-shared">${t('m.agree_on')}${c.shared.map(s => `<span>${esc(t(s))}</span>`).join('')}</div>`
         : `<div class="cand-shared dim">${t('m.little_overlap')}</div>`}
 
       ${c.user.bio ? `<div class="cand-bio">${esc(c.user.bio)}</div>` : ''}

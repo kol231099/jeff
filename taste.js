@@ -5,20 +5,28 @@
 //   2. 逐題算完再加權平均，分數自然落在 0~1，不會像舊版那樣全部擠在滿分
 //   3. 回傳 breakdown，UI 才能說出「你們在香氣、場合上特別接近」
 
-// 題目規格必須與 quiz.js 的 QUESTIONS 對齊
+// 題目規格必須與 quiz.js 的 ALL_QUESTIONS 對齊。
+// key 是翻譯鍵，不是顯示字串 —— 面向名稱要跟著介面語言走。
 const SPEC = [
-  { id: 'taste',       type: 'single', weight: 1.4, label: '風味' },
-  { id: 'aroma',       type: 'multi',  weight: 1.4, label: '香氣' },
-  { id: 'texture',     type: 'single', weight: 1.0, label: '口感' },
-  { id: 'strength',    type: 'scale',  weight: 1.0, label: '酒精強度', min: 1, max: 5 },
-  { id: 'sourness',    type: 'scale',  weight: 0.8, label: '酸度',     min: 1, max: 5 },
-  { id: 'base',        type: 'multi',  weight: 1.3, label: '基酒' },
-  { id: 'mood',        type: 'single', weight: 1.0, label: '氛圍' },
-  { id: 'occasion',    type: 'single', weight: 0.9, label: '場合' },
-  { id: 'timing',      type: 'single', weight: 0.7, label: '時段' },
-  { id: 'adventure',   type: 'scale',  weight: 0.8, label: '冒險程度', min: 1, max: 5 },
-  { id: 'personality', type: 'single', weight: 0.9, label: '個性' },
-  { id: 'avoid',       type: 'single', weight: 0.7, label: '地雷' },
+  { id: 'taste',       type: 'single', weight: 1.4, key: 'sp.taste' },
+  { id: 'aroma',       type: 'multi',  weight: 1.4, key: 'sp.aroma' },
+  { id: 'texture',     type: 'single', weight: 1.0, key: 'sp.texture' },
+  { id: 'strength',    type: 'scale',  weight: 1.0, key: 'sp.strength', min: 1, max: 5 },
+  { id: 'sourness',    type: 'scale',  weight: 0.8, key: 'sp.sourness', min: 1, max: 5 },
+  { id: 'base',        type: 'multi',  weight: 1.3, key: 'sp.base' },
+  { id: 'mood',        type: 'single', weight: 1.0, key: 'sp.mood' },
+  { id: 'occasion',    type: 'single', weight: 0.9, key: 'sp.occasion' },
+  { id: 'timing',      type: 'single', weight: 0.7, key: 'sp.timing' },
+  { id: 'adventure',   type: 'scale',  weight: 0.8, key: 'sp.adventure', min: 1, max: 5 },
+  { id: 'personality', type: 'single', weight: 0.9, key: 'sp.personality' },
+  { id: 'avoid',       type: 'single', weight: 0.7, key: 'sp.avoid' },
+  // 深入版（18 題）才會問到的面向
+  { id: 'sweetness',   type: 'scale',  weight: 1.0, key: 'sp.sweetness', min: 1, max: 5 },
+  { id: 'temperature', type: 'single', weight: 0.8, key: 'sp.temperature' },
+  { id: 'company',     type: 'single', weight: 0.7, key: 'sp.company' },
+  { id: 'ritual',      type: 'single', weight: 0.6, key: 'sp.ritual' },
+  { id: 'aftertaste',  type: 'scale',  weight: 0.8, key: 'sp.aftertaste', min: 1, max: 5 },
+  { id: 'discovery',   type: 'single', weight: 0.5, key: 'sp.discovery' },
 ];
 
 const asArray = v => (Array.isArray(v) ? v : v == null || v === '' ? [] : [v]);
@@ -71,7 +79,7 @@ function tasteSimilarity(a, b) {
     if (s === null) continue;
     weighted += s * q.weight;
     totalWeight += q.weight;
-    breakdown.push({ id: q.id, label: q.label, score: Number(s.toFixed(3)) });
+    breakdown.push({ id: q.id, key: q.key, score: Number(s.toFixed(3)) });
   }
 
   if (totalWeight === 0) return { score: 0, percent: 0, breakdown: [], shared: [], answered: 0 };
@@ -81,7 +89,7 @@ function tasteSimilarity(a, b) {
     .filter(d => d.score >= 0.6)
     .sort((x, y) => y.score - x.score)
     .slice(0, 3)
-    .map(d => d.label);
+    .map(d => d.key);
 
   return {
     score: Number(score.toFixed(4)),

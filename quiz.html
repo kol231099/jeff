@@ -10,8 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=17" />
 <link rel="stylesheet" href="transition.css?v=4" />
-<link rel="stylesheet" href="quiz.css?v=14" />
-<link rel="stylesheet" href="shaker.css?v=2" />
+<link rel="stylesheet" href="quiz.css?v=15" />
+<link rel="stylesheet" href="shaker.css?v=3" />
 <link rel="stylesheet" href="social.css?v=11" />
 <script>
 /* 換頁抵達時，在第一個影格之前就蓋住畫面，避免閃爍。
@@ -67,8 +67,37 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
   </nav>
 
   <main class="quiz-main">
+    <!-- 開場：選擇題數 -->
+    <div class="start-screen" id="startScreen">
+      <div class="start-eyebrow" data-i18n="quiz.start_eyebrow">開始之前</div>
+      <h1 class="start-title" data-i18n="quiz.start_title">你想回答幾題？</h1>
+      <p class="start-lead" data-i18n="quiz.start_lead">題目越多，AI 越懂你的口味，配對也越準。隨時可以再測一次。</p>
+
+      <div class="len-grid">
+        <button class="len-card" data-len="6" type="button">
+          <div class="len-num">6</div>
+          <div class="len-name" data-i18n="quiz.len6_t">快速</div>
+          <div class="len-desc" data-i18n="quiz.len6_d">約 1 分鐘 · 抓個大方向</div>
+        </button>
+        <button class="len-card selected" data-len="12" type="button">
+          <div class="len-badge" data-i18n="quiz.recommended">推薦</div>
+          <div class="len-num">12</div>
+          <div class="len-name" data-i18n="quiz.len12_t">標準</div>
+          <div class="len-desc" data-i18n="quiz.len12_d">約 2 分鐘 · 完整的風味輪廓</div>
+        </button>
+        <button class="len-card" data-len="18" type="button">
+          <div class="len-num">18</div>
+          <div class="len-name" data-i18n="quiz.len18_t">深入</div>
+          <div class="len-desc" data-i18n="quiz.len18_d">約 3 分鐘 · 連情境與習慣都問</div>
+        </button>
+      </div>
+
+      <button class="btn-primary start-go" id="startBtn" type="button" data-i18n="quiz.start_go">開始測驗 →</button>
+      <p class="start-note" data-i18n="quiz.start_note">不同長度之間仍然可以互相配對 —— 沒作答的題目不會被當成不合。</p>
+    </div>
+
     <!-- 進度條 -->
-    <div class="progress-wrap">
+    <div class="progress-wrap" style="display:none;">
       <div class="progress-info">
         <span id="progressText">第 1 / 12 題</span>
         <span id="progressPct">8%</span>
@@ -77,12 +106,16 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
     </div>
 
     <!-- 問卷區 -->
-    <div class="quiz-container" id="quizContainer">
+    <div class="quiz-container" id="quizContainer" style="display:none;">
       <!-- 題目由 JS 動態插入 -->
     </div>
 
     <!-- 載入動畫 -->
     <div class="loading-screen" id="loadingScreen" style="display:none;">
+      <div class="shake-flood" aria-hidden="true">
+        <svg class="shake-wave" viewBox="0 0 1200 140" preserveAspectRatio="none"><path d="M0,40 C150,90 350,-10 600,40 C850,90 1050,-10 1200,40 L1200,140 L0,140 Z"/></svg>
+        <svg class="shake-wave w2" viewBox="0 0 1200 140" preserveAspectRatio="none"><path d="M0,40 C150,90 350,-10 600,40 C850,90 1050,-10 1200,40 L1200,140 L0,140 Z"/></svg>
+      </div>
       <div class="shaker-stage">
         <div class="shaker-glow"></div>
         <svg class="shaker-svg" viewBox="40 32 120 232" aria-hidden="true">
@@ -166,10 +199,10 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
   </main>
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="i18n.js?v=10"></script>
+  <script src="i18n.js?v=11"></script>
   <script src="transition.js?v=3"></script>
   <script src="particles.js?v=10"></script>
   <script src="auth.js?v=13"></script>
-  <script src="quiz.js?v=12"></script>
+  <script src="quiz.js?v=13"></script>
 </body>
 </html>

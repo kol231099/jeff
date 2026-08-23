@@ -1,6 +1,6 @@
 // ===== 品味測驗邏輯 =====
 // 題目文字全部放在 i18n.js，這裡只留結構；切換語言時重新渲染即可
-const QUESTIONS = [
+const ALL_QUESTIONS = [
   {
     id: 'taste',
     type: 'single',
@@ -116,6 +116,56 @@ const QUESTIONS = [
       { value: 'no_limit', emoji: '🆗' },
     ],
   },
+  {
+    id: 'sweetness',
+    type: 'slider',
+    min: 1, max: 5, default: 3,
+  },
+  {
+    id: 'temperature',
+    type: 'single',
+    options: [
+      { value: 'frozen', emoji: '🧊' },
+      { value: 'chilled', emoji: '❄️' },
+      { value: 'room', emoji: '🌡️' },
+      { value: 'warm', emoji: '☕' },
+    ],
+  },
+  {
+    id: 'company',
+    type: 'single',
+    options: [
+      { value: 'alone', emoji: '🧘' },
+      { value: 'partner', emoji: '💑' },
+      { value: 'few', emoji: '👥' },
+      { value: 'crowd', emoji: '🎊' },
+    ],
+  },
+  {
+    id: 'ritual',
+    type: 'single',
+    options: [
+      { value: 'music', emoji: '🎧' },
+      { value: 'film', emoji: '📺' },
+      { value: 'food', emoji: '🍽️' },
+      { value: 'nothing', emoji: '🌌' },
+    ],
+  },
+  {
+    id: 'aftertaste',
+    type: 'slider',
+    min: 1, max: 5, default: 3,
+  },
+  {
+    id: 'discovery',
+    type: 'single',
+    options: [
+      { value: 'bartender', emoji: '🎩' },
+      { value: 'friend', emoji: '🗣️' },
+      { value: 'social', emoji: '📱' },
+      { value: 'random', emoji: '🎲' },
+    ],
+  },
 ];
 
 // 題目與選項文字都用組合出來的鍵查字典
@@ -124,6 +174,20 @@ const qSub = q => (q.hasSubtitle ? t(`q.${q.id}.s`) : '');
 const oLabel = (q, v) => t(`o.${q.id}.${v}`);
 const oDesc = (q, v) => { const k = `o.${q.id}.${v}.d`; const s = t(k); return s === k ? '' : s; };
 const slLabel = (q, i) => t(`sl.${q.id}.${i}`);
+
+// 題組：短版只留鑑別度最高的幾題；深入版把 18 題全問完。
+// 相似度計算會自動跳過沒作答的題目，所以不同長度之間仍然可以互相配對。
+const SETS = {
+  6:  ['taste', 'aroma', 'strength', 'base', 'mood', 'avoid'],
+  12: ALL_QUESTIONS.slice(0, 12).map(q => q.id),
+  18: ALL_QUESTIONS.map(q => q.id),
+};
+
+let QUESTIONS = [];
+function useSet(n) {
+  const ids = SETS[n] || SETS[12];
+  QUESTIONS = ids.map(id => ALL_QUESTIONS.find(q => q.id === id)).filter(Boolean);
+}
 
 // 判斷某題是否已作答（多選要看陣列長度，滑桿永遠算已答）
 function isAnswered(q) {
@@ -441,7 +505,24 @@ function insertPublishCard(container, card) {
   else container.appendChild(card);
 }
 
-renderQuestion();
+// 開場先讓使用者決定題數
+let chosenLength = 12;
+const startScreen = document.getElementById('startScreen');
+document.querySelectorAll('.len-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.len-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    chosenLength = Number(card.dataset.len);
+  });
+});
+document.getElementById('startBtn').addEventListener('click', () => {
+  useSet(chosenLength);
+  startScreen.style.display = 'none';
+  document.querySelector('.progress-wrap').style.display = '';
+  container.style.display = '';
+  renderQuestion();
+});
+
 window.addEventListener('pourmatch:langchange', () => {
   if (document.getElementById('resultScreen').style.display !== 'block') renderQuestion();
 });
