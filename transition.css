@@ -62,7 +62,7 @@ html.pour-arriving::before {
 /* 液面波浪：兩層不同速度與相位，看起來才有厚度 */
 .pour-wave {
   position: absolute;
-  bottom: 100%;
+  bottom: calc(100% - 1px);
   left: 0;
   width: 200%;
   height: 90px;
@@ -84,7 +84,7 @@ html.pour-arriving::before {
 /* 液面高光，讓邊緣像真的液體而不是色塊 */
 .pour-glint {
   position: absolute;
-  bottom: 100%;
+  bottom: calc(100% - 1px);
   left: 0;
   width: 100%;
   height: 3px;
@@ -125,7 +125,21 @@ html.pour-arriving::before {
 .pour-overlay.active .pour-scene { opacity: 1; transform: none; }
 
 .pour-glass { width: min(160px, 34vw); filter: drop-shadow(0 12px 40px rgba(255, 77, 141, 0.5)); }
-.pour-glass .pg-fill { transform-origin: 50% 100%; }
+.pour-glass .pg-liquid { filter: drop-shadow(0 0 6px rgba(255, 120, 150, .35)); }
+
+.pour-glass .pg-stream { opacity: .88; filter: blur(.3px) drop-shadow(0 0 4px rgba(255, 180, 110, .5)); }
+
+/* 撞擊點濺起的酒滴 */
+.pour-glass .pg-splash { opacity: 0; transition: opacity .12s linear; }
+.pour-glass .pg-drop { animation: pgDrop .42s ease-out infinite; }
+.pour-glass .pg-drop.d1 { --dx: -7px; animation-delay: 0s; }
+.pour-glass .pg-drop.d2 { --dx: 6px;  animation-delay: .14s; }
+.pour-glass .pg-drop.d3 { --dx: -2px; animation-delay: .27s; }
+@keyframes pgDrop {
+  0%   { transform: translate(0, 0) scale(.4); opacity: 0; }
+  25%  { opacity: .95; }
+  100% { transform: translate(var(--dx), -9px) scale(.15); opacity: 0; }
+}
 
 .pour-word {
   font-family: 'Orbitron', sans-serif;
