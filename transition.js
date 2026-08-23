@@ -21,7 +21,10 @@
       <div class="pour-scene">
         <svg class="pour-glass" viewBox="0 0 120 150" aria-hidden="true">
           <defs>
-            <linearGradient id="pgLiquid" x1="0" y1="0" x2="0" y2="1">
+            <!-- userSpaceOnUse：漸層固定在杯碗的座標上。
+                 預設的 objectBoundingBox 會讓顏色跟著縮放一起壓扁，
+                 那樣看起來是整塊色彩在變形，而不是酒液累積上來。 -->
+            <linearGradient id="pgLiquid" gradientUnits="userSpaceOnUse" x1="60" y1="16" x2="60" y2="76">
               <stop offset="0%" stop-color="#FFC46B"/>
               <stop offset="55%" stop-color="#FF4D8D"/>
               <stop offset="100%" stop-color="#7B5CFF"/>

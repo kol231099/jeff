@@ -150,7 +150,13 @@ html.pour-arriving::before {
 .pour-overlay.active .pour-scene { opacity: 1; transform: none; }
 
 .pour-glass { width: min(160px, 34vw); filter: drop-shadow(0 12px 40px rgba(255, 77, 141, 0.5)); }
-.pour-glass .pg-fill { transform-origin: 50% 100%; }
+/* SVG 的 transform-box 預設是 view-box，所以 50% 100% 會落在整張畫布的底邊，
+   而不是這塊酒液的底部 —— 縮放起點錯了，看起來就像一整塊滑進杯子。
+   改成 fill-box 之後，原點才是酒液自己的底邊，液面才會由下往上升。 */
+.pour-glass .pg-fill {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
 
 .pour-word {
   font-family: 'Orbitron', sans-serif;
