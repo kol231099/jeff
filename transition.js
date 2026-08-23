@@ -298,6 +298,9 @@
     // 杯子滿了才漫出整片畫面
     liquid.animate([{ height: '0' }, { height: '130vh' }],
       { duration: 900, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'forwards' });
+    // 瓶子在這裡退場。下一頁的覆蓋層沒有瓶子，留到最後一格才消失會變成跳接。
+    el.querySelector('.pg-bottle').animate([{ opacity: 1 }, { opacity: 0 }],
+      { duration: 420, easing: 'ease-in', fill: 'forwards' });
     await wait(940);
   }
 
@@ -309,15 +312,30 @@
     setLevel(el, 1, 0);          // 抵達時杯子是滿的，酒已經倒完，瓶子不出現
     setStream(el, false);
     el.querySelector('.pg-bottle').style.display = 'none';
+
+    // 上一頁最後一格是「滿版漸層 + 滿杯」。這裡若照 CSS 從 opacity:0 淡入，
+    // 就會變成酒杯憑空浮出來一下又縮回去 —— 直接接在原本的狀態上。
+    const scene = el.querySelector('.pour-scene');
+    const wordEl = el.querySelector('.pour-word');
+    scene.style.transition = 'none';
+    scene.style.opacity = '1';
+    scene.style.transform = 'none';
+    wordEl.style.transition = 'none';
+    wordEl.style.opacity = '0';
+    void scene.offsetWidth;                 // 強制回流，讓上面幾行成為起始狀態
+
     el.classList.add('active');
     setWord(el, label('tr.settling'));
+    wordEl.style.transition = 'opacity .34s ease';
+    wordEl.style.opacity = '1';             // 只有字換，杯子不動
     // 覆蓋層已就位且顏色相同，這時才拿掉行內的臨時遮罩
     document.documentElement.classList.remove('pour-arriving');
 
     if (reduce) { el.classList.remove('active'); liquid.style.height = '0'; return; }
 
-    await wait(260);
-    el.querySelector('.pour-scene').style.opacity = '0';
+    await wait(620);
+    scene.style.transition = 'opacity .5s ease';
+    scene.style.opacity = '0';
     liquid.animate([{ height: '130vh' }, { height: '0' }],
       { duration: 1000, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'forwards' });
     await wait(760);
@@ -325,6 +343,11 @@
     await wait(340);
     el.classList.remove('active');
     liquid.style.height = '0';
+    // 行內樣式會蓋過 .pour-overlay.active 的規則，留著的話同一頁再觸發一次
+    // 過場時整個場景是隱形的。交還給 CSS。
+    scene.style.cssText = '';
+    wordEl.style.cssText = '';
+    el.querySelector('.pour-veil').style.opacity = '';
   }
 
   // 換頁：先倒滿，再導向，讓下一頁接著播退場。
