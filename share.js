@@ -5,19 +5,19 @@ const id = new URLSearchParams(location.search).get('id');
 async function load() {
   if (!id) {
     body.innerHTML = `<div class="card" style="text-align:center;padding:60px 20px;">
-      <h2>沒有提供貼文 ID</h2></div>`;
+      <h2>${t('sh.no_id')}</h2></div>`;
     return;
   }
   try {
     const r = await fetch(`/api/share/${id}`);
-    if (!r.ok) throw new Error('找不到貼文');
+    if (!r.ok) throw new Error(t('sh.post_missing'));
     const p = await r.json();
     render(p);
   } catch (e) {
     body.innerHTML = `<div class="card" style="text-align:center;padding:60px 20px;">
-      <h2 style="margin-bottom:8px;">貼文不存在</h2>
+      <h2 style="margin-bottom:8px;">${t('sh.not_found')}</h2>
       <p style="color:var(--text-dim);">${e.message}</p>
-      <a href="community.html" class="btn-share" style="text-decoration:none;margin-top:16px;display:inline-block;">回到社群</a>
+      <a href="community.html" class="btn-share" style="text-decoration:none;margin-top:16px;display:inline-block;">${t('sh.back_community')}</a>
     </div>`;
   }
 }
@@ -32,23 +32,23 @@ function render(p) {
   const time = new Date(p.created_at * 1000).toLocaleString('zh-TW', { hour12: false });
   body.innerHTML = `
     <div class="social-header">
-      <h1 class="gradient-text">${p.type === 'quiz' ? '品味測驗結果' : '創意調酒'}</h1>
-      <p>來自 PourMatch 的 AI 推薦 · ${time}</p>
+      <h1 class="gradient-text">${p.type === 'quiz' ? t('cm.quiz_post') : t('cm.cocktail_post')}</h1>
+      <p>${t('sh.from', { time })}</p>
     </div>
     <div class="card post">
       <div class="post-head">
         <img class="post-avatar" src="${p.user.picture || ''}" referrerpolicy="no-referrer" alt="" />
         <div class="post-meta">
-          <div class="post-name">${p.user.name || '匿名酒友'}</div>
-          <div class="post-time">識別代碼：${p.user.unique_code || '—'}</div>
+          <div class="post-name">${p.user.name || t('cm.anon')}</div>
+          <div class="post-time">${t('sh.code', { code: p.user.unique_code || '—' })}</div>
         </div>
       </div>
       ${p.caption ? `<div class="post-caption">${escapeHtml(p.caption)}</div>` : ''}
       <div class="post-content">${inner}</div>
       <div class="post-actions">
         <span class="action-btn ${p.liked ? 'liked' : ''}">❤️ ${p.likes_count || 0}</span>
-        <a class="btn-share" href="quiz.html" style="text-decoration:none;">🍷 我也來測測看</a>
-        <a class="btn-share" href="cocktail.html" style="text-decoration:none;">🍹 我也來生成調酒</a>
+        <a class="btn-share" href="quiz.html" style="text-decoration:none;">${t('sh.try_quiz')}</a>
+        <a class="btn-share" href="cocktail.html" style="text-decoration:none;">${t('sh.try_cocktail')}</a>
       </div>
       <div class="comments-wrap" id="shareComments"></div>
     </div>
@@ -64,7 +64,7 @@ async function loadShareComments(postId) {
     const list = await r.json();
     renderShareComments(wrap, postId, list);
   } catch (e) {
-    wrap.innerHTML = `<div class="comments-loading">留言載入失敗</div>`;
+    wrap.innerHTML = `<div class="comments-loading">${t('cm.comments_failed')}</div>`;
   }
 }
 
@@ -72,19 +72,19 @@ function renderShareComments(wrap, postId, list) {
   const composer = window.currentUser ? `
     <div class="comment-composer">
       <img class="comment-avatar" src="${window.currentUser.picture || ''}" referrerpolicy="no-referrer" alt="" />
-      <textarea class="comment-input" maxlength="500" placeholder="寫下你的想法…"></textarea>
-      <button class="comment-send">送出</button>
+      <textarea class="comment-input" maxlength="500" placeholder="${t('sh.comment_ph')}"></textarea>
+      <button class="comment-send">${t('cm.send')}</button>
     </div>
   ` : `
     <div class="comment-login-cta">
-      🔒 <button class="link-style" onclick="window.triggerLogin?.()">登入</button> 即可留言
+      🔒 <button class="link-style" onclick="window.triggerLogin?.()">${t('cm.login')}</button> ${t('cm.login_to_comment')}
     </div>
   `;
   wrap.innerHTML = `
-    <div class="comments-divider">💬 ${list.length} 則留言</div>
+    <div class="comments-divider">${t('sh.n_comments', { n: list.length })}</div>
     <div class="comments-list">
       ${list.length === 0
-        ? `<div class="comments-empty">還沒有人留言 · 來當第一個吧</div>`
+        ? `<div class="comments-empty">${t('cm.no_comments')}</div>`
         : list.map(commentHtml).join('')}
     </div>
     ${composer}
@@ -95,16 +95,16 @@ function renderShareComments(wrap, postId, list) {
 function commentHtml(c) {
   const diff = Date.now() / 1000 - c.created_at;
   let time;
-  if (diff < 60) time = '剛剛';
-  else if (diff < 3600) time = `${Math.floor(diff / 60)} 分鐘前`;
-  else if (diff < 86400) time = `${Math.floor(diff / 3600)} 小時前`;
+  if (diff < 60) time = t('cm.just_now');
+  else if (diff < 3600) time = t('cm.min_ago', { n: Math.floor(diff / 60) });
+  else if (diff < 86400) time = t('cm.hr_ago', { n: Math.floor(diff / 3600) });
   else time = new Date(c.created_at * 1000).toLocaleDateString('zh-TW');
   return `
     <div class="comment-item" data-id="${c.id}">
       <img class="comment-avatar" src="${c.user.picture || ''}" referrerpolicy="no-referrer" alt="" />
       <div class="comment-body">
         <div class="comment-head">
-          <span class="comment-name">${escapeHtml(c.user.name || '酒友')}</span>
+          <span class="comment-name">${escapeHtml(c.user.name || t('m.drinker'))}</span>
           <span class="comment-time">${time}</span>
           ${c.is_owner ? `<button class="comment-delete" data-id="${c.id}">×</button>` : ''}
         </div>
@@ -121,16 +121,16 @@ function bindShareComment(wrap, postId) {
     sendBtn.onclick = async () => {
       const text = input.value.trim();
       if (!text) return;
-      sendBtn.disabled = true; sendBtn.textContent = '送出中…';
+      sendBtn.disabled = true; sendBtn.textContent = t('cm.sending');
       try {
         const r = await fetch(`/api/posts/${postId}/comments`, {
           method: 'POST', credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ body: text }),
         });
-        if (r.status === 401) { alert('請先登入'); return; }
+        if (r.status === 401) { alert(t('common.login_first')); return; }
         const data = await r.json();
-        if (!r.ok) { alert(data.error || '送出失敗'); return; }
+        if (!r.ok) { alert(data.error || t('cm.send_failed')); return; }
         const list = wrap.querySelector('.comments-list');
         const empty = list.querySelector('.comments-empty');
         if (empty) empty.remove();
@@ -140,28 +140,28 @@ function bindShareComment(wrap, postId) {
         const divider = wrap.querySelector('.comments-divider');
         if (divider) {
           const n = list.querySelectorAll('.comment-item').length;
-          divider.textContent = `💬 ${n} 則留言`;
+          divider.textContent = t('sh.n_comments', { n });
         }
       } finally {
-        sendBtn.disabled = false; sendBtn.textContent = '送出';
+        sendBtn.disabled = false; sendBtn.textContent = t('cm.send');
       }
     };
   }
   wrap.querySelectorAll('.comment-delete').forEach(b => {
     b.onclick = async () => {
-      if (!confirm('刪除這則留言？')) return;
+      if (!confirm(t('cm.confirm_delete_comment'))) return;
       const r = await fetch(`/api/comments/${b.dataset.id}`, { method: 'DELETE', credentials: 'include' });
-      if (!r.ok) { const d = await r.json(); alert(d.error || '刪除失敗'); return; }
+      if (!r.ok) { const d = await r.json(); alert(d.error || t('cm.delete_failed')); return; }
       const item = b.closest('.comment-item');
       item.remove();
       const list = wrap.querySelector('.comments-list');
       if (list && !list.querySelector('.comment-item')) {
-        list.innerHTML = `<div class="comments-empty">還沒有人留言 · 來當第一個吧</div>`;
+        list.innerHTML = `<div class="comments-empty">${t('cm.no_comments')}</div>`;
       }
       const divider = wrap.querySelector('.comments-divider');
       if (divider) {
         const n = list.querySelectorAll('.comment-item').length;
-        divider.textContent = `💬 ${n} 則留言`;
+        divider.textContent = t('sh.n_comments', { n });
       }
     };
   });
@@ -174,11 +174,11 @@ function renderQuiz(r) {
   return `
     <div class="share-quiz">
       <div class="share-section">
-        <div class="share-label">風味 DNA</div>
+        <div class="share-label">${t('sh.dna')}</div>
         <div class="share-profile">${r.profile || ''}</div>
       </div>
       <div class="share-section">
-        <div class="share-label">3 款推薦</div>
+        <div class="share-label">${t('sh.recs', { n: 3 })}</div>
         <div class="share-recs">
           ${recs.map(x => `
             <div class="share-rec">
@@ -200,10 +200,10 @@ function renderQuiz(r) {
 function renderCocktail(r) {
   const fp = r.flavor_profile || {};
   const flavorMap = [
-    { key: 'sweet', label: '甜' },
-    { key: 'sour', label: '酸' },
-    { key: 'bitter', label: '苦' },
-    { key: 'strong', label: '烈' },
+    { key: 'sweet', label: t('ck.f_sweet') },
+    { key: 'sour', label: t('ck.f_sour') },
+    { key: 'bitter', label: t('ck.f_bitter') },
+    { key: 'strong', label: t('ck.f_strong') },
   ];
   return `
     <div class="share-cocktail">
@@ -222,15 +222,15 @@ function renderCocktail(r) {
           </div>`).join('')}
       </div>
       <div class="share-section">
-        <div class="share-label">材料</div>
+        <div class="share-label">${t('sh.ingredients')}</div>
         <ul class="share-ings">${(r.ingredients || []).map(i => `<li><span>${i.name}</span><span>${i.amount}</span></li>`).join('')}</ul>
       </div>
       <div class="share-section">
-        <div class="share-label">調製步驟</div>
+        <div class="share-label">${t('sh.steps')}</div>
         <ol class="share-steps">${(r.steps || []).map(s => `<li>${s}</li>`).join('')}</ol>
       </div>
       <div class="share-section">
-        <div class="share-label">裝飾</div>
+        <div class="share-label">${t('sh.garnish')}</div>
         <div>${r.garnish || ''}</div>
       </div>
     </div>

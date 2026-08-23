@@ -127,27 +127,27 @@ const cherryMat = new THREE.MeshPhysicalMaterial({
 const drink = new THREE.Group();
 scene.add(drink);
 const parts = [];
-function addPart(mesh, { home, apart, label, spec }) {
-  mesh.userData = { home: new THREE.Vector3(...home), apart: new THREE.Vector3(...apart), label, spec };
+function addPart(mesh, { home, apart, labelKey, specKey }) {
+  mesh.userData = { home: new THREE.Vector3(...home), apart: new THREE.Vector3(...apart), labelKey, specKey };
   drink.add(mesh);
   parts.push(mesh);
   return mesh;
 }
 
 const bowl = addPart(new THREE.Mesh(lathe(BOWL_OUT.concat(BOWL_IN)), glassMat),
-  { home: [0, 0, 0], apart: [0, 6.2, 0], label: '杯體', spec: 'Coupe · 210ml' });
+  { home: [0, 0, 0], apart: [0, 6.2, 0], labelKey: 'sc.pl_bowl', specKey: 'sc.ps_bowl' });
 const liquid = addPart(new THREE.Mesh(paintLiquid(liquidProfile(0.001)), liquidMat),
-  { home: [0, 0, 0], apart: [0, 2.4, 0], label: '酒液', spec: '基酒 45ml · 利口酒 15ml' });
+  { home: [0, 0, 0], apart: [0, 2.4, 0], labelKey: 'sc.pl_liquid', specKey: 'sc.ps_liquid' });
 const ice = addPart(new THREE.Mesh(new THREE.IcosahedronGeometry(0.92, 1), iceMat),
-  { home: [0.7, 5.5, 0.35], apart: [0, -1.6, 0], label: '冰', spec: '單顆大冰 · 緩融' });
+  { home: [0.7, 5.5, 0.35], apart: [0, -1.6, 0], labelKey: 'sc.pl_ice', specKey: 'sc.ps_ice' });
 const citrus = addPart(new THREE.Mesh(new THREE.CylinderGeometry(1.25, 1.25, 0.08, 48), citrusMat),
-  { home: [-1.5, 6.4, 0.9], apart: [0, -4.4, 0], label: '柑橘', spec: '檸檬皮油 · 表面噴附' });
+  { home: [-1.5, 6.4, 0.9], apart: [0, -4.4, 0], labelKey: 'sc.pl_citrus', specKey: 'sc.ps_citrus' });
 const cherry = addPart(new THREE.Mesh(new THREE.SphereGeometry(0.42, 32, 24), cherryMat),
-  { home: [1.6, 6.6, -0.7], apart: [0, -6.8, 0], label: '裝飾', spec: '酒漬櫻桃' });
+  { home: [1.6, 6.6, -0.7], apart: [0, -6.8, 0], labelKey: 'sc.pl_cherry', specKey: 'sc.ps_cherry' });
 const stem = addPart(new THREE.Mesh(lathe(STEM), glassMat),
-  { home: [0, 0, 0], apart: [0, -9.4, 0], label: '杯腳', spec: '手工拉製' });
+  { home: [0, 0, 0], apart: [0, -9.4, 0], labelKey: 'sc.pl_stem', specKey: 'sc.ps_stem' });
 const foot = addPart(new THREE.Mesh(lathe(FOOT), glassMat),
-  { home: [0, 0, 0], apart: [0, -12.2, 0], label: '底座', spec: 'Ø 54mm' });
+  { home: [0, 0, 0], apart: [0, -12.2, 0], labelKey: 'sc.pl_foot', specKey: 'sc.ps_foot' });
 
 citrus.rotation.z = 0.5;
 step();
@@ -436,7 +436,7 @@ readScroll();
 const labels = parts.map(m => {
   const el = document.createElement('div');
   el.className = 'part-label';
-  el.innerHTML = `<span class="pl-dot"></span><span class="pl-text"><b>${m.userData.label}</b>${m.userData.spec}</span>`;
+  el.innerHTML = `<span class="pl-dot"></span><span class="pl-text"><b>${t(m.userData.labelKey)}</b>${t(m.userData.specKey)}</span>`;
   labelLayer.appendChild(el);
   return el;
 });
@@ -547,3 +547,11 @@ const io = new IntersectionObserver(
   { threshold: 0.3 }
 );
 document.querySelectorAll('.act').forEach(el => io.observe(el));
+
+// 切換語言時，重寫已建立的零件標籤
+window.addEventListener('pourmatch:langchange', () => {
+  parts.forEach((m, i) => {
+    labels[i].innerHTML =
+      `<span class="pl-dot"></span><span class="pl-text"><b>${t(m.userData.labelKey)}</b>${t(m.userData.specKey)}</span>`;
+  });
+});
