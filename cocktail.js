@@ -161,7 +161,7 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
   const advanced = buildAdvancedPayload();
   if (state.base_spirit.length === 0 && state.flavors.length === 0 && !state.mood
       && !state.free_text && !advanced) {
-    alert('至少選擇一項偏好，或在自由文字欄留言');
+    alert(t('ck.need_input'));
     return;
   }
 
@@ -169,12 +169,7 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
   const loading = document.getElementById('loadingScreen');
   loading.style.display = 'block';
 
-  const tips = [
-    '融合風味的分子...',
-    '平衡甜酸苦的比例...',
-    '尋找靈感故事...',
-    '雕琢最後一滴...',
-  ];
+  const tips = [t('ck.tip1'), t('ck.tip2'), t('ck.tip3'), t('ck.tip4')];
   let tipIdx = 0;
   const tipInterval = setInterval(() => {
     tipIdx = (tipIdx + 1) % tips.length;
@@ -195,6 +190,7 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
           free_text: state.free_text,
         },
         advanced,
+        lang: getLang(),
       }),
     });
     const data = await resp.json();
@@ -205,9 +201,9 @@ document.getElementById('generateBtn').addEventListener('click', async () => {
     clearInterval(tipInterval);
     loading.innerHTML = `
       <div style="padding:60px 20px;text-align:center;">
-        <h2 style="color:#FF4D8D;margin-bottom:12px;">生成失敗 😢</h2>
+        <h2 style="color:#FF4D8D;margin-bottom:12px;">${t('ck.failed')}</h2>
         <p style="color:var(--text-dim);margin-bottom:24px;">${err.message}</p>
-        <button class="btn-primary" onclick="location.reload()">重試</button>
+        <button class="btn-primary" onclick="location.reload()">${t('common.retry')}</button>
       </div>
     `;
   }
@@ -234,10 +230,10 @@ function renderCocktail(data) {
   // 風味條
   const fp = data.flavor_profile || {};
   const flavorMap = [
-    { key: 'sweet', label: '甜' },
-    { key: 'sour', label: '酸' },
-    { key: 'bitter', label: '苦' },
-    { key: 'strong', label: '烈' },
+    { key: 'sweet', label: t('ck.f_sweet') },
+    { key: 'sour', label: t('ck.f_sour') },
+    { key: 'bitter', label: t('ck.f_bitter') },
+    { key: 'strong', label: t('ck.f_strong') },
   ];
   document.getElementById('flavorBars').innerHTML = flavorMap.map((f, i) => `
     <div class="flavor-bar">
@@ -277,10 +273,10 @@ function renderAdvancedResult(data) {
   if (!wrap) return;
 
   const specs = [
-    { label: '技法', value: data.technique },
-    { label: '難度', value: data.difficulty },
-    { label: '製作時間', value: data.prep_time },
-    { label: '推估酒精濃度', value: data.abv_estimate },
+    { label: t('ck.spec_technique'), value: data.technique },
+    { label: t('ck.spec_difficulty'), value: data.difficulty },
+    { label: t('ck.spec_time'), value: data.prep_time },
+    { label: t('ck.spec_abv'), value: data.abv_estimate },
   ].filter(s => s.value);
 
   const proTips = data.pro_tips || [];
@@ -341,11 +337,11 @@ function injectPublishRow(type, historyId) {
             <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
           </svg>
         </div>
-        <div class="publish-lock-title">登入後即可發布到社群</div>
-        <div class="publish-lock-sub">用 Google 一鍵登入 · 登入完成會自動回到這個結果頁<br/>讓其他酒友嘗試你的 AI 獨家配方</div>
+        <div class="publish-lock-title">${t('pub.locked_title')}</div>
+        <div class="publish-lock-sub">${t('pub.locked_sub_cocktail')}</div>
         <button class="btn-publish-hero btn-publish-login">
           <span class="bp-spark"></span>
-          <span class="bp-text">🚀 登入並發布到社群</span>
+          <span class="bp-text">${t('pub.login_publish')}</span>
         </button>
       </div>
     `;
@@ -371,14 +367,14 @@ function injectPublishRow(type, historyId) {
         </svg>
       </div>
       <div>
-        <div class="publish-title">把這杯獨家調酒發布到社群</div>
-        <div class="publish-sub">讓其他酒友嘗試你的 AI 配方 · 收集按讚與留言</div>
+        <div class="publish-title">${t('pub.title_cocktail')}</div>
+        <div class="publish-sub">${t('pub.sub_cocktail')}</div>
       </div>
     </div>
-    <textarea class="publish-caption" maxlength="280" placeholder="想對其他酒友說什麼？（選填）"></textarea>
+    <textarea class="publish-caption" maxlength="280" placeholder="${t('pub.caption_ph')}"></textarea>
     <button class="btn-publish-hero">
       <span class="bp-spark"></span>
-      <span class="bp-text">📢 發布到 PourMatch 社群</span>
+      <span class="bp-text">${t('pub.publish')}</span>
     </button>
   `;
   insertPublishCard(container, card);
@@ -387,7 +383,7 @@ function injectPublishRow(type, historyId) {
     const caption = card.querySelector('.publish-caption').value;
     const btn = card.querySelector('.btn-publish-hero');
     btn.disabled = true;
-    btn.querySelector('.bp-text').textContent = '發布中…';
+    btn.querySelector('.bp-text').textContent = t('pub.publishing');
 
     let hid = historyId;
     try {
@@ -404,26 +400,26 @@ function injectPublishRow(type, historyId) {
         hid = sd.history_id;
         if (hid && lastCocktailData) lastCocktailData.history_id = hid;
       }
-      if (!hid) throw new Error('無法儲存結果');
+      if (!hid) throw new Error(t('pub.save_failed'));
 
       const r = await fetch('/api/posts', {
         method: 'POST', credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type, history_id: hid, caption }),
       });
-      if (r.status === 401) throw new Error('請先登入才能發布');
+      if (r.status === 401) throw new Error(t('pub.need_login'));
       const data = await r.json();
       if (data.id) {
-        btn.querySelector('.bp-text').textContent = '✅ 已發布！前往社群查看 →';
+        btn.querySelector('.bp-text').textContent = t('pub.published');
         btn.onclick = () => location.href = 'community.html';
         btn.disabled = false;
       } else {
-        throw new Error(data.error || '發布失敗');
+        throw new Error(data.error || t('pub.publish_failed'));
       }
     } catch (err) {
       alert(err.message);
       btn.disabled = false;
-      btn.querySelector('.bp-text').textContent = '📢 發布到 PourMatch 社群';
+      btn.querySelector('.bp-text').textContent = t('pub.publish');
     }
   };
 }

@@ -63,90 +63,90 @@
       <div class="cocktail-header">
         <div class="cocktail-badge">
           <span class="dot"></span>
-          <span>AI 客製調酒 · 獨一無二</span>
+          <span data-i18n="ck.badge">AI 客製調酒 · 獨一無二</span>
         </div>
         <h1 class="cocktail-title">
-          <span class="gradient-text">為你</span>
-          <span style="color:var(--text);">調一杯只屬於你的酒</span>
+          <span class="gradient-text" data-i18n="ck.title1">為你</span>
+          <span style="color:var(--text);" data-i18n="ck.title2">調一杯只屬於你的酒</span>
         </h1>
-        <p class="cocktail-sub">告訴 AI 你此刻的心情與偏好，生成世界唯一的專屬配方。</p>
+        <p class="cocktail-sub" data-i18n="ck.sub">告訴 AI 你此刻的心情與偏好，生成世界唯一的專屬配方。</p>
       </div>
 
       <div class="form-card">
         <!-- 基酒 -->
         <div class="form-group">
-          <label class="form-label">偏好基酒</label>
+          <label class="form-label" data-i18n="cl.1">偏好基酒</label>
           <div class="chip-group" data-field="base_spirit" data-multi="true">
-            <button class="chip" data-value="gin">🌲 琴酒</button>
-            <button class="chip" data-value="whiskey">🥃 威士忌</button>
-            <button class="chip" data-value="vodka">🧊 伏特加</button>
-            <button class="chip" data-value="rum">🏝️ 蘭姆酒</button>
-            <button class="chip" data-value="tequila">🌵 龍舌蘭</button>
-            <button class="chip" data-value="brandy">🍇 白蘭地</button>
-            <button class="chip" data-value="sake">🎋 清酒</button>
-            <button class="chip" data-value="surprise">🎁 驚喜我</button>
+            <button class="chip" data-value="gin" data-i18n="c.base_spirit.gin">🌲 琴酒</button>
+            <button class="chip" data-value="whiskey" data-i18n="c.base_spirit.whiskey">🥃 威士忌</button>
+            <button class="chip" data-value="vodka" data-i18n="c.base_spirit.vodka">🧊 伏特加</button>
+            <button class="chip" data-value="rum" data-i18n="c.base_spirit.rum">🏝️ 蘭姆酒</button>
+            <button class="chip" data-value="tequila" data-i18n="c.base_spirit.tequila">🌵 龍舌蘭</button>
+            <button class="chip" data-value="brandy" data-i18n="c.base_spirit.brandy">🍇 白蘭地</button>
+            <button class="chip" data-value="sake" data-i18n="c.base_spirit.sake">🎋 清酒</button>
+            <button class="chip" data-value="surprise" data-i18n="c.base_spirit.surprise">🎁 驚喜我</button>
           </div>
         </div>
 
         <!-- 風味 -->
         <div class="form-group">
-          <label class="form-label">想要的風味</label>
+          <label class="form-label" data-i18n="cl.2">想要的風味</label>
           <div class="chip-group" data-field="flavors" data-multi="true">
-            <button class="chip" data-value="fruity">🍑 果香</button>
-            <button class="chip" data-value="floral">🌸 花香</button>
-            <button class="chip" data-value="spicy">🌶️ 辛香</button>
-            <button class="chip" data-value="herbal">🌿 草本</button>
-            <button class="chip" data-value="creamy">🥛 奶香</button>
-            <button class="chip" data-value="citrus">🍋 柑橘</button>
-            <button class="chip" data-value="smoky">🔥 煙燻</button>
-            <button class="chip" data-value="chocolate">🍫 可可</button>
+            <button class="chip" data-value="fruity" data-i18n="c.flavors.fruity">🍑 果香</button>
+            <button class="chip" data-value="floral" data-i18n="c.flavors.floral">🌸 花香</button>
+            <button class="chip" data-value="spicy" data-i18n="c.flavors.spicy">🌶️ 辛香</button>
+            <button class="chip" data-value="herbal" data-i18n="c.flavors.herbal">🌿 草本</button>
+            <button class="chip" data-value="creamy" data-i18n="c.flavors.creamy">🥛 奶香</button>
+            <button class="chip" data-value="citrus" data-i18n="c.flavors.citrus">🍋 柑橘</button>
+            <button class="chip" data-value="smoky" data-i18n="c.flavors.smoky">🔥 煙燻</button>
+            <button class="chip" data-value="chocolate" data-i18n="c.flavors.chocolate">🍫 可可</button>
           </div>
         </div>
 
         <!-- 甜度 / 酒精 雙滑桿 -->
         <div class="form-group two-col">
           <div>
-            <label class="form-label">甜度 <span class="val-badge" id="sweetVal">3</span></label>
+            <label class="form-label"><span data-i18n="cl.3">甜度</span> <span class="val-badge" id="sweetVal">3</span></label>
             <input type="range" class="custom-slider" min="1" max="5" value="3" id="sweetSlider" />
-            <div class="slider-hint"><span>乾爽</span><span>甜膩</span></div>
+            <div class="slider-hint"><span data-i18n="ck.sw_dry">乾爽</span><span data-i18n="ck.sw_sweet">甜膩</span></div>
           </div>
           <div>
-            <label class="form-label">酒精強度 <span class="val-badge" id="strongVal">3</span></label>
+            <label class="form-label"><span data-i18n="cl.4">酒精強度</span> <span class="val-badge" id="strongVal">3</span></label>
             <input type="range" class="custom-slider" min="1" max="5" value="3" id="strongSlider" />
-            <div class="slider-hint"><span>微醺</span><span>強勁</span></div>
+            <div class="slider-hint"><span data-i18n="ck.st_light">微醺</span><span data-i18n="ck.st_strong">強勁</span></div>
           </div>
         </div>
 
         <!-- 心情 -->
         <div class="form-group">
-          <label class="form-label">此刻的心情</label>
+          <label class="form-label" data-i18n="cl.5">此刻的心情</label>
           <div class="chip-group" data-field="mood" data-multi="false">
-            <button class="chip" data-value="happy">😄 開心</button>
-            <button class="chip" data-value="chill">😌 放鬆</button>
-            <button class="chip" data-value="romantic">💗 浪漫</button>
-            <button class="chip" data-value="sad">🥲 失落</button>
-            <button class="chip" data-value="wild">🤘 狂野</button>
-            <button class="chip" data-value="focused">🎯 專注</button>
+            <button class="chip" data-value="happy" data-i18n="c.mood.happy">😄 開心</button>
+            <button class="chip" data-value="chill" data-i18n="c.mood.chill">😌 放鬆</button>
+            <button class="chip" data-value="romantic" data-i18n="c.mood.romantic">💗 浪漫</button>
+            <button class="chip" data-value="sad" data-i18n="c.mood.sad">🥲 失落</button>
+            <button class="chip" data-value="wild" data-i18n="c.mood.wild">🤘 狂野</button>
+            <button class="chip" data-value="focused" data-i18n="c.mood.focused">🎯 專注</button>
           </div>
         </div>
 
         <!-- 自由文字 -->
         <div class="form-group">
-          <label class="form-label">想告訴調酒師的話（可選）</label>
-          <textarea class="form-textarea" id="freeText" placeholder="例：今晚失眠，想來一杯像星空一樣的酒..." maxlength="200"></textarea>
+          <label class="form-label" data-i18n="cl.6">想告訴調酒師的話（可選）</label>
+          <textarea class="form-textarea" id="freeText" data-i18n-placeholder="ck.free_ph" placeholder="例：今晚失眠，想來一杯像星空一樣的酒..." maxlength="200"></textarea>
         </div>
 
         <div class="generate-row">
           <button class="btn-primary btn-generate" id="generateBtn">
-            <span>⚡ 生成我的專屬調酒</span>
+            <span data-i18n="ck.generate">⚡ 生成我的專屬調酒</span>
           </button>
           <button class="btn-advanced" id="advancedBtn" type="button">
             <span class="adv-icon">🎛️</span>
-            <span class="adv-label">進階模式</span>
+            <span class="adv-label" data-i18n="ck.advanced">進階模式</span>
             <span class="adv-count" id="advCount" hidden>0</span>
           </button>
         </div>
-        <p class="advanced-hint">想要更精準的配方？進階模式有 10 組額外選項，包含技法、杯型、飲食限制與命名風格。</p>
+        <p class="advanced-hint" data-i18n="ck.adv_hint">想要更精準的配方？進階模式有 10 組額外選項，包含技法、杯型、飲食限制與命名風格。</p>
       </div>
     </div>
 
@@ -158,8 +158,8 @@
         <div class="core-ring r3"></div>
         <div class="core-center">🍹</div>
       </div>
-      <h2 class="loading-title gradient-text">調配中</h2>
-      <p class="loading-sub" id="loadingSub">融合風味的分子...</p>
+      <h2 class="loading-title gradient-text" data-i18n="ck.loading">調配中</h2>
+      <p class="loading-sub" id="loadingSub" data-i18n="ck.tip1">融合風味的分子...</p>
     </div>
 
     <!-- 結果：調酒卡 -->
@@ -202,20 +202,20 @@
       </div>
 
       <div class="result-story-card">
-        <div class="story-label">故事</div>
+        <div class="story-label" data-i18n="ck.story">故事</div>
         <div class="story-text" id="cockStory"></div>
       </div>
 
       <div class="recipe-grid">
         <div class="recipe-card">
-          <div class="recipe-header">📋 材料</div>
+          <div class="recipe-header" data-i18n="ck.ingredients">📋 材料</div>
           <ul class="ingredients" id="ingredientList"></ul>
         </div>
         <div class="recipe-card">
-          <div class="recipe-header">🥄 調製步驟</div>
+          <div class="recipe-header" data-i18n="ck.steps">🥄 調製步驟</div>
           <ol class="steps-list" id="stepsList"></ol>
           <div class="garnish-row">
-            <span class="garnish-label">裝飾</span>
+            <span class="garnish-label" data-i18n="ck.garnish">裝飾</span>
             <span id="garnishText"></span>
           </div>
         </div>
@@ -223,25 +223,25 @@
 
       <!-- 進階模式才會出現的額外內容 -->
       <div class="adv-result" id="advResult" hidden>
-        <div class="adv-result-badge">🎛️ 進階模式產出</div>
+        <div class="adv-result-badge" data-i18n="ck.adv_badge">🎛️ 進階模式產出</div>
         <div class="adv-spec-grid" id="advSpecGrid"></div>
         <div class="adv-extra" id="advProTips" hidden>
-          <div class="adv-extra-title">🎯 調製要訣</div>
+          <div class="adv-extra-title" data-i18n="ck.pro_tips">🎯 調製要訣</div>
           <ul class="adv-extra-list" id="proTipsList"></ul>
         </div>
         <div class="adv-extra" id="advVariations" hidden>
-          <div class="adv-extra-title">🔀 變化版本</div>
+          <div class="adv-extra-title" data-i18n="ck.variations">🔀 變化版本</div>
           <ul class="adv-extra-list" id="variationsList"></ul>
         </div>
         <div class="adv-extra" id="advMocktail" hidden>
-          <div class="adv-extra-title">🚫🍸 無酒精版本</div>
+          <div class="adv-extra-title" data-i18n="ck.mocktail">🚫🍸 無酒精版本</div>
           <p class="adv-extra-text" id="mocktailText"></p>
         </div>
       </div>
 
       <div class="result-actions">
-        <button class="btn-primary" onclick="location.reload()">再生成一杯</button>
-        <a href="quiz.html" class="btn-ghost">做品味測驗 →</a>
+        <button class="btn-primary" onclick="location.reload()" data-i18n="ck.again">再生成一杯</button>
+        <a href="quiz.html" class="btn-ghost" data-i18n="ck.try_quiz">做品味測驗 →</a>
       </div>
     </div>
   </main>
@@ -251,141 +251,141 @@
       <div class="adv-panel" role="dialog" aria-modal="true" aria-labelledby="advTitle">
         <div class="adv-head">
           <div>
-            <h2 class="adv-title gradient-text" id="advTitle">進階模式</h2>
-            <p class="adv-sub">選越多，AI 越知道你要什麼。全部都可以留空。</p>
+            <h2 class="adv-title gradient-text" id="advTitle" data-i18n="ck.advanced">進階模式</h2>
+            <p class="adv-sub" data-i18n="ck.adv_sub">選越多，AI 越知道你要什麼。全部都可以留空。</p>
           </div>
           <button class="adv-close" id="advClose" type="button" aria-label="關閉">✕</button>
         </div>
 
         <div class="adv-body">
           <div class="form-group">
-            <label class="form-label">口感質地</label>
+            <label class="form-label" data-i18n="cl.7">口感質地</label>
             <div class="chip-group" data-field="adv_texture" data-multi="true">
-              <button class="chip" data-value="sparkling">🫧 氣泡感</button>
-              <button class="chip" data-value="silky">🥛 絲滑</button>
-              <button class="chip" data-value="crisp">❄️ 清爽俐落</button>
-              <button class="chip" data-value="viscous">🍯 濃稠掛杯</button>
-              <button class="chip" data-value="frozen">🧊 冰沙質地</button>
-              <button class="chip" data-value="foamy">☁️ 綿密泡沫</button>
+              <button class="chip" data-value="sparkling" data-i18n="c.adv_texture.sparkling">🫧 氣泡感</button>
+              <button class="chip" data-value="silky" data-i18n="c.adv_texture.silky">🥛 絲滑</button>
+              <button class="chip" data-value="crisp" data-i18n="c.adv_texture.crisp">❄️ 清爽俐落</button>
+              <button class="chip" data-value="viscous" data-i18n="c.adv_texture.viscous">🍯 濃稠掛杯</button>
+              <button class="chip" data-value="frozen" data-i18n="c.adv_texture.frozen">🧊 冰沙質地</button>
+              <button class="chip" data-value="foamy" data-i18n="c.adv_texture.foamy">☁️ 綿密泡沫</button>
             </div>
           </div>
 
           <div class="form-group two-col">
             <div>
-              <label class="form-label">酸度 <span class="val-badge" id="sourVal">3</span></label>
+              <label class="form-label"><span data-i18n="cl.8">酸度</span> <span class="val-badge" id="sourVal">3</span></label>
               <input type="range" class="custom-slider" min="1" max="5" value="3" id="sourSlider" />
-              <div class="slider-hint"><span>圓潤</span><span>銳利</span></div>
+              <div class="slider-hint"><span data-i18n="ck.so_round">圓潤</span><span data-i18n="ck.so_sharp">銳利</span></div>
             </div>
             <div>
-              <label class="form-label">苦韻 <span class="val-badge" id="bitterVal">3</span></label>
+              <label class="form-label"><span data-i18n="cl.9">苦韻</span> <span class="val-badge" id="bitterVal">3</span></label>
               <input type="range" class="custom-slider" min="1" max="5" value="3" id="bitterSlider" />
-              <div class="slider-hint"><span>不要苦</span><span>苦得過癮</span></div>
+              <div class="slider-hint"><span data-i18n="ck.bi_none">不要苦</span><span data-i18n="ck.bi_much">苦得過癮</span></div>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">冰與溫度</label>
+            <label class="form-label" data-i18n="cl.10">冰與溫度</label>
             <div class="chip-group" data-field="adv_ice" data-multi="false">
-              <button class="chip" data-value="big_rock">🧊 大冰球慢融</button>
-              <button class="chip" data-value="crushed">🍧 碎冰</button>
-              <button class="chip" data-value="up">🍸 無冰冰鎮</button>
-              <button class="chip" data-value="hot">☕ 溫熱飲</button>
+              <button class="chip" data-value="big_rock" data-i18n="c.adv_ice.big_rock">🧊 大冰球慢融</button>
+              <button class="chip" data-value="crushed" data-i18n="c.adv_ice.crushed">🍧 碎冰</button>
+              <button class="chip" data-value="up" data-i18n="c.adv_ice.up">🍸 無冰冰鎮</button>
+              <button class="chip" data-value="hot" data-i18n="c.adv_ice.hot">☕ 溫熱飲</button>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">杯型</label>
+            <label class="form-label" data-i18n="cl.11">杯型</label>
             <div class="chip-group" data-field="adv_glass" data-multi="false">
-              <button class="chip" data-value="coupe">🥂 淺碟香檳杯</button>
-              <button class="chip" data-value="rocks">🥃 古典杯</button>
-              <button class="chip" data-value="highball">🥤 高球杯</button>
-              <button class="chip" data-value="martini">🍸 馬丁尼杯</button>
-              <button class="chip" data-value="copper">🍺 銅杯</button>
-              <button class="chip" data-value="any">🎲 交給 AI</button>
+              <button class="chip" data-value="coupe" data-i18n="c.adv_glass.coupe">🥂 淺碟香檳杯</button>
+              <button class="chip" data-value="rocks" data-i18n="c.adv_glass.rocks">🥃 古典杯</button>
+              <button class="chip" data-value="highball" data-i18n="c.adv_glass.highball">🥤 高球杯</button>
+              <button class="chip" data-value="martini" data-i18n="c.adv_glass.martini">🍸 馬丁尼杯</button>
+              <button class="chip" data-value="copper" data-i18n="c.adv_glass.copper">🍺 銅杯</button>
+              <button class="chip" data-value="any" data-i18n="c.adv_glass.any">🎲 交給 AI</button>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">配方複雜度</label>
+            <label class="form-label" data-i18n="cl.12">配方複雜度</label>
             <div class="chip-group" data-field="adv_complexity" data-multi="false">
-              <button class="chip" data-value="simple">🌱 3 種材料以內</button>
-              <button class="chip" data-value="medium">⚖️ 4-6 種材料</button>
-              <button class="chip" data-value="complex">🎩 不限制，盡情發揮</button>
+              <button class="chip" data-value="simple" data-i18n="c.adv_complexity.simple">🌱 3 種材料以內</button>
+              <button class="chip" data-value="medium" data-i18n="c.adv_complexity.medium">⚖️ 4-6 種材料</button>
+              <button class="chip" data-value="complex" data-i18n="c.adv_complexity.complex">🎩 不限制，盡情發揮</button>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">調製技法</label>
+            <label class="form-label" data-i18n="cl.13">調製技法</label>
             <div class="chip-group" data-field="adv_technique" data-multi="true">
-              <button class="chip" data-value="shake">🫱 搖盪</button>
-              <button class="chip" data-value="stir">🥄 攪拌</button>
-              <button class="chip" data-value="build">🧱 直調</button>
-              <button class="chip" data-value="infuse">🫖 浸漬</button>
-              <button class="chip" data-value="smoke">💨 煙燻</button>
-              <button class="chip" data-value="clarify">💧 澄清</button>
-              <button class="chip" data-value="fat_wash">🧈 油洗</button>
+              <button class="chip" data-value="shake" data-i18n="c.adv_technique.shake">🫱 搖盪</button>
+              <button class="chip" data-value="stir" data-i18n="c.adv_technique.stir">🥄 攪拌</button>
+              <button class="chip" data-value="build" data-i18n="c.adv_technique.build">🧱 直調</button>
+              <button class="chip" data-value="infuse" data-i18n="c.adv_technique.infuse">🫖 浸漬</button>
+              <button class="chip" data-value="smoke" data-i18n="c.adv_technique.smoke">💨 煙燻</button>
+              <button class="chip" data-value="clarify" data-i18n="c.adv_technique.clarify">💧 澄清</button>
+              <button class="chip" data-value="fat_wash" data-i18n="c.adv_technique.fat_wash">🧈 油洗</button>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">靈感來源</label>
+            <label class="form-label" data-i18n="cl.14">靈感來源</label>
             <div class="chip-group" data-field="adv_inspiration" data-multi="false">
-              <button class="chip" data-value="city">🌆 某個城市</button>
-              <button class="chip" data-value="season">🍂 某個季節</button>
-              <button class="chip" data-value="movie">🎬 電影場景</button>
-              <button class="chip" data-value="music">🎵 音樂類型</button>
-              <button class="chip" data-value="nature">🏔️ 自然風景</button>
-              <button class="chip" data-value="memory">📻 一段回憶</button>
+              <button class="chip" data-value="city" data-i18n="c.adv_inspiration.city">🌆 某個城市</button>
+              <button class="chip" data-value="season" data-i18n="c.adv_inspiration.season">🍂 某個季節</button>
+              <button class="chip" data-value="movie" data-i18n="c.adv_inspiration.movie">🎬 電影場景</button>
+              <button class="chip" data-value="music" data-i18n="c.adv_inspiration.music">🎵 音樂類型</button>
+              <button class="chip" data-value="nature" data-i18n="c.adv_inspiration.nature">🏔️ 自然風景</button>
+              <button class="chip" data-value="memory" data-i18n="c.adv_inspiration.memory">📻 一段回憶</button>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">酒液顏色</label>
+            <label class="form-label" data-i18n="cl.15">酒液顏色</label>
             <div class="chip-group" data-field="adv_color" data-multi="false">
-              <button class="chip" data-value="clear">💎 透明澄澈</button>
-              <button class="chip" data-value="gold">🌟 金黃琥珀</button>
-              <button class="chip" data-value="red">❤️ 緋紅</button>
-              <button class="chip" data-value="green">🌿 翠綠</button>
-              <button class="chip" data-value="blue">💙 深藍</button>
-              <button class="chip" data-value="milky">🥛 乳白</button>
-              <button class="chip" data-value="dark">🖤 暗夜黑</button>
+              <button class="chip" data-value="clear" data-i18n="c.adv_color.clear">💎 透明澄澈</button>
+              <button class="chip" data-value="gold" data-i18n="c.adv_color.gold">🌟 金黃琥珀</button>
+              <button class="chip" data-value="red" data-i18n="c.adv_color.red">❤️ 緋紅</button>
+              <button class="chip" data-value="green" data-i18n="c.adv_color.green">🌿 翠綠</button>
+              <button class="chip" data-value="blue" data-i18n="c.adv_color.blue">💙 深藍</button>
+              <button class="chip" data-value="milky" data-i18n="c.adv_color.milky">🥛 乳白</button>
+              <button class="chip" data-value="dark" data-i18n="c.adv_color.dark">🖤 暗夜黑</button>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">飲食與材料限制</label>
+            <label class="form-label" data-i18n="cl.16">飲食與材料限制</label>
             <div class="chip-group" data-field="adv_diet" data-multi="true">
-              <button class="chip" data-value="mocktail">🚫🍸 要無酒精版本</button>
-              <button class="chip" data-value="low_cal">🥗 低糖低卡</button>
-              <button class="chip" data-value="no_dairy">🥛❌ 不含乳製品</button>
-              <button class="chip" data-value="no_egg">🥚❌ 不含蛋</button>
-              <button class="chip" data-value="vegan">🌱 全素可用</button>
-              <button class="chip" data-value="common">🏠 只用常見材料</button>
+              <button class="chip" data-value="mocktail" data-i18n="c.adv_diet.mocktail">🚫🍸 要無酒精版本</button>
+              <button class="chip" data-value="low_cal" data-i18n="c.adv_diet.low_cal">🥗 低糖低卡</button>
+              <button class="chip" data-value="no_dairy" data-i18n="c.adv_diet.no_dairy">🥛❌ 不含乳製品</button>
+              <button class="chip" data-value="no_egg" data-i18n="c.adv_diet.no_egg">🥚❌ 不含蛋</button>
+              <button class="chip" data-value="vegan" data-i18n="c.adv_diet.vegan">🌱 全素可用</button>
+              <button class="chip" data-value="common" data-i18n="c.adv_diet.common">🏠 只用常見材料</button>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">命名風格</label>
+            <label class="form-label" data-i18n="cl.17">命名風格</label>
             <div class="chip-group" data-field="adv_naming" data-multi="false">
-              <button class="chip" data-value="poetic">🌙 詩意抽象</button>
-              <button class="chip" data-value="humor">😆 幽默有梗</button>
-              <button class="chip" data-value="classic">🏛️ 古典中文</button>
-              <button class="chip" data-value="english">🔤 英文命名</button>
+              <button class="chip" data-value="poetic" data-i18n="c.adv_naming.poetic">🌙 詩意抽象</button>
+              <button class="chip" data-value="humor" data-i18n="c.adv_naming.humor">😆 幽默有梗</button>
+              <button class="chip" data-value="classic" data-i18n="c.adv_naming.classic">🏛️ 古典中文</button>
+              <button class="chip" data-value="english" data-i18n="c.adv_naming.english">🔤 英文命名</button>
             </div>
           </div>
         </div>
 
         <div class="adv-foot">
-          <button class="btn-ghost adv-reset" id="advReset" type="button">清除進階設定</button>
-          <button class="btn-primary adv-done" id="advDone" type="button">完成，回到生成</button>
+          <button class="btn-ghost adv-reset" id="advReset" type="button" data-i18n="ck.adv_reset">清除進階設定</button>
+          <button class="btn-primary adv-done" id="advDone" type="button" data-i18n="ck.adv_done">完成，回到生成</button>
         </div>
       </div>
     </div>
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="i18n.js?v=2"></script>
+  <script src="i18n.js?v=3"></script>
   <script src="particles.js?v=10"></script>
   <script src="auth.js?v=11"></script>
-  <script src="cocktail.js?v=11"></script>
+  <script src="cocktail.js?v=12"></script>
 </body>
 </html>
