@@ -1,0 +1,71 @@
+/* ===== 載入時背景被酒液填滿（測驗與調酒共用）===== */
+/* 沒有真正的進度可用（AI 要多久無法預知），所以用一條先快後慢的曲線，
+   逼近但永遠不到頂 —— 看起來像在推進，又不會提早「做完」卻還在等。 */
+.shake-flood {
+  position: fixed;
+  left: -5vw;
+  right: -5vw;
+  bottom: 0;
+  height: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg,
+      #FFC46B 0%,
+      #FF8A5B 18%,
+      #FF4D8D 48%,
+      #A05CFF 78%,
+      #7B5CFF 100%);
+  box-shadow: 0 -18px 60px rgba(255, 77, 141, 0.45);
+  animation: floodRise 22s cubic-bezier(0.14, 0.72, 0.2, 1) forwards;
+  will-change: height;
+}
+@keyframes floodRise {
+  from { height: 0; }
+  to   { height: 88vh; }
+}
+
+/* 液面波浪，跟過場用同一組視覺語彙 */
+.shake-wave {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: 200%;
+  height: 70px;
+  fill: #FFC46B;
+  animation: waveSlide 3.2s linear infinite;
+}
+.shake-wave.w2 {
+  fill: #FF8A5B;
+  opacity: 0.55;
+  height: 52px;
+  animation-duration: 4.4s;
+  animation-direction: reverse;
+}
+
+/* 酒液不透明之後，漸層文字會直接消失在同色的背景裡，
+   所以載入畫面的標題改成實心白字，配暖光暈與暗邊，兩種底色都撐得住。 */
+.loading-screen .loading-title {
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  color: #FFF6E6;
+  text-shadow:
+    0 2px 24px rgba(255, 181, 71, 0.75),
+    0 1px 4px rgba(70, 24, 12, 0.7);
+}
+.loading-screen .loading-sub {
+  color: #FFF0DC;
+  text-shadow: 0 1px 4px rgba(70, 24, 12, 0.65);
+}
+
+/* 載入畫面的內容要在酒液之上 */
+.loading-screen { position: relative; z-index: 1; }
+.loading-screen .shaker-stage,
+.loading-screen .loading-title,
+.loading-screen .loading-sub { position: relative; z-index: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .shake-flood { animation: none; height: 30vh; }
+  .shake-wave { animation: none; }
+}
