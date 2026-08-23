@@ -117,6 +117,7 @@ function renderAuthUI() {
     btn.style.position = btn.style.position || 'relative';
 
     const overlay = document.createElement('div');
+    overlay.className = 'gsi-overlay';
     overlay.style.cssText = `
       position: absolute;
       inset: 0;
@@ -134,6 +135,7 @@ function renderAuthUI() {
         theme: 'filled_black',
         size: 'large',
         width: Math.max(200, Math.round(rect.width)),
+        locale: (window.getLang && getLang() === 'zh') ? 'zh_TW' : 'en',
       });
       return true;
     };
@@ -259,6 +261,12 @@ window.addEventListener('load', () => {
       client_id: GOOGLE_CLIENT_ID,
       callback: handleCredentialResponse,
       auto_select: false,
+    });
+    // 切換語言時重繪 Google 按鈕，否則它會停在初次渲染時的語系
+    window.addEventListener('pourmatch:langchange', () => {
+      document.querySelectorAll('.btn-login').forEach(b => { delete b.dataset.gsiReady; });
+      document.querySelectorAll('.gsi-overlay').forEach(o => o.remove());
+      renderAuthUI();
     });
   }
   fetchMe();
