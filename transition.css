@@ -124,7 +124,9 @@ html.pour-arriving::before {
 }
 .pour-overlay.active .pour-scene { opacity: 1; transform: none; }
 
-.pour-glass { width: min(160px, 34vw); filter: drop-shadow(0 12px 40px rgba(255, 77, 141, 0.5)); }
+.pour-glass { width: min(250px, 56vw); filter: drop-shadow(0 12px 40px rgba(255, 77, 141, 0.45)); }
+.pour-glass .pg-bottle { filter: drop-shadow(0 8px 18px rgba(0, 0, 0, .45)); }
+.pour-glass .pg-stream-hi { opacity: .8; }
 .pour-glass .pg-liquid { filter: drop-shadow(0 0 6px rgba(255, 120, 150, .35)); }
 
 .pour-glass .pg-stream { opacity: .95; filter: blur(.3px) drop-shadow(0 0 5px rgba(255, 240, 210, .75)); }
@@ -135,10 +137,12 @@ html.pour-arriving::before {
 .pour-glass .pg-drop.d1 { --dx: -7px; animation-delay: 0s; }
 .pour-glass .pg-drop.d2 { --dx: 6px;  animation-delay: .14s; }
 .pour-glass .pg-drop.d3 { --dx: -2px; animation-delay: .27s; }
+.pour-glass .pg-drop.d4 { --dx: 10px; animation-delay: .35s; }
+.pour-glass .pg-drop.d5 { --dx: -11px; animation-delay: .2s; }
 @keyframes pgDrop {
   0%   { transform: translate(0, 0) scale(.4); opacity: 0; }
   25%  { opacity: .95; }
-  100% { transform: translate(var(--dx), -9px) scale(.15); opacity: 0; }
+  100% { transform: translate(var(--dx), -12px) scale(.15); opacity: 0; }
 }
 
 .pour-word {
