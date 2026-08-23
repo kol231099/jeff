@@ -1,13 +1,23 @@
 /* ===== 酒液的共用色彩 ===== */
 :root {
+  /* 錨點就是原本那五個顏色，中間各插一個算出來的中間色。
+     這樣色階變密、不會有帶狀分佈，但整體看起來跟原版一樣飽和 ——
+     之前把「精緻」做成「調淡」，酒液變粉嫩，層次反而沒了。 */
   --drink-ramp: linear-gradient(180deg,
-    #FFE0B0 0%, #FFC97F 9%, #FFAE72 20%, #FF8F73 32%, #FF6E88 45%,
-    #F2559B 57%, #C95BC4 70%, #9B5AE0 84%, #7A54D6 100%);
+    #FFC46B 0%,
+    #FFA763 9%,
+    #FF8A5B 18%,
+    #FF6B74 33%,
+    #FF4D8D 48%,
+    #CF54C6 63%,
+    #A05CFF 78%,
+    #8D5CFF 89%,
+    #7B5CFF 100%);
   --drink-light: radial-gradient(ellipse 78% 46% at 50% -6%,
     rgba(255, 246, 224, 0.42), rgba(255, 246, 224, 0) 68%);
   --drink-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-  --drink-top: #FFE0B0;
-  --drink-top-2: #FFAE72;
+  --drink-top: #FFC46B;
+  --drink-top-2: #FF8A5B;
 }
 
 /* 顆粒：打散大面積漸層的帶狀分佈 */
@@ -32,7 +42,7 @@ html.pour-arriving::before {
   position: fixed;
   inset: 0;
   z-index: 9998;
-  background-image: var(--drink-light), var(--drink-ramp);
+  background-image: var(--drink-ramp);
 }
 
 /* 兩段式：離開頁面時酒液漲滿畫面，抵達新頁面後退去。
@@ -67,8 +77,8 @@ html.pour-arriving::before {
   right: -5vw;
   bottom: 0;
   height: 0;
-  background-image: var(--drink-light), var(--drink-ramp);
-  box-shadow: 0 -18px 60px rgba(255, 110, 136, 0.4);
+  background-image: var(--drink-ramp);
+  box-shadow: 0 -18px 60px rgba(255, 77, 141, 0.45);
   will-change: height;
 }
 
@@ -85,7 +95,7 @@ html.pour-arriving::before {
 }
 .pour-wave.w2 {
   fill: var(--drink-top-2);
-  opacity: 0.5;
+  opacity: 0.55;
   height: 70px;
   animation-delay: -1.4s;
 }
