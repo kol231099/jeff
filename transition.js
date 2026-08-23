@@ -106,10 +106,15 @@
     liquid.style.height = '0';
   }
 
-  // 換頁：先倒滿，再導向，讓下一頁接著播退場
+  // 換頁：先倒滿，再導向，讓下一頁接著播退場。
+  // 倒酒的這一秒順便把目的地重新抓一次（cache: 'reload'），
+  // 強制更新該網址的快取條目 —— 否則瀏覽器可能拿舊的 HTML，
+  // 使用者就會看到過期的頁面而且無從察覺。
   async function pourTo(url, word) {
     sessionStorage.setItem(FLAG, '1');
+    const warm = fetch(url, { cache: 'reload' }).catch(() => {});
     await pourOut(word);
+    await Promise.race([warm, wait(1200)]);
     location.href = url;
   }
 
