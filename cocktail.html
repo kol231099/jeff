@@ -9,11 +9,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=17" />
-<link rel="stylesheet" href="transition.css?v=5" />
+<link rel="stylesheet" href="transition.css?v=6" />
 <link rel="stylesheet" href="quiz.css?v=15" />
 <link rel="stylesheet" href="cocktail.css?v=11" />
 <link rel="stylesheet" href="swirl.css?v=2" />
-<link rel="stylesheet" href="flood.css?v=2" />
+<link rel="stylesheet" href="flood.css?v=3" />
 <link rel="stylesheet" href="social.css?v=11" />
 <script>
 /* 換頁抵達時，在第一個影格之前就蓋住畫面，避免閃爍。
@@ -164,8 +164,6 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
     <!-- 載入動畫 -->
     <div class="loading-screen" id="loadingScreen" style="display:none;">
       <div class="shake-flood" aria-hidden="true">
-        <svg class="shake-wave" viewBox="0 0 1200 140" preserveAspectRatio="none"><path d="M0,40 C150,90 350,-10 600,40 C850,90 1050,-10 1200,40 L1200,140 L0,140 Z"/></svg>
-        <svg class="shake-wave w2" viewBox="0 0 1200 140" preserveAspectRatio="none"><path d="M0,40 C150,90 350,-10 600,40 C850,90 1050,-10 1200,40 L1200,140 L0,140 Z"/></svg>
       </div>
       <div class="swirl-stage">
         <div class="swirl-glow"></div>
@@ -449,7 +447,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="i18n.js?v=11"></script>
-  <script src="transition.js?v=4"></script>
+  <script src="transition.js?v=5"></script>
   <script src="particles.js?v=10"></script>
   <script src="auth.js?v=13"></script>
   <script src="cocktail.js?v=12"></script>

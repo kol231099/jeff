@@ -1,65 +1,66 @@
-/* ===== 載入時背景被酒液填滿（測驗與調酒共用）===== */
-/* 沒有真正的進度可用（AI 要多久無法預知），所以用一條先快後慢的曲線，
-   逼近但永遠不到頂 —— 看起來像在推進，又不會提早「做完」卻還在等。 */
+/* ===== 載入時背景緩緩浮現（測驗與調酒共用）===== */
+/* 原本是酒液從底部往上長，液面那條邊在次像素下會露縫。
+   改成整片色彩用 opacity 慢慢浮現 —— 沒有邊界要對齊，也更接近「朦朧顯現」。 */
+
 .shake-flood {
   position: fixed;
-  left: -5vw;
-  right: -5vw;
-  bottom: 0;
-  height: 0;
+  inset: 0;
   z-index: 0;
   pointer-events: none;
+  opacity: 0;
   background-image: var(--drink-light), var(--drink-ramp);
-  box-shadow: 0 -18px 60px rgba(255, 110, 136, 0.4);
-  animation: floodRise 22s cubic-bezier(0.14, 0.72, 0.2, 1) forwards;
-  will-change: height;
+  animation: floodFade 5.5s ease-out forwards;
+  will-change: opacity;
 }
-@keyframes floodRise {
-  from { height: 0; }
-  to   { height: 88vh; }
+@keyframes floodFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-/* 液面波浪，跟過場用同一組視覺語彙 */
-.shake-wave {
+/* 中央留一塊較淡的區域，內容才不會被顏色壓過去 */
+.shake-flood::before {
+  content: '';
   position: absolute;
-  bottom: 100%;
-  left: 0;
-  width: 200%;
-  height: 70px;
-  fill: var(--drink-top);
-  animation: waveSlide 3.2s linear infinite;
-}
-.shake-wave.w2 {
-  fill: var(--drink-top-2);
-  opacity: 0.5;
-  height: 52px;
-  animation-duration: 4.4s;
-  animation-direction: reverse;
+  inset: 0;
+  background: radial-gradient(ellipse 52% 44% at 50% 46%,
+    rgba(24, 16, 40, 0.5), rgba(24, 16, 40, 0) 70%);
+  pointer-events: none;
 }
 
-/* 酒液不透明之後，漸層文字會直接消失在同色的背景裡，
-   所以載入畫面的標題改成實心白字，配暖光暈與暗邊，兩種底色都撐得住。 */
+/* 顆粒，打散大面積漸層的帶狀分佈 */
+.shake-flood::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--drink-noise);
+  background-size: 160px 160px;
+  opacity: 0.13;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* 顏色浮上來之後，漸層文字會消失在同色背景裡 */
 .loading-screen .loading-title {
   background: none;
   -webkit-background-clip: initial;
   background-clip: initial;
   color: #FFF6E6;
   text-shadow:
-    0 2px 24px rgba(255, 181, 71, 0.75),
+    0 2px 24px rgba(255, 181, 71, 0.6),
     0 1px 4px rgba(70, 24, 12, 0.7);
 }
 .loading-screen .loading-sub {
   color: #FFF0DC;
-  text-shadow: 0 1px 4px rgba(70, 24, 12, 0.65);
+  text-shadow: 0 1px 4px rgba(70, 24, 12, 0.6);
 }
 
 /* 載入畫面的內容要在酒液之上 */
 .loading-screen { position: relative; z-index: 1; }
 .loading-screen .shaker-stage,
+.loading-screen .swirl-stage,
 .loading-screen .loading-title,
 .loading-screen .loading-sub { position: relative; z-index: 1; }
 
 @media (prefers-reduced-motion: reduce) {
-  .shake-flood { animation: none; height: 30vh; }
-  .shake-wave { animation: none; }
+  .shake-flood { animation: none; opacity: 0.85; }
 }
