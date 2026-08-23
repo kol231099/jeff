@@ -1,136 +1,129 @@
 // ===== 品味測驗邏輯 =====
+// 題目文字全部放在 i18n.js，這裡只留結構；切換語言時重新渲染即可
 const QUESTIONS = [
   {
     id: 'taste',
-    title: '你最受哪種風味吸引？',
     type: 'single',
     options: [
-      { value: 'sweet', emoji: '🍯', label: '甜美豐潤', desc: '蜂蜜、焦糖、熟果' },
-      { value: 'bitter', emoji: '☕', label: '苦韻深沉', desc: '黑咖啡、可可、藥草' },
-      { value: 'smoky', emoji: '🔥', label: '煙燻濃烈', desc: '泥煤、橡木、皮革' },
-      { value: 'fresh', emoji: '🌿', label: '清新草本', desc: '柑橘、薄荷、青草' },
+      { value: 'sweet', emoji: '🍯' },
+      { value: 'bitter', emoji: '☕' },
+      { value: 'smoky', emoji: '🔥' },
+      { value: 'fresh', emoji: '🌿' },
     ],
   },
   {
     id: 'aroma',
-    title: '哪些香氣會讓你想多聞兩下？',
-    subtitle: '可以複選，選越多我們越懂你',
     type: 'multi',
+    hasSubtitle: true,
     options: [
-      { value: 'citrus', emoji: '🍊', label: '柑橘皮油', desc: '檸檬、葡萄柚、橙皮' },
-      { value: 'floral', emoji: '🌸', label: '花香調', desc: '接骨木、玫瑰、洋甘菊' },
-      { value: 'spice', emoji: '🌶️', label: '辛香料', desc: '肉桂、丁香、黑胡椒' },
-      { value: 'wood', emoji: '🪵', label: '木質陳年', desc: '橡木桶、香草、雪茄盒' },
-      { value: 'tropical', emoji: '🥭', label: '熱帶果香', desc: '芒果、百香果、鳳梨' },
-      { value: 'herbal', emoji: '🌿', label: '草本藥草', desc: '迷迭香、羅勒、苦艾' },
-      { value: 'roast', emoji: '☕', label: '烘焙焦香', desc: '咖啡、可可、堅果' },
-      { value: 'mineral', emoji: '🧂', label: '礦石鹹感', desc: '海風、燧石、鹽花' },
+      { value: 'citrus', emoji: '🍊' },
+      { value: 'floral', emoji: '🌸' },
+      { value: 'spice', emoji: '🌶️' },
+      { value: 'wood', emoji: '🪵' },
+      { value: 'tropical', emoji: '🥭' },
+      { value: 'herbal', emoji: '🌿' },
+      { value: 'roast', emoji: '☕' },
+      { value: 'mineral', emoji: '🧂' },
     ],
   },
   {
     id: 'texture',
-    title: '入口的口感，你偏好哪一種？',
     type: 'single',
     options: [
-      { value: 'sparkling', emoji: '🫧', label: '氣泡跳躍', desc: '刺刺的、有生命力' },
-      { value: 'silky', emoji: '🥛', label: '絲滑綿密', desc: '像天鵝絨滑過舌尖' },
-      { value: 'crisp', emoji: '❄️', label: '清爽俐落', desc: '乾淨、不留餘韻' },
-      { value: 'viscous', emoji: '🍯', label: '濃稠厚重', desc: '掛杯、口感飽滿' },
+      { value: 'sparkling', emoji: '🫧' },
+      { value: 'silky', emoji: '🥛' },
+      { value: 'crisp', emoji: '❄️' },
+      { value: 'viscous', emoji: '🍯' },
     ],
   },
   {
     id: 'strength',
-    title: '你喜歡多強烈的酒精感？',
     type: 'slider',
     min: 1, max: 5, default: 3,
-    labels: ['入口即化', '微醺怡人', '均衡有感', '烈火燒心', '直球強勁'],
   },
   {
     id: 'sourness',
-    title: '對酸度的接受程度呢？',
     type: 'slider',
     min: 1, max: 5, default: 3,
-    labels: ['完全不要酸', '一點點就好', '酸甜平衡', '喜歡明亮酸感', '越酸越開心'],
   },
   {
     id: 'base',
-    title: '有偏愛的基酒嗎？',
-    subtitle: '可以複選，沒有特別偏好就選「都想試試」',
     type: 'multi',
+    hasSubtitle: true,
     options: [
-      { value: 'gin', emoji: '🌲', label: '琴酒', desc: '杜松子與植物香' },
-      { value: 'whisky', emoji: '🥃', label: '威士忌', desc: '穀物與桶陳' },
-      { value: 'rum', emoji: '🏝️', label: '蘭姆酒', desc: '甘蔗與焦糖' },
-      { value: 'tequila', emoji: '🌵', label: '龍舌蘭', desc: '青草與土地味' },
-      { value: 'vodka', emoji: '💎', label: '伏特加', desc: '乾淨中性' },
-      { value: 'brandy', emoji: '🍇', label: '白蘭地', desc: '果實蒸餾陳年' },
-      { value: 'sake', emoji: '🍶', label: '清酒 / 燒酎', desc: '米香與東方調' },
-      { value: 'any', emoji: '🎲', label: '都想試試', desc: '交給 AI 決定' },
+      { value: 'gin', emoji: '🌲' },
+      { value: 'whisky', emoji: '🥃' },
+      { value: 'rum', emoji: '🏝️' },
+      { value: 'tequila', emoji: '🌵' },
+      { value: 'vodka', emoji: '💎' },
+      { value: 'brandy', emoji: '🍇' },
+      { value: 'sake', emoji: '🍶' },
+      { value: 'any', emoji: '🎲' },
     ],
   },
   {
     id: 'mood',
-    title: '今晚想要什麼氛圍？',
     type: 'single',
     options: [
-      { value: 'chill', emoji: '🌙', label: '獨處放空', desc: '沉澱一天的思緒' },
-      { value: 'romantic', emoji: '💞', label: '浪漫約會', desc: '與心動的人共飲' },
-      { value: 'party', emoji: '🎉', label: '派對狂歡', desc: '燃燒整個夜晚' },
-      { value: 'deep', emoji: '🗣️', label: '深度交談', desc: '老友一杯徹夜聊' },
+      { value: 'chill', emoji: '🌙' },
+      { value: 'romantic', emoji: '💞' },
+      { value: 'party', emoji: '🎉' },
+      { value: 'deep', emoji: '🗣️' },
     ],
   },
   {
     id: 'occasion',
-    title: '你通常在哪裡喝酒？',
     type: 'single',
     options: [
-      { value: 'home', emoji: '🛋️', label: '家中獨酌', desc: '舒服的沙發配音樂' },
-      { value: 'bar', emoji: '🍸', label: '精品酒吧', desc: '吧台前看調酒師表演' },
-      { value: 'restaurant', emoji: '🍽️', label: '餐酒搭配', desc: '與美食共舞' },
-      { value: 'outdoor', emoji: '🌌', label: '戶外露營', desc: '星空下的微醺' },
+      { value: 'home', emoji: '🛋️' },
+      { value: 'bar', emoji: '🍸' },
+      { value: 'restaurant', emoji: '🍽️' },
+      { value: 'outdoor', emoji: '🌌' },
     ],
   },
   {
     id: 'timing',
-    title: '最想來一杯的時刻是？',
     type: 'single',
     options: [
-      { value: 'aperitif', emoji: '🌇', label: '傍晚開胃', desc: '下班後的第一杯' },
-      { value: 'dinner', emoji: '🍽️', label: '佐餐時光', desc: '配著菜一起慢慢喝' },
-      { value: 'late', emoji: '🌃', label: '深夜獨飲', desc: '城市安靜下來之後' },
-      { value: 'brunch', emoji: '☀️', label: '週末白天', desc: '陽光下的微醺' },
+      { value: 'aperitif', emoji: '🌇' },
+      { value: 'dinner', emoji: '🍽️' },
+      { value: 'late', emoji: '🌃' },
+      { value: 'brunch', emoji: '☀️' },
     ],
   },
   {
     id: 'adventure',
-    title: '你有多想嘗試沒喝過的東西？',
     type: 'slider',
     min: 1, max: 5, default: 3,
-    labels: ['只喝我熟悉的', '偶爾換換口味', '一半經典一半新奇', '想被推坑', '越沒聽過越好'],
   },
   {
     id: 'personality',
-    title: '用一個詞形容你自己？',
     type: 'single',
     options: [
-      { value: 'bold', emoji: '⚡', label: '大膽冒險', desc: '總是敢於嘗試新事物' },
-      { value: 'elegant', emoji: '🎭', label: '優雅內斂', desc: '講究細節與品味' },
-      { value: 'cozy', emoji: '🧸', label: '溫柔療癒', desc: '喜歡讓人放鬆的氛圍' },
-      { value: 'mysterious', emoji: '🌑', label: '神秘深沉', desc: '有故事的人' },
+      { value: 'bold', emoji: '⚡' },
+      { value: 'elegant', emoji: '🎭' },
+      { value: 'cozy', emoji: '🧸' },
+      { value: 'mysterious', emoji: '🌑' },
     ],
   },
   {
     id: 'avoid',
-    title: '有什麼口感你絕對無法接受？',
     type: 'single',
     options: [
-      { value: 'too_sweet', emoji: '🚫', label: '太甜膩' },
-      { value: 'too_bitter', emoji: '😖', label: '太苦澀' },
-      { value: 'too_strong', emoji: '🥵', label: '酒精太嗆' },
-      { value: 'no_limit', emoji: '🆗', label: '我都能接受' },
+      { value: 'too_sweet', emoji: '🚫' },
+      { value: 'too_bitter', emoji: '😖' },
+      { value: 'too_strong', emoji: '🥵' },
+      { value: 'no_limit', emoji: '🆗' },
     ],
   },
 ];
+
+// 題目與選項文字都用組合出來的鍵查字典
+const qTitle = q => t(`q.${q.id}.t`);
+const qSub = q => (q.hasSubtitle ? t(`q.${q.id}.s`) : '');
+const oLabel = (q, v) => t(`o.${q.id}.${v}`);
+const oDesc = (q, v) => { const k = `o.${q.id}.${v}.d`; const s = t(k); return s === k ? '' : s; };
+const slLabel = (q, i) => t(`sl.${q.id}.${i}`);
 
 // 判斷某題是否已作答（多選要看陣列長度，滑桿永遠算已答）
 function isAnswered(q) {
@@ -153,15 +146,15 @@ function renderQuestion() {
   const total = QUESTIONS.length;
   const pct = ((currentIdx + 1) / total) * 100;
 
-  progressText.textContent = `第 ${currentIdx + 1} / ${total} 題`;
+  progressText.textContent = t('quiz.progress', { n: currentIdx + 1, total });
   progressPct.textContent = `${Math.round(pct)}%`;
   progressFill.style.width = pct + '%';
 
   let html = `
     <div class="question-card">
       <div class="question-num">Q${String(currentIdx + 1).padStart(2, '0')}</div>
-      <h2 class="question-title">${q.title}</h2>
-      ${q.subtitle ? `<p class="question-subtitle">${q.subtitle}</p>` : ''}
+      <h2 class="question-title">${qTitle(q)}</h2>
+      ${q.hasSubtitle ? `<p class="question-subtitle">${qSub(q)}</p>` : ''}
   `;
 
   if (q.type === 'single' || q.type === 'multi') {
@@ -175,8 +168,8 @@ function renderQuestion() {
         <button class="option-card ${selected}" data-value="${opt.value}">
           <div class="option-emoji">${opt.emoji}</div>
           <div class="option-body">
-            <div class="option-label">${opt.label}</div>
-            ${opt.desc ? `<div class="option-desc">${opt.desc}</div>` : ''}
+            <div class="option-label">${oLabel(q, opt.value)}</div>
+            ${oDesc(q, opt.value) ? `<div class="option-desc">${oDesc(q, opt.value)}</div>` : ''}
           </div>
         </button>
       `;
@@ -187,20 +180,20 @@ function renderQuestion() {
     html += `
       <div class="slider-question">
         <div class="slider-row">
-          <span><strong>${q.labels[0]}</strong></span>
-          <span><strong>${q.labels[q.labels.length - 1]}</strong></span>
+          <span><strong>${slLabel(q, 1)}</strong></span>
+          <span><strong>${slLabel(q, q.max)}</strong></span>
         </div>
         <input type="range" class="custom-slider" min="${q.min}" max="${q.max}" value="${val}" id="sliderInput" />
-        <div class="slider-value" id="sliderVal">${q.labels[val - 1]}</div>
+        <div class="slider-value" id="sliderVal">${slLabel(q, val)}</div>
       </div>
     `;
   }
 
   html += `
       <div class="quiz-controls">
-        <button class="btn-back" id="btnBack" ${currentIdx === 0 ? 'disabled' : ''}>← 上一題</button>
+        <button class="btn-back" id="btnBack" ${currentIdx === 0 ? 'disabled' : ''}>${t('quiz.back')}</button>
         <button class="btn-next" id="btnNext" ${isAnswered(q) ? '' : 'disabled'}>
-          ${currentIdx === total - 1 ? '開始 AI 分析 ✨' : '下一題 →'}
+          ${currentIdx === total - 1 ? t('quiz.analyse') : t('quiz.next')}
         </button>
       </div>
     </div>
@@ -232,7 +225,7 @@ function renderQuestion() {
     slider.addEventListener('input', e => {
       const v = Number(e.target.value);
       answers[q.id] = v;
-      sliderVal.textContent = q.labels[v - 1];
+      sliderVal.textContent = slLabel(q, v);
     });
   }
 
@@ -252,12 +245,7 @@ async function submitQuiz() {
   loading.style.display = 'block';
 
   // 循環提示文字
-  const tips = [
-    '讀取你的風味 DNA...',
-    '比對 480 款精選酒譜...',
-    '計算情境匹配度...',
-    '生成專屬推薦...',
-  ];
+  const tips = [t('quiz.tip1'), t('quiz.tip2'), t('quiz.tip3'), t('quiz.tip4')];
   let tipIdx = 0;
   const tipInterval = setInterval(() => {
     tipIdx = (tipIdx + 1) % tips.length;
@@ -268,7 +256,7 @@ async function submitQuiz() {
     const resp = await fetch('/api/taste-quiz', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ answers }),
+      body: JSON.stringify({ answers, lang: getLang() }),
     });
     const data = await resp.json();
     clearInterval(tipInterval);
@@ -278,9 +266,9 @@ async function submitQuiz() {
     clearInterval(tipInterval);
     loading.innerHTML = `
       <div style="padding:60px 20px;text-align:center;">
-        <h2 style="color:#FF4D8D;margin-bottom:12px;">分析失敗 😢</h2>
+        <h2 style="color:#FF4D8D;margin-bottom:12px;">${t('quiz.failed')}</h2>
         <p style="color:var(--text-dim);margin-bottom:24px;">${err.message}</p>
-        <button class="btn-primary" onclick="location.reload()">重試</button>
+        <button class="btn-primary" onclick="location.reload()">${t('common.retry')}</button>
       </div>
     `;
   }
@@ -307,7 +295,7 @@ function renderResult(data) {
 
   const recs = data.recommendations || [];
   const countEl = document.getElementById('recCount');
-  if (countEl) countEl.textContent = `${recs.length} 款推薦`;
+  if (countEl) countEl.textContent = t('quiz.rec_count', { n: recs.length });
 
   const grid = document.getElementById('recGrid');
   grid.innerHTML = recs.map(r => `
@@ -323,8 +311,8 @@ function renderResult(data) {
         ${(r.flavor_tags || []).map(t => `<span class="rec-tag">${t}</span>`).join('')}
       </div>
       <div class="rec-reason">${r.reason || ''}</div>
-      <div class="rec-tip"><strong>品飲建議：</strong>${r.serving_tip || ''}</div>
-      ${r.food_pairing ? `<div class="rec-tip"><strong>餐搭：</strong>${r.food_pairing}</div>` : ''}
+      <div class="rec-tip"><strong>${t('quiz.serving')}</strong>${r.serving_tip || ''}</div>
+      ${r.food_pairing ? `<div class="rec-tip"><strong>${t('quiz.pairing')}</strong>${r.food_pairing}</div>` : ''}
     </div>
   `).join('');
 
@@ -360,11 +348,11 @@ function injectPublishRow(type, historyId) {
             <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
           </svg>
         </div>
-        <div class="publish-lock-title">登入後即可發布到社群</div>
-        <div class="publish-lock-sub">用 Google 一鍵登入 · 登入完成會自動回到這個結果頁<br/>讓其他酒友看見你的風味 DNA</div>
+        <div class="publish-lock-title">${t('pub.locked_title')}</div>
+        <div class="publish-lock-sub">${t('pub.locked_sub_quiz')}</div>
         <button class="btn-publish-hero btn-publish-login">
           <span class="bp-spark"></span>
-          <span class="bp-text">🚀 登入並發布到社群</span>
+          <span class="bp-text">${t('pub.login_publish')}</span>
         </button>
       </div>
     `;
@@ -390,14 +378,14 @@ function injectPublishRow(type, historyId) {
         </svg>
       </div>
       <div>
-        <div class="publish-title">把這份結果發布到社群</div>
-        <div class="publish-sub">讓其他酒友看見你的風味 DNA · AI 也許會把你和他們配對</div>
+        <div class="publish-title">${t('pub.title_quiz')}</div>
+        <div class="publish-sub">${t('pub.sub_quiz')}</div>
       </div>
     </div>
-    <textarea class="publish-caption" maxlength="280" placeholder="想對其他酒友說什麼？（選填）"></textarea>
+    <textarea class="publish-caption" maxlength="280" placeholder="${t('pub.caption_ph')}"></textarea>
     <button class="btn-publish-hero">
       <span class="bp-spark"></span>
-      <span class="bp-text">📢 發布到 PourMatch 社群</span>
+      <span class="bp-text">${t('pub.publish')}</span>
     </button>
   `;
   insertPublishCard(container, card);
@@ -406,7 +394,7 @@ function injectPublishRow(type, historyId) {
     const caption = card.querySelector('.publish-caption').value;
     const btn = card.querySelector('.btn-publish-hero');
     btn.disabled = true;
-    btn.querySelector('.bp-text').textContent = '發布中…';
+    btn.querySelector('.bp-text').textContent = t('pub.publishing');
 
     let hid = historyId;
     try {
@@ -423,26 +411,26 @@ function injectPublishRow(type, historyId) {
         hid = sd.history_id;
         if (hid && lastQuizData) lastQuizData.history_id = hid;
       }
-      if (!hid) throw new Error('無法儲存結果');
+      if (!hid) throw new Error(t('pub.save_failed'));
 
       const r = await fetch('/api/posts', {
         method: 'POST', credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type, history_id: hid, caption }),
       });
-      if (r.status === 401) throw new Error('請先登入才能發布');
+      if (r.status === 401) throw new Error(t('pub.need_login'));
       const data = await r.json();
       if (data.id) {
-        btn.querySelector('.bp-text').textContent = '✅ 已發布！前往社群查看 →';
+        btn.querySelector('.bp-text').textContent = t('pub.published');
         btn.onclick = () => location.href = 'community.html';
         btn.disabled = false;
       } else {
-        throw new Error(data.error || '發布失敗');
+        throw new Error(data.error || t('pub.publish_failed'));
       }
     } catch (err) {
       alert(err.message);
       btn.disabled = false;
-      btn.querySelector('.bp-text').textContent = '📢 發布到 PourMatch 社群';
+      btn.querySelector('.bp-text').textContent = t('pub.publish');
     }
   };
 }
@@ -454,3 +442,6 @@ function insertPublishCard(container, card) {
 }
 
 renderQuestion();
+window.addEventListener('pourmatch:langchange', () => {
+  if (document.getElementById('resultScreen').style.display !== 'block') renderQuestion();
+});

@@ -79,33 +79,33 @@
         <div class="core-ring r3"></div>
         <div class="core-center">AI</div>
       </div>
-      <h2 class="loading-title gradient-text">分析中</h2>
-      <p class="loading-sub" id="loadingSub">讀取你的風味 DNA...</p>
+      <h2 class="loading-title gradient-text" data-i18n="quiz.loading_title">分析中</h2>
+      <p class="loading-sub" id="loadingSub" data-i18n="quiz.tip1">讀取你的風味 DNA…</p>
     </div>
 
     <!-- 結果區 -->
     <div class="result-screen" id="resultScreen" style="display:none;">
       <div class="profile-card">
-        <div class="profile-label">你的風味 DNA</div>
+        <div class="profile-label" data-i18n="quiz.dna_label">你的風味 DNA</div>
         <div class="profile-nickname gradient-text" id="profileNickname"></div>
         <div class="profile-text" id="profileText"></div>
         <div class="profile-traits" id="profileTraits"></div>
       </div>
-      <h2 class="result-title">為你量身打造的 <span class="gradient-text" id="recCount">推薦</span></h2>
+      <h2 class="result-title"><span data-i18n="quiz.result_prefix">為你量身打造的</span> <span class="gradient-text" id="recCount">推薦</span></h2>
       <div class="rec-grid" id="recGrid"></div>
       <!-- 測驗完的下一步：拿這份結果去配對 -->
       <a href="match.html" class="next-match">
         <div class="nm-left">
-          <div class="nm-label">下一步</div>
-          <div class="nm-title">找出跟你味覺重疊的人</div>
-          <div class="nm-sub">依這份結果比對其他酒友 · 雙方都想認識才會開啟聊天</div>
+          <div class="nm-label" data-i18n="quiz.next_label">下一步</div>
+          <div class="nm-title" data-i18n="quiz.next_title">找出跟你味覺重疊的人</div>
+          <div class="nm-sub" data-i18n="quiz.next_sub">依這份結果比對其他酒友 · 雙方都想認識才會開啟聊天</div>
         </div>
         <div class="nm-arrow">→</div>
       </a>
 
       <div class="result-actions">
-        <button class="btn-primary" onclick="location.reload()">再測一次</button>
-        <a href="cocktail.html" class="btn-ghost">試試調酒生成器 →</a>
+        <button class="btn-primary" onclick="location.reload()" data-i18n="quiz.retake">再測一次</button>
+        <a href="cocktail.html" class="btn-ghost" data-i18n="quiz.try_cocktail">試試調酒生成器 →</a>
       </div>
     </div>
   </main>
@@ -114,6 +114,6 @@
   <script src="i18n.js?v=2"></script>
   <script src="particles.js?v=10"></script>
   <script src="auth.js?v=11"></script>
-  <script src="quiz.js?v=11"></script>
+  <script src="quiz.js?v=12"></script>
 </body>
 </html>

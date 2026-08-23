@@ -49,6 +49,13 @@ const COCKTAIL_ANGLES = [
   '以一種東方食材或茶飲為靈感',
 ];
 
+// 回覆語言：前端把介面語言一起送上來，AI 產出才不會跟介面對不上
+const LANG_RULE = {
+  zh: '整份回覆請使用繁體中文。',
+  en: 'Write the entire response in natural, idiomatic English. Do not use any Chinese.',
+};
+const langRule = l => LANG_RULE[l === 'en' ? 'en' : 'zh'];
+
 // ===== Auth helper =====
 function getUser(req) {
   const token = req.cookies.token;
@@ -168,9 +175,11 @@ app.post('/api/taste-quiz', async (req, res) => {
     const ai = requireOpenAIClient(res);
     if (!ai) return;
 
-    const { answers } = req.body;
+    const { answers, lang } = req.body;
     const angle = pick(QUIZ_ANGLES);
     const prompt = `你是一位專業的調酒師與品酒顧問。根據用戶的品味測驗，分析他的飲酒人格並推薦 4 款酒。
+
+${langRule(lang)}
 
 用戶答案：${JSON.stringify(answers)}
 
@@ -231,7 +240,7 @@ app.post('/api/cocktail-generator', async (req, res) => {
     const ai = requireOpenAIClient(res);
     if (!ai) return;
 
-    const { preferences, advanced } = req.body;
+    const { preferences, advanced, lang } = req.body;
     const angle = pick(COCKTAIL_ANGLES);
 
     // 進階模式：附上額外偏好，並要求更完整的配方規格
@@ -264,6 +273,8 @@ ${JSON.stringify(advanced)}
   "mocktail_version": "無酒精版本要怎麼調（沒有這個需求時給空字串）"` : '';
 
     const prompt = `你是世界級的創意調酒師。根據用戶的偏好，創造一款獨一無二的調酒。
+
+${langRule(lang)}
 
 用戶偏好：${JSON.stringify(preferences)}
 
@@ -712,7 +723,9 @@ app.get('/api/match', requireAuth, async (req, res) => {
 
     let comments = [];
     if (openai) {
-      const prompt = `你是 PourMatch 的 AI 飲酒配對顧問。根據兩人的品味測驗答案，用 1 句溫暖、有趣、像詩的中文描述他們為什麼合得來。
+      const prompt = `你是 PourMatch 的 AI 飲酒配對顧問。根據兩人的品味測驗答案，用 1 句溫暖、有趣、像詩的話描述他們為什麼合得來。
+
+${langRule(req.query.lang)}
 
 我的答案：${JSON.stringify(myAns)}
 
