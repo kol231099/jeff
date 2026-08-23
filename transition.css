@@ -112,13 +112,15 @@
 
 .pour-word {
   font-family: 'Orbitron', sans-serif;
-  mix-blend-mode: difference;
   font-size: clamp(13px, 1.6vw, 17px);
   font-weight: 700;
   letter-spacing: 7px;
   text-transform: uppercase;
-  color: #FFF1D8;
-  text-shadow: 0 2px 24px rgba(255, 181, 71, 0.8);
+  color: #FFF6E6;
+  /* 深色底與亮酒液上都要讀得清楚，所以同時給光暈與暗邊 */
+  text-shadow:
+    0 2px 20px rgba(255, 181, 71, 0.7),
+    0 1px 3px rgba(60, 20, 10, 0.75);
 }
 .pour-word span { animation: wordPulse 1.5s ease-in-out infinite; display: inline-block; }
 @keyframes wordPulse {
