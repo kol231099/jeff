@@ -17,7 +17,7 @@
   position: absolute;
   top: 34px;
   left: 32px;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 12px;
   letter-spacing: 3px;
   color: var(--text-dim);
@@ -36,7 +36,7 @@
   border: 1px solid rgba(123, 92, 255, 0.35);
   background: rgba(123, 92, 255, 0.1);
   border-radius: 100px;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 11px;
   letter-spacing: 3px;
   color: var(--text-dim);
@@ -48,7 +48,7 @@
   animation: pulse 1.8s ease-in-out infinite;
 }
 .lang-title {
-  font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-weight: 900;
   font-size: clamp(36px, 6vw, 68px);
   line-height: 1.08;
@@ -109,14 +109,11 @@
 .lang-card.selected .lc-glow { opacity: 1; }
 
 .lc-mark {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 46px;
   font-weight: 900;
   letter-spacing: 1px;
-  background: linear-gradient(135deg, #FFB547, #FF4D8D, #7B5CFF);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent-warm);
   margin-bottom: 14px;
 }
 .lc-name { font-size: 20px; font-weight: 700; margin-bottom: 4px; }

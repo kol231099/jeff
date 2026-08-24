@@ -17,7 +17,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 13px;
   color: var(--text-dim);
   letter-spacing: 1px;
@@ -60,7 +60,7 @@
 }
 .question-num {
   display: inline-block;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 13px;
   color: var(--accent-gold);
   letter-spacing: 2px;
@@ -172,14 +172,11 @@
 }
 .slider-value {
   text-align: center;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 28px;
   font-weight: 700;
   margin-top: 8px;
-  background: linear-gradient(135deg, var(--accent-gold), var(--accent-pink));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent-warm);
 }
 
 /* 控制按鈕 */
@@ -263,7 +260,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-weight: 900;
   font-size: 28px;
   color: #fff;
@@ -276,7 +273,7 @@
   50% { transform: scale(1.08); }
 }
 .loading-title {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 44px;
   font-weight: 900;
   margin-bottom: 12px;
@@ -300,7 +297,7 @@
   box-shadow: 0 8px 32px rgba(255, 77, 141, 0.1);
 }
 .profile-label {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 12px;
   color: var(--accent-gold);
   letter-spacing: 3px;
@@ -380,7 +377,7 @@
   display: inline-flex;
   align-items: baseline;
   gap: 3px;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-weight: 700;
   margin-bottom: 10px;
   padding: 4px 10px;
@@ -488,7 +485,7 @@
 }
 .nm-left { flex: 1; text-align: left; }
 .nm-label {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 11px;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -527,14 +524,14 @@
   margin-bottom: 22px;
   border: 1px solid var(--border);
   border-radius: 100px;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 11px;
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--text-dim);
 }
 .start-title {
-  font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: clamp(30px, 4.6vw, 50px);
   font-weight: 800;
   letter-spacing: -1px;
@@ -590,15 +587,12 @@
   white-space: nowrap;
 }
 .len-num {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 40px;
   font-weight: 900;
   line-height: 1;
   margin-bottom: 8px;
-  background: linear-gradient(135deg, var(--accent-gold), var(--accent-pink));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent-warm);
 }
 .len-name { font-size: 16px; font-weight: 700; margin-bottom: 5px; }
 .len-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; }

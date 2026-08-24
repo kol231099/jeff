@@ -9,7 +9,7 @@
 }
 .social-header { text-align: center; margin-bottom: 40px; animation: fadeInUp .7s ease-out; }
 .social-title {
-  font-family: 'Orbitron','Noto Sans TC',sans-serif; font-weight: 900;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif; font-weight: 900;
   font-size: clamp(30px, 4.5vw, 48px); margin-bottom: 12px; letter-spacing: -1px;
 }
 .social-sub { color: var(--text-dim); font-size: 16px; }
@@ -44,10 +44,9 @@
   object-fit: cover;
 }
 .profile-name {
-  font-family: 'Orbitron','Noto Sans TC',sans-serif;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif;
   font-size: 30px; font-weight: 900; margin-bottom: 4px;
-  background: linear-gradient(135deg, #FFB547, #FF4D8D, #7B5CFF);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  color: var(--accent-warm);
 }
 .profile-email { color: var(--text-dim); font-size: 13px; margin-bottom: 14px; }
 .profile-bio { color: var(--text); font-size: 15px; line-height: 1.6; font-style: italic; }
@@ -64,12 +63,12 @@
   margin-bottom: 20px;
 }
 .code-label {
-  font-family: 'Orbitron',sans-serif;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif;
   font-size: 11px; letter-spacing: 3px; color: var(--accent-cyan);
   margin-bottom: 6px; text-transform: uppercase;
 }
 .code-value {
-  font-family: 'Orbitron','Space Grotesk',sans-serif;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif;
   font-size: 34px; font-weight: 900; letter-spacing: 6px; color: var(--text);
 }
 .code-hint { font-size: 12px; color: var(--text-dim); margin-top: 8px; }
@@ -97,10 +96,9 @@
   text-align: center;
 }
 .stat-num {
-  font-family: 'Orbitron',sans-serif;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif;
   font-size: 26px; font-weight: 900;
-  background: linear-gradient(135deg, #FFB547, #FF4D8D);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  color: var(--accent-warm);
 }
 .stat-label { font-size: 11px; color: var(--text-dim); letter-spacing: 1px; margin-top: 4px; }
 
@@ -176,10 +174,9 @@
   margin-bottom: 14px;
 }
 .post-content-name {
-  font-family: 'Orbitron','Noto Sans TC',sans-serif;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif;
   font-size: 22px; font-weight: 900;
-  background: linear-gradient(135deg, #FFB547, #FF4D8D);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  color: var(--accent-warm);
   margin-bottom: 6px;
 }
 .post-content-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 8px; }
@@ -245,7 +242,7 @@
 .friend-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
 .friend-name { font-weight: 700; font-size: 15px; }
 .friend-code {
-  font-family: 'Orbitron',sans-serif; font-size: 11px; color: var(--accent-cyan); letter-spacing: 2px;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif; font-size: 11px; color: var(--accent-cyan); letter-spacing: 2px;
 }
 .btn-remove {
   padding: 8px 14px;
@@ -276,16 +273,15 @@
   object-fit: cover;
 }
 .match-score {
-  font-family: 'Orbitron',sans-serif;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif;
   text-align: center; min-width: 80px;
 }
 .match-score-num {
   font-size: 36px; font-weight: 900;
-  background: linear-gradient(135deg, #FFB547, #FF4D8D);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  color: var(--accent-warm);
 }
 .match-score-label { font-size: 11px; color: var(--text-dim); letter-spacing: 2px; }
-.match-name { font-family: 'Orbitron','Noto Sans TC',sans-serif; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.match-name { font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
 .match-bio { font-size: 13px; color: var(--text-dim); margin-bottom: 8px; }
 .match-comment {
   font-size: 14px; color: var(--accent-gold);
@@ -365,7 +361,7 @@
 
 /* ===== 補強：新頁面用到的 class ===== */
 .card-title {
-  font-family: 'Orbitron','Noto Sans TC',sans-serif;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif;
   font-size: 18px; font-weight: 700;
   margin-bottom: 16px;
   color: var(--text);
@@ -412,15 +408,13 @@
 }
 .mini-rec-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
 .mini-rec-score {
-  font-family: 'Orbitron',sans-serif; font-size: 18px; font-weight: 900;
-  background: linear-gradient(135deg, #FFB547, #FF4D8D);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif; font-size: 18px; font-weight: 900;
+  color: var(--accent-warm);
 }
 .mini-name {
-  font-family: 'Orbitron','Noto Sans TC',sans-serif;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif;
   font-size: 22px; font-weight: 900;
-  background: linear-gradient(135deg, #FFB547, #FF4D8D);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  color: var(--accent-warm);
   margin-bottom: 4px;
 }
 .mini-tagline { font-size: 13px; color: var(--accent-cyan); margin-bottom: 8px; letter-spacing: 1px; }
@@ -440,10 +434,10 @@
   gap: 10px; padding: 30px 24px;
 }
 .match-rank {
-  font-family: 'Orbitron',sans-serif; font-size: 12px; letter-spacing: 3px;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif; font-size: 12px; letter-spacing: 3px;
   color: var(--accent-cyan); font-weight: 800;
 }
-.match-code { font-family: 'Orbitron',sans-serif; font-size: 11px; color: var(--accent-cyan); letter-spacing: 3px; }
+.match-code { font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif; font-size: 11px; color: var(--accent-cyan); letter-spacing: 3px; }
 .match-card .match-comment { border-left: none; padding-left: 0; padding-top: 12px; border-top: 2px solid var(--accent-gold); margin-top: 4px; width: 100%; }
 .match-card .btn-add-friend { margin-top: 8px; }
 
@@ -451,7 +445,7 @@
 .share-quiz, .share-cocktail { display: block; }
 .share-section { margin-bottom: 20px; }
 .share-label {
-  font-family: 'Orbitron',sans-serif; font-size: 11px; letter-spacing: 3px;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif; font-size: 11px; letter-spacing: 3px;
   color: var(--accent-gold); font-weight: 700; margin-bottom: 10px;
 }
 .share-profile { font-size: 16px; line-height: 1.7; color: var(--text); font-style: italic; }
@@ -465,9 +459,8 @@
 .share-rec-head { display: flex; justify-content: space-between; align-items: baseline; }
 .share-rec-name { font-size: 18px; font-weight: 700; }
 .share-rec-score {
-  font-family: 'Orbitron',sans-serif; font-size: 22px; font-weight: 900;
-  background: linear-gradient(135deg, #FFB547, #FF4D8D);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif; font-size: 22px; font-weight: 900;
+  color: var(--accent-warm);
 }
 .share-rec-cat { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
 .share-rec-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
@@ -478,7 +471,7 @@
 }
 .share-rec-reason { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
 
-.share-cock-name { font-family: 'Orbitron','Noto Sans TC',sans-serif; font-size: 32px; font-weight: 900; }
+.share-cock-name { font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif; font-size: 32px; font-weight: 900; }
 .share-cock-tagline { color: var(--accent-cyan); letter-spacing: 1px; margin: 4px 0 14px; }
 .share-cock-meta { display: flex; gap: 16px; color: var(--text-dim); font-size: 13px; margin-bottom: 12px; }
 .share-cock-story { font-size: 15px; color: var(--text); line-height: 1.7; margin-bottom: 18px; font-style: italic; }
@@ -549,7 +542,7 @@
   box-shadow: 0 0 24px rgba(255,77,141,.25);
 }
 .publish-title {
-  font-family: 'Orbitron','Noto Sans TC',sans-serif;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif;
   font-size: 18px; font-weight: 700; color: var(--text);
   margin-bottom: 4px;
 }
@@ -640,11 +633,9 @@
   50%      { transform: translateY(-3px) scale(1.04); box-shadow: 0 6px 44px rgba(255,77,141,.45), inset 0 1px 0 rgba(255,255,255,.25); }
 }
 .publish-locked .publish-lock-title {
-  font-family: 'Orbitron','Noto Sans TC',sans-serif;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif;
   font-size: 19px; font-weight: 700;
-  background: linear-gradient(135deg,#FFB547,#FF4D8D 50%,#7B5CFF);
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--accent-warm);
   margin-bottom: 10px;
   letter-spacing: 0.5px;
 }
@@ -686,7 +677,7 @@
   border-top: 1px dashed rgba(255,255,255,.08);
 }
 .comments-divider {
-  font-family: 'Orbitron','Noto Sans TC',sans-serif;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif;
   font-size: 13px;
   color: var(--text-dim);
   letter-spacing: .4px;
@@ -794,9 +785,7 @@
 .link-style {
   background: none; border: none; padding: 0;
   font: inherit; cursor: pointer;
-  background: linear-gradient(135deg,#FFB547,#FF4D8D);
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--accent-warm);
   font-weight: 700;
 }
 

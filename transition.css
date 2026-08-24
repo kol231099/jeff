@@ -146,7 +146,7 @@ html.pour-arriving::before {
 }
 
 .pour-word {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: clamp(13px, 1.6vw, 17px);
   font-weight: 700;
   letter-spacing: 7px;

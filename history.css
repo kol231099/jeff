@@ -14,7 +14,7 @@
   animation: fadeInUp 0.7s ease-out;
 }
 .history-title {
-  font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-weight: 900;
   font-size: clamp(32px, 5vw, 52px);
   margin-bottom: 14px;
@@ -81,13 +81,10 @@
   margin-bottom: 12px;
 }
 .history-name {
-  font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 22px;
   font-weight: 700;
-  background: linear-gradient(135deg, #FFB547, #FF4D8D);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent-warm);
   margin-bottom: 4px;
 }
 .history-meta {
@@ -145,7 +142,7 @@
   animation: fadeInUp 0.7s ease-out;
 }
 .login-prompt h2 {
-  font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 28px;
   margin-bottom: 14px;
 }

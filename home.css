@@ -10,11 +10,11 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 14px;
-  border-radius: 100px;
-  background: rgba(255,181,71,0.08);
-  border: 1px solid rgba(255,181,71,0.25);
-  color: #FFB547;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  border: 0;
+  color: var(--text-dim);
   font-size: 12px;
   font-family: 'Space Grotesk', system-ui, sans-serif;
   letter-spacing: 1.5px;
@@ -33,7 +33,7 @@
   50%     { opacity: 1; }
 }
 .home-section h2 {
-  font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 38px;
   font-weight: 800;
   line-height: 1.2;
@@ -147,15 +147,12 @@
 }
 @keyframes orbSpin { to { transform: rotate(360deg); } }
 .show-name {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 20px;
   font-weight: 700;
   text-align: center;
   margin: 0 0 6px;
-  background: linear-gradient(135deg, #FFB547, #FF4D8D, #7B5CFF);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent-warm);
 }
 .show-tags {
   display: flex;
@@ -251,7 +248,7 @@
 .faq-item summary::-webkit-details-marker { display: none; }
 .faq-item summary::after {
   content: '+';
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 22px;
   color: #FFB547;
   transition: transform .25s;
@@ -287,7 +284,7 @@
   background: linear-gradient(90deg, transparent, #FF4D8D, transparent);
 }
 .home-final h2 {
-  font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 36px;
   font-weight: 800;
   margin: 0 0 12px;
@@ -353,7 +350,7 @@
 .btn-showcase .bs-new {
   padding: 3px 8px;
   border-radius: 100px;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1px;

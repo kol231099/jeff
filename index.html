@@ -7,10 +7,10 @@
 <title>PourMatch — AI 飲酒交友</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20" />
-<link rel="stylesheet" href="transition.css?v=16" />
-<link rel="stylesheet" href="home.css?v=12" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;600&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=21" />
+<link rel="stylesheet" href="transition.css?v=17" />
+<link rel="stylesheet" href="home.css?v=13" />
 <script>
 /* 換頁抵達時，在第一個影格之前就蓋住畫面，避免閃爍。
    若 JS 之後出錯，3 秒後自動解除，不會把頁面永遠遮住。 */
@@ -89,28 +89,12 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </a>
         <a href="cocktail.html" class="btn-ghost" style="text-decoration:none;display:inline-flex;align-items:center;" data-i18n="home.cta_cocktail">🍹 調酒生成器</a>
-        <a href="showcase.html" class="btn-showcase">
-          <span class="bs-dot"></span>
-          <span data-i18n="home.cta_showcase">THE POUR · 3D 展示</span>
-          <span class="bs-new">DEMO</span>
-        </a>
       </div>
 
-      <div class="stats">
-        <div class="stat"><div class="stat-num">12K+</div><div class="stat-label" data-i18n="home.stat_users">活躍用戶</div></div>
-        <div class="divider"></div>
-        <div class="stat"><div class="stat-num">480+</div><div class="stat-label" data-i18n="home.stat_drinks">精選酒款</div></div>
-        <div class="divider"></div>
-        <div class="stat"><div class="stat-num">97%</div><div class="stat-label" data-i18n="home.stat_satisfaction">配對滿意度</div></div>
-      </div>
     </div>
 
     <!-- 中央科幻視覺：AI 酒杯全息 -->
     <div class="hero-visual">
-      <div class="orbit orbit-1"></div>
-      <div class="orbit orbit-2"></div>
-      <div class="orbit orbit-3"></div>
-
       <!-- 環繞小卡 -->
       <div class="float-card fc-1">
         <div class="fc-icon">🍷</div>
@@ -347,7 +331,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
 
   <!-- 使用情境 -->
   <section class="home-section">
-    <div class="home-eyebrow"><span class="dot"></span><span>WHEN TO POUR</span></div>
+    <div class="home-eyebrow"><span>WHEN TO POUR</span></div>
     <h2 data-i18n="home.when_t">什麼時候，最適合來一杯？</h2>
     <p class="home-lead" data-i18n="home.when_lead">不是只有派對才需要酒。PourMatch 替你讀懂每一個微小情緒，把對的酒在對的時間遞到你手裡。</p>
     <div class="scene-grid">
@@ -380,7 +364,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
 
   <!-- AI 調酒展示牆 -->
   <section class="home-section">
-    <div class="home-eyebrow"><span class="dot"></span><span>RECENTLY POURED</span></div>
+    <div class="home-eyebrow"><span>RECENTLY POURED</span></div>
     <h2 data-i18n-html="home.recent_t">看看 AI 最近<span class="gradient-text">為大家調了什麼</span></h2>
     <p class="home-lead" data-i18n="home.recent_lead">每一杯都是地球上獨一無二的配方。AI 沒重複過，也不會重複你的。</p>
     <div class="showcase-grid">
@@ -404,16 +388,11 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
       </div>
     </div>
 
-    <div class="pulse-strip">
-      <span class="pulse-dot"></span>
-      <span class="pulse-label">LIVE</span>
-      <span class="pulse-text" data-i18n-html="home.pulse">過去 24 小時，AI 已替全球用戶調出 <strong>2,847</strong> 杯獨一無二的飲品 · 完成 <strong>193</strong> 次味蕾配對</span>
-    </div>
   </section>
 
   <!-- FAQ -->
   <section class="home-section">
-    <div class="home-eyebrow"><span class="dot"></span><span>FAQ</span></div>
+    <div class="home-eyebrow"><span>FAQ</span></div>
     <h2 data-i18n="home.faq_t">大家都在問</h2>
     <p class="home-lead" data-i18n="home.faq_lead">第一次用 PourMatch？這幾題大概會替你解答 80% 的疑問。</p>
     <div class="faq-list">

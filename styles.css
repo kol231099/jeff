@@ -3,14 +3,17 @@
   --bg-0: #05060d;
   --bg-1: #0a0b1a;
   --bg-2: #0f1028;
-  --accent-gold: #FFB547;
+  /* 外殼只用一個暖金重音。粉紫仍保留變數，因為酒杯與酒液是「內容」，
+     顏色留給內容 —— 這是參考站的邏輯：中性的殼，有顏色的內容。 */
+  --accent-gold: #C9A227;
+  --accent-warm: #E8C87A;
   --accent-pink: #FF4D8D;
   --accent-purple: #7B5CFF;
   --accent-cyan: #00E5FF;
-  --text: #EEF0FF;
-  --text-dim: #9AA0C7;
-  --border: rgba(255, 255, 255, 0.08);
-  --card-bg: rgba(255, 255, 255, 0.04);
+  --text: #EDE8E0;
+  --text-dim: #8A8578;
+  --border: rgba(237, 232, 224, 0.09);
+  --card-bg: rgba(237, 232, 224, 0.03);
   --glow-pink: 0 0 40px rgba(255, 77, 141, 0.45);
   --glow-gold: 0 0 40px rgba(255, 181, 71, 0.4);
   --glow-purple: 0 0 40px rgba(123, 92, 255, 0.45);
@@ -28,37 +31,29 @@ html, body {
 }
 
 body {
-  /* 夜間酒吧的光：上方一盞暖吊燈、左右兩側酒紅與紫的環境光、
-     越往下越沉。均勻的深色是機房，不均勻的才是有燈的房間。 */
-  background:
-    radial-gradient(ellipse 120% 55% at 50% -10%, rgba(255, 160, 80, 0.3), transparent 60%),
-    radial-gradient(ellipse 90% 60% at 4% 22%, rgba(123, 92, 255, 0.26), transparent 62%),
-    radial-gradient(ellipse 95% 65% at 100% 80%, rgba(255, 77, 141, 0.22), transparent 62%),
-    radial-gradient(ellipse 70% 50% at 50% 110%, rgba(88, 26, 90, 0.6), transparent 72%),
-    linear-gradient(180deg, #100A1E 0%, #0A0616 46%, #05060d 100%);
+  /* 背景什麼都不做。一處偏離中心、半在框外的微光，判斷不出光從哪來 ——
+     神秘感來自「大部分沉在暗處」，不是來自發光。 */
+  background: linear-gradient(178deg, #0C0A12 0%, #09080D 52%, #070609 100%);
   position: relative;
 }
 
-/* 空氣感：兩池從上方灑下的暖光緩慢呼吸，像吊燈隔著煙霧 */
 body::before {
   content: '';
   position: fixed;
-  inset: -10%;
+  inset: -12%;
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 38% 32% at 28% 4%, rgba(255, 181, 71, 0.2), transparent 70%),
-    radial-gradient(ellipse 34% 28% at 76% 10%, rgba(255, 120, 130, 0.14), transparent 70%),
-    radial-gradient(ellipse 50% 36% at 55% 94%, rgba(100, 66, 200, 0.18), transparent 72%);
-  animation: hazeBreathe 18s ease-in-out infinite;
+    radial-gradient(ellipse 78% 52% at 38% -8%, rgba(255, 226, 190, .075), transparent 62%),
+    radial-gradient(ellipse 62% 44% at 88% 96%, rgba(150, 130, 200, .05), transparent 68%);
+  animation: hush 52s ease-in-out infinite;   /* 慢到不會被認出是循環 */
 }
-@keyframes hazeBreathe {
-  0%, 100% { opacity: 0.75; transform: translateX(0) scale(1); }
-  50%      { opacity: 1;    transform: translateX(-1.5%) scale(1.04); }
+@keyframes hush {
+  0%, 100% { opacity: .82; transform: translate(0, 0) scale(1); }
+  50%      { opacity: 1;   transform: translate(-1.2%, .8%) scale(1.05); }
 }
 
-/* 顆粒 + 暗角：壓住大面積模糊光暈的色帶，並把視線收進畫面中央。
-   低透明度的雜訊蓋在所有東西上是底片的作法，文字上看不出來。 */
+/* 顆粒避免變成死板的數位純黑；暗角收到四角沉進黑裡，房間就沒有邊界 */
 body::after {
   content: '';
   position: fixed;
@@ -66,10 +61,9 @@ body::after {
   z-index: 2;
   pointer-events: none;
   background-image:
-    radial-gradient(ellipse 95% 82% at 50% 40%, transparent 46%, rgba(3, 2, 10, 0.62) 100%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+    radial-gradient(ellipse 82% 70% at 44% 38%, transparent 34%, rgba(0, 0, 0, .82) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
   background-size: auto, 160px 160px;
-  opacity: 0.9;
 }
 
 /* ====== 粒子 / 網格 / 光暈背景 ====== */
@@ -78,76 +72,14 @@ body::after {
   inset: 0;
   z-index: 1;
   pointer-events: none;
+  opacity: .38;          /* 粒子留著，但退到幾乎察覺不到 */
 }
 
-.grid-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  /* 若有似無的暖色格線：是質地，不是科技感的主角 */
-  background-image:
-    linear-gradient(rgba(255, 200, 150, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 200, 150, 0.045) 1px, transparent 1px);
-  background-size: 72px 72px;
-  mask-image: radial-gradient(ellipse 70% 52% at 50% 32%, black 18%, transparent 78%);
-  -webkit-mask-image: radial-gradient(ellipse 70% 52% at 50% 32%, black 18%, transparent 78%);
-  pointer-events: none;
-}
-
-.glow {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(110px);
-  z-index: 0;
-  pointer-events: none;
-  will-change: transform;
-}
-/* 三盞燈各有自己的顏色層次與漂移節奏。
-   同步移動的光暈一眼就是動畫；錯開週期之後才像空氣在流動。 */
-.glow-1 {
-  width: 46vmax; height: 46vmax;
-  max-width: 900px; max-height: 900px;
-  background: radial-gradient(circle,
-    rgba(123, 92, 255, 0.75) 0%, rgba(80, 48, 190, 0.4) 38%, transparent 66%);
-  top: -14vmax; left: -10vmax;
-  opacity: 0.7;
-  animation: glowDriftA 19s ease-in-out infinite;
-}
-.glow-2 {
-  width: 42vmax; height: 42vmax;
-  max-width: 840px; max-height: 840px;
-  background: radial-gradient(circle,
-    rgba(255, 77, 141, 0.7) 0%, rgba(150, 30, 80, 0.38) 40%, transparent 68%);
-  bottom: -12vmax; right: -9vmax;
-  opacity: 0.62;
-  animation: glowDriftB 25s ease-in-out infinite;
-}
-.glow-3 {
-  width: 36vmax; height: 36vmax;
-  max-width: 740px; max-height: 740px;
-  background: radial-gradient(circle,
-    rgba(255, 181, 71, 0.62) 0%, rgba(200, 100, 40, 0.3) 42%, transparent 70%);
-  top: 38%; left: 42%;
-  opacity: 0.5;
-  animation: glowDriftC 31s ease-in-out infinite;
-}
-
-@keyframes glowDriftA {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50%      { transform: translate(46px, 28px) scale(1.08); }
-}
-@keyframes glowDriftB {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  45%      { transform: translate(-38px, -34px) scale(1.1); }
-}
-@keyframes glowDriftC {
-  0%, 100% { transform: translate(0, 0) scale(0.96); }
-  40%      { transform: translate(-30px, 24px) scale(1.06); }
-  72%      { transform: translate(24px, -18px) scale(1.02); }
-}
+/* 裝飾性網格與彩色光暈整組移除 —— 那是搶戲的東西 */
+.grid-bg, .glow { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  body::before, .glow { animation: none; }
+  body::before { animation: none; }
 }
 
 /* ====== 導覽列 ====== */
@@ -183,14 +115,11 @@ body::after {
   filter: drop-shadow(0 0 12px rgba(255, 77, 141, 0.5));
 }
 .logo-text {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-weight: 800;
   font-size: 22px;
   letter-spacing: 1px;
-  background: linear-gradient(135deg, #FFB547, #FF4D8D, #7B5CFF);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent-warm);
 }
 
 .nav-links {
@@ -259,15 +188,19 @@ body::after {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
-  background: rgba(123, 92, 255, 0.1);
-  border: 1px solid rgba(123, 92, 255, 0.3);
-  border-radius: 100px;
-  font-size: 13px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  font-size: 11px;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
   color: var(--text-dim);
-  margin-bottom: 28px;
-  font-weight: 500;
+  margin-bottom: 30px;
+  font-weight: 400;
 }
+/* 會呼吸的點拿掉：它不傳達任何資訊，只是動來動去 */
+.badge .dot { display: none; }
 .badge .dot {
   width: 8px; height: 8px;
   background: var(--accent-gold);
@@ -282,7 +215,7 @@ body::after {
 }
 
 .hero-title {
-  font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-weight: 900;
   font-size: clamp(48px, 7vw, 96px);
   line-height: 1;
@@ -291,11 +224,9 @@ body::after {
 }
 .gradient-text {
   display: block;
-  background: linear-gradient(135deg, #FFB547 0%, #FF4D8D 50%, #7B5CFF 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 0 30px rgba(255, 77, 141, 0.4));
+  background: none;
+  color: var(--accent-warm);
+  filter: none;
 }
 .hero-sub-line {
   display: block;
@@ -314,10 +245,7 @@ body::after {
 .hero-desc strong {
   color: var(--text);
   font-weight: 700;
-  background: linear-gradient(135deg, var(--accent-gold), var(--accent-pink));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent-warm);
 }
 
 .cta-row {
@@ -332,11 +260,10 @@ body::after {
   align-items: center;
   gap: 10px;
   padding: 16px 32px;
-  background: linear-gradient(135deg, var(--accent-gold), var(--accent-pink), var(--accent-purple));
-  background-size: 200% 200%;
+  background: var(--accent-warm);
   border: none;
-  border-radius: 14px;
-  color: white;
+  border-radius: 4px;
+  color: #17140D;
   font-size: 16px;
   font-weight: 700;
   font-family: inherit;
@@ -361,7 +288,7 @@ body::after {
   padding: 16px 28px;
   background: transparent;
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 4px;
   color: var(--text);
   font-size: 16px;
   font-weight: 500;
@@ -380,13 +307,10 @@ body::after {
   gap: 32px;
 }
 .stat-num {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 32px;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--accent-gold), var(--accent-pink));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent-warm);
 }
 .stat-label {
   font-size: 13px;
@@ -446,18 +370,12 @@ body::after {
   align-items: center;
   gap: 11px;
   padding: 12px 16px;
-  background:
-    linear-gradient(150deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 55%),
-    rgba(13, 14, 34, 0.72);
-  backdrop-filter: blur(18px) saturate(1.2);
-  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  background: rgba(14, 12, 18, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--border);
-  border-radius: 15px;
-  /* 三層陰影：貼近的暗邊、擴散的落影、內側一道高光 */
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.35),
-    0 14px 40px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   animation: floatCard 6s ease-in-out infinite;
   transition: box-shadow 0.35s ease, border-color 0.35s ease;
   z-index: 3;
@@ -522,10 +440,10 @@ body::after {
   position: absolute;
   top: 38%; left: 50%;
   width: 250px; height: 250px;
-  border: 1px solid rgba(255, 181, 71, 0.28);
+  border: 1px solid rgba(232, 200, 122, 0.1);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 60px rgba(255, 181, 71, 0.16), inset 0 0 50px rgba(255, 77, 141, 0.1);
+  box-shadow: none;
   animation: holoRotate 14s linear infinite;
 }
 .holo-ring.ring-2 {
@@ -680,7 +598,7 @@ body::after {
   letter-spacing: 1px;
 }
 .dl-value {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 16px;
   font-weight: 700;
   color: var(--accent-gold);
@@ -734,7 +652,7 @@ body::after {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border);
-  border-radius: 18px;
+  border-radius: 5px;
   transition: all 0.3s;
   cursor: pointer;
 }

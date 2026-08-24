@@ -96,17 +96,16 @@
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .cand-code {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 11px; letter-spacing: 1px;
   color: var(--text-dim);
 }
 .cand-score { text-align: right; flex-shrink: 0; }
 .cand-score-num {
   display: block;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 26px; font-weight: 800;
-  background: linear-gradient(135deg, #FFB547, #FF4D8D);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+  color: var(--accent-warm);
 }
 .cand-score-label {
   font-size: 10px; letter-spacing: 1.5px;
@@ -206,7 +205,7 @@
   pointer-events: none;
 }
 .mm-title {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 30px; font-weight: 800;
   margin-bottom: 24px;
 }
