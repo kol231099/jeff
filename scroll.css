@@ -423,3 +423,79 @@
   width: 100% !important; align-self: stretch !important; margin: 0 !important;
   transform: none !important; opacity: 1 !important; filter: none !important;
 }
+
+/* ===== 倒酒影片：捲動擦洗 ===== */
+.pour { position: relative; }
+.pour-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+.pour-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 影片本身偏暖亮，壓一點才接得上網站的暗色調 */
+  filter: brightness(.82) saturate(.94) contrast(1.04);
+}
+/* 上下壓暗，讓文字有落點；中段保持透明不擋畫面 */
+.pour-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(7,6,10,.88) 0%, rgba(7,6,10,.18) 28%,
+                    rgba(7,6,10,.22) 62%, rgba(7,6,10,.92) 100%),
+    radial-gradient(ellipse 90% 70% at 50% 50%, transparent 40%, rgba(7,6,10,.5) 100%);
+}
+.pour-copy {
+  position: relative;
+  z-index: 1;
+  width: calc(100% - var(--gutter) * 2);
+  max-width: var(--measure);
+  align-self: start;
+  padding-top: 20vh;
+  /* 隨擦洗進度淡出，讓畫面在後半段留給倒酒本身 */
+  opacity: calc(1 - var(--scrub, 0) * 1.5);
+  transition: opacity .2s linear;
+}
+.pour-copy h2 {
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
+  font-size: clamp(34px, 5vw, 74px);
+  font-weight: 400;
+  line-height: 1.12;
+  margin: 0 0 18px;
+  color: var(--text);
+}
+.pour-copy p { font-size: 13px; letter-spacing: 1.4px; color: var(--text-dim); margin: 0; }
+
+/* 進度條：知道自己滑到哪 */
+.pour-track {
+  position: absolute;
+  left: max(var(--gutter), calc((100vw - var(--measure)) / 2));
+  right: max(var(--gutter), calc((100vw - var(--measure)) / 2));
+  bottom: 7vh;
+  height: 1px;
+  background: rgba(255,255,255,.12);
+  z-index: 1;
+}
+.pour-track b {
+  display: block;
+  height: 100%;
+  background: var(--accent-warm);
+  transform: scaleX(var(--scrub, 0));
+  transform-origin: 0 50%;
+}
+
+@media (max-width: 900px) {
+  .pour-copy { padding-top: 16vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pour { height: auto !important; }
+  .pour-stage { position: static; height: 70vh; }
+  .pour-copy { opacity: 1; }
+}

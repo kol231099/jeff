@@ -124,7 +124,64 @@
     update();
   }
 
-  /* ---------- 4. 導讀：逐句點亮 ---------- */
+  /* ---------- 4. 倒酒影片：捲動擦洗播放進度 ----------
+     不呼叫 play()，而是直接把捲動進度寫進 currentTime。
+     影片已重新編碼成每 4 格一個關鍵影格，所以 seek 幾乎即時。 */
+
+  // 影片每一秒對應多少捲動像素。這是唯一要調的旋鈕：
+  // 調大 = 滑得更久（更慢），調小 = 更快滑完。
+  const SCRUB_PX_PER_SEC = 480;
+
+  function initScrub() {
+    const secs = [...document.querySelectorAll('[data-scrub]')];
+    if (!secs.length) return;
+
+    const setup = sec => {
+      const v = sec.querySelector('[data-scrub-video]');
+      if (!v) return null;
+      const dur = v.duration;
+      if (!dur || !isFinite(dur)) return null;
+      const run = reduce ? 0 : Math.round(dur * SCRUB_PX_PER_SEC);
+      sec.style.height = `${innerHeight + run}px`;
+      return { sec, v, dur, run };
+    };
+
+    let items = [];
+    const build = () => { items = secs.map(setup).filter(Boolean); update(); };
+
+    let ticking = false;
+    function update() {
+      for (const { sec, v, dur, run } of items) {
+        if (!run) continue;
+        const p = Math.min(1, Math.max(0, -sec.getBoundingClientRect().top / run));
+        const t = p * dur;
+        // 差距太小就不寫入：每格都 seek 會讓 Safari 卡頓
+        if (Math.abs(v.currentTime - t) > 1 / 48) {
+          try { v.currentTime = t; } catch (e) {}
+        }
+        sec.style.setProperty('--scrub', p.toFixed(4));
+      }
+    }
+
+    addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { update(); ticking = false; });
+    }, { passive: true });
+    addEventListener('resize', build);
+
+    // 影片要先知道長度才能換算行程
+    for (const sec of secs) {
+      const v = sec.querySelector('[data-scrub-video]');
+      if (!v) continue;
+      if (v.readyState >= 1) build();
+      else v.addEventListener('loadedmetadata', build, { once: true });
+      // 有些瀏覽器不先觸碰就不解碼第一格
+      v.addEventListener('loadeddata', () => { try { v.currentTime = 0.001; } catch (e) {} }, { once: true });
+    }
+  }
+
+  /* ---------- 5. 導讀：逐句點亮 ---------- */
   function initGuide() {
     const secs = [...document.querySelectorAll('[data-guide]')];
     if (!secs.length) return;
@@ -163,7 +220,7 @@
     update();
   }
 
-  /* ---------- 5. 導覽列隨捲動收起 ---------- */
+  /* ---------- 6. 導覽列隨捲動收起 ---------- */
   function initNav() {
     const nav = document.querySelector('.navbar');
     if (!nav) return;
@@ -184,7 +241,7 @@
     update();
   }
 
-  const start = () => { initPin(); initGuide(); initReveal(); initProgress(); initNav(); };
+  const start = () => { initPin(); initScrub(); initGuide(); initReveal(); initProgress(); initNav(); };
   if (document.readyState === 'loading') addEventListener('DOMContentLoaded', start);
   else start();
 })();
