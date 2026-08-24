@@ -260,7 +260,8 @@ body::after {
   font-size: 15px;
   color: var(--text-dim);
   margin: 40px 0 56px;
-  max-width: 38ch;                        /* 中文行長比拉丁文短才好讀 */
+  max-width: 38ch;
+  text-wrap: pretty;                        /* 中文行長比拉丁文短才好讀 */
   line-height: 2.05;
   letter-spacing: 0.02em;
 }
@@ -861,22 +862,26 @@ html[lang="en"] .hero-sub-line { font-style: italic; }
 
 /* 中文標題：字面滿，需要更鬆的字距與略低的字級 */
 html[lang="zh-Hant"] .hero-title {
-  font-size: clamp(44px, 5.8vw, 84px);
-  letter-spacing: 0.04em;
-  font-weight: 500;                  /* 中文襯線在深底需要多一點重量 */
-  line-height: 1.18;
+  font-size: clamp(46px, 6vw, 88px);
+  letter-spacing: 0.06em;
+  font-weight: 600;                  /* 大字級的中文襯線需要重量才有存在感 */
+  line-height: 1.14;
 }
 html[lang="zh-Hant"] .hero-sub-line {
-  letter-spacing: 0.12em;            /* 副標拉開，與主標區隔 */
+  font-size: 0.66em;                 /* 拉開級距：主標與副標不是同一個層級 */
+  letter-spacing: 0.22em;            /* 字少的行拉開字距，視覺長度才平衡 */
   font-weight: 300;
+  margin-top: 14px;
 }
 /* 中文內文用無襯線：襯線中文在 15px 會糊 */
 html[lang="zh-Hant"] .hero-desc {
   font-family: 'Noto Sans TC', 'Space Grotesk', sans-serif;
   font-weight: 300;
   letter-spacing: 0.05em;
-  line-height: 2.1;
-  max-width: 30ch;
+  line-height: 2.15;
+  max-width: 34ch;
+  line-break: strict;      /* 不在標點或詞中不當斷開 */
+  text-wrap: pretty;       /* 避免結尾孤字 */
 }
 /* 中文的字距不該套用拉丁文的負值 */
 html[lang="zh-Hant"] .badge { letter-spacing: 2.6px; }
