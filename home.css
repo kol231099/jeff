@@ -361,3 +361,16 @@
   color: #0a0b1a;
   background: linear-gradient(120deg, #FFB547, #E8C87A);
 }
+
+/* 情境卡：編號取代 emoji，並靠字級而非色塊建立層次 */
+.scene-idx {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 34px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--accent-gold);
+  opacity: .5;
+  line-height: 1;
+  margin-bottom: 20px;
+  font-variant-numeric: tabular-nums;
+}

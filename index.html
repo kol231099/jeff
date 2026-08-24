@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;600&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=25" />
-<link rel="stylesheet" href="transition.css?v=21" />
-<link rel="stylesheet" href="home.css?v=17" />
+<link rel="stylesheet" href="styles.css?v=26" />
+<link rel="stylesheet" href="transition.css?v=22" />
+<link rel="stylesheet" href="home.css?v=18" />
 <script>
 /* 換頁抵達時，在第一個影格之前就蓋住畫面，避免閃爍。
    若 JS 之後出錯，3 秒後自動解除，不會把頁面永遠遮住。 */
@@ -88,7 +88,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
           <span data-i18n="home.cta_quiz">開始我的品味測驗</span>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </a>
-        <a href="cocktail.html" class="btn-ghost" style="text-decoration:none;display:inline-flex;align-items:center;" data-i18n="home.cta_cocktail">🍹 調酒生成器</a>
+        <a href="cocktail.html" class="btn-ghost" style="text-decoration:none;display:inline-flex;align-items:center;" data-i18n="home.cta_cocktail">調酒生成器</a>
       </div>
 
     </div>
@@ -97,28 +97,28 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
     <div class="hero-visual">
       <!-- 環繞小卡 -->
       <div class="float-card fc-1">
-        <div class="fc-icon">🍷</div>
+        <div class="fc-idx">01</div>
         <div class="fc-text">
           <div class="fc-title" data-i18n="home.card_wine">紅酒</div>
           <div class="fc-tag" data-i18n="home.card_wine_tag">果香 · 濃郁</div>
         </div>
       </div>
       <div class="float-card fc-2">
-        <div class="fc-icon">🥃</div>
+        <div class="fc-idx">02</div>
         <div class="fc-text">
           <div class="fc-title" data-i18n="home.card_whisky">威士忌</div>
           <div class="fc-tag" data-i18n="home.card_whisky_tag">煙燻 · 深沉</div>
         </div>
       </div>
       <div class="float-card fc-3">
-        <div class="fc-icon">🍸</div>
+        <div class="fc-idx">03</div>
         <div class="fc-text">
           <div class="fc-title" data-i18n="home.card_martini">馬丁尼</div>
           <div class="fc-tag" data-i18n="home.card_martini_tag">優雅 · 俐落</div>
         </div>
       </div>
       <div class="float-card fc-4">
-        <div class="fc-icon">🍺</div>
+        <div class="fc-idx">04</div>
         <div class="fc-text">
           <div class="fc-title" data-i18n="home.card_beer">精釀啤酒</div>
           <div class="fc-tag" data-i18n="home.card_beer_tag">清爽 · 隨興</div>
@@ -336,25 +336,25 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
     <p class="home-lead" data-i18n="home.when_lead">不是只有派對才需要酒。PourMatch 替你讀懂每一個微小情緒，把對的酒在對的時間遞到你手裡。</p>
     <div class="scene-grid">
       <div class="scene-card" style="--scene-color:#FFB547;">
-        <div class="scene-icon">🌙</div>
+        <div class="scene-idx">01</div>
         <h3 data-i18n="home.s1_t">失眠的深夜</h3>
         <p data-i18n="home.s1_d">大腦關不掉的那種夜，AI 會推一杯柔軟、甜度剛好、能讓肩膀放下的調酒。</p>
         <span class="scene-tag" data-i18n="home.s1_tag">低酒精 · 助眠系</span>
       </div>
       <div class="scene-card" style="--scene-color:#FF4D8D;">
-        <div class="scene-icon">💌</div>
+        <div class="scene-idx">02</div>
         <h3 data-i18n="home.s2_t">想為他/她調一杯</h3>
         <p data-i18n="home.s2_d">輸入對方的個性，AI 替你譯成一杯只屬於兩人的飲品。比情書更難複製。</p>
         <span class="scene-tag" data-i18n="home.s2_tag">禮物模式 · 客製</span>
       </div>
       <div class="scene-card" style="--scene-color:#7B5CFF;">
-        <div class="scene-icon">🥂</div>
+        <div class="scene-idx">03</div>
         <h3 data-i18n="home.s3_t">朋友臨時來家裡</h3>
         <p data-i18n="home.s3_d">冰箱只有半瓶威士忌？告訴 AI 你有什麼，立刻給你一份能變出來的酒單。</p>
         <span class="scene-tag" data-i18n="home.s3_tag">在家酒吧 · 即興</span>
       </div>
       <div class="scene-card" style="--scene-color:#00E5FF;">
-        <div class="scene-icon">🎯</div>
+        <div class="scene-idx">04</div>
         <h3 data-i18n="home.s4_t">結束一場硬仗後</h3>
         <p data-i18n="home.s4_d">專案上線、考完試、簡報結束。給自己一杯像獎牌的酒，AI 懂這種儀式感。</p>
         <span class="scene-tag" data-i18n="home.s4_tag">犒賞模式 · 強勁</span>
@@ -377,7 +377,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
       <div class="show-card" style="--orb-a:#7B5CFF;--orb-b:#00E5FF;--orb-glow:rgba(123,92,255,.45);">
         <div class="show-orb"></div>
         <h3 class="show-name">Midnight Code</h3>
-        <div class="show-tags" data-i18n-html="home.c2_tags"><span>🔥 煙燻</span><span>🌿 草本</span><span>強勁</span></div>
+        <div class="show-tags" data-i18n-html="home.c2_tags"><span>煙燻</span><span>草本</span><span>強勁</span></div>
         <p class="show-story" data-i18n="home.c2_story">寫給凌晨三點還在 debug 的工程師——苦得剛好，能把腦袋燒亮。</p>
       </div>
       <div class="show-card" style="--orb-a:#FF4D8D;--orb-b:#7B5CFF;--orb-glow:rgba(255,77,141,.45);">
@@ -432,12 +432,12 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
         <span data-i18n="home.final_cta1">立即開始品味測驗</span>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </a>
-      <a href="cocktail.html" class="btn-ghost" style="text-decoration:none;display:inline-flex;align-items:center;" data-i18n="home.final_cta2">🍹 直接調一杯</a>
+      <a href="cocktail.html" class="btn-ghost" style="text-decoration:none;display:inline-flex;align-items:center;" data-i18n="home.final_cta2">直接調一杯</a>
     </div>
   </section>
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="i18n.js?v=11"></script>
+  <script src="i18n.js?v=12"></script>
   <script src="transition.js?v=17"></script>
   <script src="particles.js?v=10"></script>
   <script src="auth.js?v=13"></script>

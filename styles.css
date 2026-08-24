@@ -5,14 +5,14 @@
   --bg-2: #0f1028;
   /* 外殼只用一個暖金重音。粉紫仍保留變數，因為酒杯與酒液是「內容」，
      顏色留給內容 —— 這是參考站的邏輯：中性的殼，有顏色的內容。 */
-  --accent-gold: #C9A227;
-  --accent-warm: #E8C87A;
+  --accent-gold: #B9A47A;
+  --accent-warm: #DCCBA6;
   --accent-pink: #FF4D8D;
   --accent-purple: #7B5CFF;
   --accent-cyan: #00E5FF;
-  --text: #EDE8E0;
-  --text-dim: #8A8578;
-  --border: rgba(237, 232, 224, 0.09);
+  --text: #E9E4DA;
+  --text-dim: #8E887C;
+  --border: rgba(233, 228, 218, 0.07);
   --card-bg: rgba(237, 232, 224, 0.03);
   --glow-pink: 0 0 40px rgba(255, 77, 141, 0.45);
   --glow-gold: 0 0 40px rgba(255, 181, 71, 0.4);
@@ -85,22 +85,23 @@ body::after {
 /* ====== 導覽列 ====== */
 .navbar {
   position: fixed;
-  top: 20px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - 40px);
-  max-width: 1400px;
+  width: calc(100% - 96px);
+  max-width: 1320px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 28px;
-  background: rgba(10, 11, 26, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border);
-  border-radius: 20px;
+  padding: 26px 4px;
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 0;
+  border-bottom: 1px solid var(--border);  /* 一條髮絲線取代整個容器 */
+  border-radius: 0;
   z-index: 100;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
 }
 
 .logo {
@@ -130,9 +131,11 @@ body::after {
 .nav-links a {
   color: var(--text-dim);
   text-decoration: none;
-  font-size: 15px;
-  font-weight: 500;
-  transition: color 0.25s;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 1.9px;
+  text-transform: uppercase;
+  transition: color .5s cubic-bezier(.22,1,.36,1);
   position: relative;
 }
 .nav-links a:hover { color: var(--text); }
@@ -178,8 +181,9 @@ body::after {
   align-items: center;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 140px 40px 80px;
+  padding: 210px 4px 140px;
   min-height: 100vh;
+  gap: 90px;
 }
 
 .hero-content { animation: fadeInUp 0.9s ease-out; }
@@ -216,11 +220,11 @@ body::after {
 
 .hero-title {
   font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
-  font-weight: 900;
-  font-size: clamp(48px, 7vw, 96px);
-  line-height: 1;
-  letter-spacing: -2px;
-  margin-bottom: 24px;
+  font-weight: 300;                       /* 襯線體靠字形，不靠粗細 */
+  font-size: clamp(54px, 8.4vw, 122px);   /* 放大，讓字本身成為版面 */
+  line-height: 0.98;
+  letter-spacing: -0.015em;               /* 襯線體不該像無襯線那樣擠 */
+  margin-bottom: 34px;
 }
 .gradient-text {
   display: block;
@@ -231,16 +235,19 @@ body::after {
 .hero-sub-line {
   display: block;
   color: var(--text);
-  font-size: 0.75em;
-  margin-top: 8px;
+  font-size: 0.78em;
+  font-style: italic;                     /* 兩行之間做出層次，不是同一個聲音 */
+  font-weight: 300;
+  margin-top: 2px;
 }
 
 .hero-desc {
-  font-size: 18px;
+  font-size: 15.5px;
   color: var(--text-dim);
-  margin-bottom: 36px;
-  max-width: 520px;
-  line-height: 1.7;
+  margin-bottom: 48px;
+  max-width: 44ch;                        /* 以字元數控制行長，不是像素 */
+  line-height: 1.95;                      /* 留白從行距開始 */
+  letter-spacing: 0.01em;
 }
 .hero-desc strong {
   color: var(--text);
@@ -259,18 +266,21 @@ body::after {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 16px 32px;
+  padding: 19px 38px;
   background: var(--accent-warm);
   border: none;
-  border-radius: 4px;
-  color: #17140D;
-  font-size: 16px;
-  font-weight: 700;
+  border-radius: 2px;
+  color: #14120C;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 8px 24px rgba(232, 200, 122, 0.35);
-  animation: gradientShift 4s ease infinite;
+  /* 慢而長的緩動，急促的 0.25s 會顯得廉價 */
+  transition: background .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1);
+  box-shadow: none;                       /* 發光的按鈕不高級 */
+  animation: none;
 }
 .btn-primary:hover {
   transform: translateY(-2px);
@@ -285,16 +295,18 @@ body::after {
 }
 
 .btn-ghost {
-  padding: 16px 28px;
+  padding: 19px 34px;
   background: transparent;
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 2px;
   color: var(--text);
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.25s;
+  transition: border-color .55s cubic-bezier(.22,1,.36,1), color .55s cubic-bezier(.22,1,.36,1);
 }
 .btn-ghost:hover {
   background: rgba(255, 255, 255, 0.05);
@@ -796,3 +808,30 @@ body::after {
 
 /* 各頁 eyebrow 裡的呼吸點：不傳達資訊，只是動來動去 */
 .cocktail-badge .dot, .home-eyebrow .dot, .lang-eyebrow .dot, .start-eyebrow .dot { display: none; }
+
+/* ===== 精品版面的細節 ===== */
+/* 卡片編號：細襯線數字取代彩色 emoji */
+.fc-idx {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 22px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--accent-gold);
+  line-height: 1;
+  min-width: 26px;
+  font-variant-numeric: tabular-nums;
+}
+/* 導覽列連結的底線改成從中間展開的髮絲線，而不是變色 */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 50%; bottom: -6px;
+  width: 0; height: 1px;
+  background: var(--accent-warm);
+  transition: width .55s cubic-bezier(.22,1,.36,1), left .55s cubic-bezier(.22,1,.36,1);
+}
+.nav-links a:hover { color: var(--text); }
+.nav-links a:hover::after { width: 100%; left: 0; }
+
+.btn-primary:hover { background: #EBDCBA; transform: translateY(-1px); }
+.btn-ghost:hover { border-color: rgba(220, 203, 166, .42); color: var(--accent-warm); }
