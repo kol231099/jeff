@@ -131,7 +131,7 @@
   width: 26px; height: 26px;
   display: grid; place-items: center;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-gold), var(--accent-pink));
+  background: linear-gradient(135deg, var(--accent-warm), var(--accent-gold));
   color: #0a0b1a;
   font-size: 14px;
   font-weight: 800;
@@ -146,7 +146,7 @@
   padding: 17px 44px;
   border: none;
   border-radius: 100px;
-  background: linear-gradient(135deg, var(--accent-gold), var(--accent-pink), var(--accent-purple));
+  background: linear-gradient(135deg, var(--accent-warm), var(--accent-gold));
   background-size: 200% 200%;
   color: #fff;
   font-family: inherit;

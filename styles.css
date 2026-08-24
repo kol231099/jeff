@@ -141,7 +141,7 @@ body::after {
   position: absolute;
   bottom: -6px; left: 0;
   width: 0; height: 2px;
-  background: linear-gradient(90deg, var(--accent-gold), var(--accent-pink));
+  background: linear-gradient(90deg, var(--accent-warm), var(--accent-gold));
   transition: width 0.3s;
 }
 .nav-links a:hover::after { width: 100%; }
@@ -574,7 +574,7 @@ body::after {
 }
 .dl-top .dl-line { top: 100%; left: 10%; transform: rotate(55deg); transform-origin: left; }
 .dl-right .dl-line { top: 50%; right: 100%; }
-.dl-left .dl-line { top: 50%; left: 100%; background: linear-gradient(-90deg, var(--accent-purple), transparent); box-shadow: 0 0 8px var(--accent-purple); }
+.dl-left .dl-line { top: 50%; left: 100%; background: linear-gradient(-90deg, var(--accent-warm), transparent); box-shadow: 0 0 8px var(--accent-warm); }
 
 .dl-box {
   padding: 8px 14px;

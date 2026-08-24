@@ -105,7 +105,7 @@
   border: 1px solid rgba(232, 200, 122, 0.3);
   border-radius: 100px;
   font-size: 11px;
-  color: var(--accent-cyan, #E8C87A);
+  color: var(--accent-warm);
 }
 .history-summary {
   font-size: 14px;

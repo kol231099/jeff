@@ -39,7 +39,7 @@
 .profile-avatar {
   width: 110px; height: 110px;
   border-radius: 50%;
-  border: 3px solid var(--accent-pink);
+  border: 3px solid var(--accent-warm);
   box-shadow: 0 0 32px rgba(232, 200, 122, .4);
   object-fit: cover;
 }
@@ -74,7 +74,7 @@
 .code-hint { font-size: 12px; color: var(--text-dim); margin-top: 8px; }
 .btn-copy {
   padding: 12px 20px;
-  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  background: linear-gradient(135deg, var(--accent-warm), var(--accent-gold));
   border: none; border-radius: 100px;
   color: #fff; font-weight: 700; font-family: inherit;
   cursor: pointer; transition: all .2s;
@@ -269,7 +269,7 @@
 .match-avatar {
   width: 80px; height: 80px;
   border-radius: 50%;
-  border: 2px solid var(--accent-pink);
+  border: 2px solid var(--accent-warm);
   object-fit: cover;
 }
 .match-score {
@@ -291,7 +291,7 @@
 .match-actions { display: flex; flex-direction: column; gap: 8px; }
 .btn-add-friend {
   padding: 10px 18px;
-  background: linear-gradient(135deg, var(--accent-gold), var(--accent-pink));
+  background: linear-gradient(135deg, var(--accent-warm), var(--accent-gold));
   border: none; border-radius: 100px;
   color: #fff; font: inherit; font-weight: 700; cursor: pointer;
   font-size: 13px; transition: all .2s;
@@ -329,7 +329,7 @@
 .publish-row textarea:focus { outline: none; border-color: rgba(232, 200, 122, .5); }
 .btn-publish {
   padding: 10px 18px;
-  background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+  background: linear-gradient(135deg, var(--accent-warm), var(--accent-warm));
   border: none; border-radius: 100px;
   color: #fff; font: inherit; font-weight: 700; cursor: pointer;
   white-space: nowrap;

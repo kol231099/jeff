@@ -343,7 +343,7 @@
 .btn-showcase .bs-dot {
   width: 7px; height: 7px;
   border-radius: 50%;
-  background: var(--accent-cyan, #E8C87A);
+  background: var(--accent-warm);
   box-shadow: 0 0 10px #E8C87A;
   animation: pulse 1.8s ease-in-out infinite;
 }

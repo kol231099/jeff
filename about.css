@@ -104,7 +104,7 @@
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--accent-gold), var(--accent-pink), var(--accent-purple));
+  background: linear-gradient(90deg, var(--accent-warm), var(--accent-gold));
   opacity: 0.5;
 }
 .about-feat:hover {
@@ -163,7 +163,7 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-gold), var(--accent-pink), var(--accent-purple));
+  background: linear-gradient(135deg, var(--accent-warm), var(--accent-gold));
   display: flex;
   align-items: center;
   justify-content: center;
