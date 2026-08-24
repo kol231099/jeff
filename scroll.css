@@ -16,7 +16,7 @@
 /* ---------- 進場揭露 ---------- */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(26px);
+  transform: translateY(34px);
   transition: opacity .95s cubic-bezier(.22,1,.36,1),
               transform .95s cubic-bezier(.22,1,.36,1);
   will-change: opacity, transform;
@@ -75,7 +75,7 @@
   gap: clamp(40px, 5vw, 96px);
   height: 100%;
   padding-left: max(var(--gutter), calc((100vw - var(--measure)) / 2));
-  padding-right: 26vw;
+  padding-right: 34vw;   /* 尾段留白：最後一項要能走到畫面中央 */
   will-change: transform;
 }
 

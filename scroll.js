@@ -25,11 +25,16 @@
       pin.classList.remove('pin-off');
       // 需要橫向捲過的距離
       const dist = Math.max(0, track.scrollWidth - innerWidth + 96);
-      // 1:1 對應時只釘住 0.78 個視窗高，一閃就過去了。
-      // 把垂直行程拉長成 1.7 倍，橫移走得慢，這一段才成為一個「時刻」。
-      const travel = dist * 3.2;   // 這段是主秀。太快會來不及看清楚每一杯
-      pin.style.height = `${innerHeight + travel}px`;
-      return { pin, track, dist, travel };
+      // 只按橫向距離換算的話，項目少的區塊會一閃而過（4 張卡只有 2 個視窗高）。
+      // 改成同時保證「每個項目至少佔 0.95 個視窗高」，節奏才會一致。
+      const count = [...track.children].filter(
+        el => el.classList && (el.classList.contains('lane-item') ||
+              el.classList.contains('shot') || el.classList.contains('scene-panel'))).length;
+      const travel = Math.max(dist * 3.2, count * innerHeight * 0.95);
+      // 尾段：最後一個項目走到定位後，再多留一段才放開釘住
+      const tail = innerHeight * 0.75;
+      pin.style.height = `${innerHeight + travel + tail}px`;
+      return { pin, track, dist, travel, tail };
     };
 
     let items = pins.map(setup).filter(Boolean);
@@ -37,7 +42,7 @@
     const update = () => {
       for (const { pin, track, dist, travel } of items) {
         const r = pin.getBoundingClientRect();
-        // 0 → 1：區塊頂端貼齊視窗頂端起算
+        // 0 → 1：區塊頂端貼齊視窗頂端起算。超過 1 之後進入尾段，橫移維持在底。
         const p = travel > 0 ? Math.min(1, Math.max(0, -r.top / travel)) : 0;
         track.style.transform = `translate3d(${-p * dist}px,0,0)`;
         pin.style.setProperty('--pin-progress', p.toFixed(4));
@@ -94,10 +99,10 @@
         if (!e.isIntersecting) continue;
         // 同一組內依序進場，整組同時出現會失去節奏
         const i = +(e.target.dataset.revealDelay || 0);
-        setTimeout(() => e.target.classList.add('is-in'), i * 90);
+        setTimeout(() => e.target.classList.add('is-in'), i * 130);
         io.unobserve(e.target);
       }
-    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.1 });
 
     els.forEach(e => io.observe(e));
   }

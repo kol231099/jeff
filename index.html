@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@200;300;400;500&family=Noto+Serif+TC:wght@200;300;400;500;600;700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=36" />
 <link rel="stylesheet" href="transition.css?v=31" />
-<link rel="stylesheet" href="scroll.css?v=7" />
+<link rel="stylesheet" href="scroll.css?v=11" />
 <link rel="stylesheet" href="home.css?v=27" />
 <script>
 /* 換頁抵達時，在第一個影格之前就蓋住畫面，避免閃爍。
@@ -305,23 +305,23 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
   </main>
 
   <!-- 底部特色列 -->
-  <section class="features" id="features" data-reveal>
-    <div class="feat">
+  <section class="features" id="features">
+    <div class="feat" data-reveal data-reveal-delay="1">
       <div class="feat-icon">🧠</div>
       <div class="feat-title" data-i18n="home.feat1_t">AI 味覺分析</div>
       <div class="feat-desc" data-i18n="home.feat1_d">12 題深入分析你的風味 DNA</div>
     </div>
-    <div class="feat">
+    <div class="feat" data-reveal data-reveal-delay="2">
       <div class="feat-icon">💞</div>
       <div class="feat-title" data-i18n="home.feat2_t">同好配對</div>
       <div class="feat-desc" data-i18n="home.feat2_d">用酒單找到氣味相投的人</div>
     </div>
-    <div class="feat">
+    <div class="feat" data-reveal data-reveal-delay="3">
       <div class="feat-icon">🌃</div>
       <div class="feat-title" data-i18n="home.feat3_t">情境推薦</div>
       <div class="feat-desc" data-i18n="home.feat3_d">心情、場合、天氣一鍵搭配</div>
     </div>
-    <div class="feat">
+    <div class="feat" data-reveal data-reveal-delay="4">
       <div class="feat-icon">📖</div>
       <div class="feat-title" data-i18n="home.feat4_t">品酒日記</div>
       <div class="feat-desc" data-i18n="home.feat4_d">紀錄喝過的每一杯與心情</div>
@@ -549,32 +549,32 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
   </section>
 
   <!-- FAQ -->
-  <section class="home-section" data-reveal>
-    <div class="home-eyebrow"><span>FAQ</span></div>
-    <h2 data-i18n="home.faq_t">大家都在問</h2>
-    <p class="home-lead" data-i18n="home.faq_lead">第一次用 PourMatch？這幾題大概會替你解答 80% 的疑問。</p>
+  <section class="home-section">
+    <div class="home-eyebrow" data-reveal><span>FAQ</span></div>
+    <h2 data-reveal data-reveal-delay="1" data-i18n="home.faq_t">大家都在問</h2>
+    <p class="home-lead" data-reveal data-reveal-delay="2" data-i18n="home.faq_lead">第一次用 PourMatch？這幾題大概會替你解答 80% 的疑問。</p>
     <div class="faq-list">
-      <details class="faq-item">
+      <details class="faq-item" data-reveal data-reveal-delay="1">
         <summary data-i18n="home.q1">不會喝酒，也能用嗎？</summary>
         <div class="faq-body" data-i18n-html="home.a1">完全可以。AI 調酒生成器可以把酒精強度調到「微醺」甚至生成 <strong>無酒精 mocktail</strong>。我們關心的是味覺與情緒，不是你的酒量。</div>
       </details>
-      <details class="faq-item">
+      <details class="faq-item" data-reveal data-reveal-delay="2">
         <summary data-i18n="home.q2">AI 給的調酒配方真的能在家做嗎？</summary>
         <div class="faq-body" data-i18n-html="home.a2">AI 會以家用酒吧能取得的材料優先生成配方，並附上分量、步驟與裝飾建議。如果碰到稀有材料，AI 也會提供常見替代品。</div>
       </details>
-      <details class="faq-item">
+      <details class="faq-item" data-reveal data-reveal-delay="3">
         <summary data-i18n="home.q3">配對到的酒友會看到我的個資嗎？</summary>
         <div class="faq-body" data-i18n-html="home.a3">不會。預設只顯示頭像、暱稱與你公開的味覺檔案。要不要進一步聯繫，由你決定。每位用戶都有獨一無二的 <strong>6 碼識別代碼</strong>，只在你願意分享時才會曝光。</div>
       </details>
-      <details class="faq-item">
+      <details class="faq-item" data-reveal data-reveal-delay="4">
         <summary data-i18n="home.q4">需要付費嗎？</summary>
         <div class="faq-body" data-i18n-html="home.a4">核心功能（風味測驗、AI 調酒、社群、配對、好友）<strong>完全免費</strong>。Google 一鍵登入即可開始，沒有訂閱門檻。</div>
       </details>
-      <details class="faq-item">
+      <details class="faq-item" data-reveal data-reveal-delay="5">
         <summary data-i18n="home.q5">我的測驗結果可以分享給沒註冊的朋友嗎？</summary>
         <div class="faq-body" data-i18n-html="home.a5">可以。每個測驗結果與 AI 調酒都能生成 <strong>公開分享連結</strong>，朋友不用註冊就能看到，貼到 IG、Threads、Discord 都行。</div>
       </details>
-      <details class="faq-item">
+      <details class="faq-item" data-reveal data-reveal-delay="6">
         <summary data-i18n="home.q6">未滿法定飲酒年齡能用嗎？</summary>
         <div class="faq-body" data-i18n-html="home.a6">PourMatch 服務僅供 <strong>已達當地合法飲酒年齡</strong> 的使用者。未達標的朋友建議使用 mocktail（無酒精）模式，或先收藏起來，等到了再回來。</div>
       </details>
@@ -597,7 +597,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="i18n.js?v=13"></script>
   <script src="transition.js?v=17"></script>
-  <script src="scroll.js?v=9"></script>
+  <script src="scroll.js?v=11"></script>
   <script src="particles.js?v=10"></script>
   <script src="auth.js?v=13"></script>
 </body>
