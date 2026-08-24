@@ -457,19 +457,34 @@
   filter: none;
   /* 上下緣讓影片自己淡出，露出頁面背景，接縫就不存在。
      疊一層半透明色是蓋不掉的：只要不是全不透明，邊緣一定會透出來。 */
-  -webkit-mask-image: linear-gradient(180deg,
-    transparent 0%, rgba(0,0,0,.35) 5%, #000 17%, #000 84%, rgba(0,0,0,.4) 95%, transparent 100%);
-  mask-image: linear-gradient(180deg,
-    transparent 0%, rgba(0,0,0,.35) 5%, #000 17%, #000 84%, rgba(0,0,0,.4) 95%, transparent 100%);
+  --pour-fade: linear-gradient(180deg,
+    transparent 0%,
+    rgba(0,0,0,.06) 6%,
+    rgba(0,0,0,.20) 12%,
+    rgba(0,0,0,.44) 18%,
+    rgba(0,0,0,.72) 24%,
+    rgba(0,0,0,.92) 29%,
+    #000 34%,
+    #000 78%,
+    rgba(0,0,0,.86) 86%,
+    rgba(0,0,0,.5) 93%,
+    rgba(0,0,0,.16) 97%,
+    transparent 100%);
+  -webkit-mask-image: var(--pour-fade);
+  mask-image: var(--pour-fade);
 }
 /* 上下壓暗，讓文字有落點；中段保持透明不擋畫面 */
 .pour-shade {
   position: absolute;
   inset: 0;
   /* 只為了讓文字站得住，中段完全放行，不遮到倒酒本身 */
+  /* 上緣收到與頁面完全相同的底色，中段全放行不擋畫面 */
   background:
-    linear-gradient(180deg, rgba(7,6,10,.68) 0%, rgba(7,6,10,.06) 24%,
-                    transparent 40%, transparent 68%, rgba(7,6,10,.5) 92%, rgba(7,6,10,.78) 100%);
+    linear-gradient(180deg,
+      #09080D 0%, rgba(9,8,13,.92) 8%, rgba(9,8,13,.62) 17%,
+      rgba(9,8,13,.28) 26%, rgba(9,8,13,.08) 33%,
+      transparent 42%, transparent 68%,
+      rgba(9,8,13,.42) 88%, rgba(9,8,13,.82) 97%, #09080D 100%);
   pointer-events: none;
 }
 .pour-copy {
