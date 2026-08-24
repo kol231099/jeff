@@ -74,15 +74,7 @@ body::after {
   background-size: 160px 160px;
 }
 
-/* ====== 粒子 / 網格 / 光暈背景 ====== */
-#particles {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: .38;          /* 粒子留著，但退到幾乎察覺不到 */
-}
-
+/* ====== 網格 / 光暈背景（皆已停用）====== */
 /* 裝飾性網格與彩色光暈整組移除 —— 那是搶戲的東西 */
 .grid-bg, .glow { display: none; }
 
