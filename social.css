@@ -527,7 +527,12 @@
   background: radial-gradient(circle, rgba(255,77,141,.18), transparent 60%);
   filter: blur(60px);
   pointer-events: none;
-  animation: floatGlow 9s ease-in-out infinite;
+  animation: publishGlow 9s ease-in-out infinite;
+}
+/* styles.css 的 floatGlow 已改名，這裡用自己的一份 */
+@keyframes publishGlow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -30px) scale(1.1); }
 }
 .publish-header {
   position: relative;
