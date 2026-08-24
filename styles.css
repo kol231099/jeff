@@ -1,5 +1,7 @@
 /* ====== 基底變數 ====== */
 :root {
+  --measure: 1320px;      /* 全站共用版心 */
+  --gutter: 48px;
   --bg-0: #05060d;
   --bg-1: #0a0b1a;
   --bg-2: #0f1028;
@@ -88,8 +90,8 @@ body::after {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - 96px);
-  max-width: 1320px;
+  width: calc(100% - var(--gutter) * 2);
+  max-width: var(--measure);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -179,9 +181,10 @@ body::after {
   grid-template-columns: 1.1fr 1fr;
   gap: 60px;
   align-items: center;
-  max-width: 1400px;
+  width: calc(100% - var(--gutter) * 2);
+  max-width: var(--measure);
   margin: 0 auto;
-  padding: 172px 4px 120px;
+  padding: 172px 0 120px;   /* 左右內距歸零，邊界由版心決定 */
   min-height: 100vh;
   gap: 90px;
 }
@@ -196,12 +199,21 @@ body::after {
   background: none;
   border: 0;
   border-radius: 0;
-  font-size: 11px;
-  letter-spacing: 2.4px;
+  font-size: 10.5px;
+  letter-spacing: 3.4px;
   text-transform: uppercase;
   color: var(--text-dim);
-  margin-bottom: 30px;
+  margin-bottom: 44px;
   font-weight: 400;
+}
+/* eyebrow 上方一條短髮絲線：精品版面用線分段，不用色塊 */
+.badge::before {
+  content: '';
+  display: block;
+  width: 34px; height: 1px;
+  background: var(--accent-gold);
+  opacity: .5;
+  margin-bottom: 22px;
 }
 /* 會呼吸的點拿掉：它不傳達任何資訊，只是動來動去 */
 .badge .dot { display: none; }
@@ -220,11 +232,12 @@ body::after {
 
 .hero-title {
   font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
-  font-weight: 300;                       /* 襯線體靠字形，不靠粗細 */
-  font-size: clamp(54px, 8.4vw, 122px);   /* 放大，讓字本身成為版面 */
-  line-height: 0.98;
-  letter-spacing: -0.015em;               /* 襯線體不該像無襯線那樣擠 */
-  margin-bottom: 34px;
+  font-weight: 400;                       /* 300 在中文字上太細，深底會失重 */
+  font-size: clamp(48px, 6.6vw, 96px);    /* 收一級：滿版標題會壓垮其他層級 */
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  margin-bottom: 0;
+  text-wrap: balance;
 }
 .gradient-text {
   display: block;
@@ -234,20 +247,22 @@ body::after {
 }
 .hero-sub-line {
   display: block;
-  color: var(--text);
+  color: var(--text-dim);                 /* 色階退一級，做出前後關係 */
   font-size: 0.78em;
-  font-style: italic;                     /* 兩行之間做出層次，不是同一個聲音 */
   font-weight: 300;
   margin-top: 2px;
+  /* 中文沒有真正的斜體字，設 italic 只會得到幾何傾斜的假字。
+     只有拉丁文吃斜體；中文改用縮排與色階做層次。 */
+  font-style: normal;
 }
 
 .hero-desc {
-  font-size: 15.5px;
+  font-size: 15px;
   color: var(--text-dim);
-  margin-bottom: 48px;
-  max-width: 44ch;                        /* 以字元數控制行長，不是像素 */
-  line-height: 1.95;                      /* 留白從行距開始 */
-  letter-spacing: 0.01em;
+  margin: 40px 0 56px;
+  max-width: 38ch;                        /* 中文行長比拉丁文短才好讀 */
+  line-height: 2.05;
+  letter-spacing: 0.02em;
 }
 .hero-desc strong {
   color: var(--text);
@@ -835,3 +850,33 @@ body::after {
 
 .btn-primary:hover { background: #EBDCBA; transform: translateY(-1px); }
 .btn-ghost:hover { border-color: rgba(220, 203, 166, .42); color: var(--accent-warm); }
+
+
+/* ===== 雙語排版的光學校正 =====
+   同一個字級下，中文的視覺重量比拉丁文重、字面也更滿。
+   不分別處理，兩種語言不可能同時好看。 */
+
+/* 拉丁文才有真斜體可用 */
+html[lang="en"] .hero-sub-line { font-style: italic; }
+
+/* 中文標題：字面滿，需要更鬆的字距與略低的字級 */
+html[lang="zh-Hant"] .hero-title {
+  font-size: clamp(44px, 5.8vw, 84px);
+  letter-spacing: 0.04em;
+  font-weight: 500;                  /* 中文襯線在深底需要多一點重量 */
+  line-height: 1.18;
+}
+html[lang="zh-Hant"] .hero-sub-line {
+  letter-spacing: 0.12em;            /* 副標拉開，與主標區隔 */
+  font-weight: 300;
+}
+/* 中文內文用無襯線：襯線中文在 15px 會糊 */
+html[lang="zh-Hant"] .hero-desc {
+  font-family: 'Noto Sans TC', 'Space Grotesk', sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  line-height: 2.1;
+  max-width: 30ch;
+}
+/* 中文的字距不該套用拉丁文的負值 */
+html[lang="zh-Hant"] .badge { letter-spacing: 2.6px; }
