@@ -298,12 +298,7 @@ body::after {
   box-shadow: none;                       /* 發光的按鈕不高級 */
   animation: none;
 }
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 36px rgba(232, 200, 122, 0.55);
-}
-.btn-primary svg { transition: transform 0.3s; }
-.btn-primary:hover svg { transform: translateX(4px); }
+.btn-primary svg { transition: transform .55s cubic-bezier(.22,1,.36,1); }
 
 @keyframes gradientShift {
   0%, 100% { background-position: 0% 50%; }
@@ -324,10 +319,7 @@ body::after {
   cursor: pointer;
   transition: border-color .55s cubic-bezier(.22,1,.36,1), color .55s cubic-bezier(.22,1,.36,1);
 }
-.btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.2);
-}
+
 
 .stats {
   display: flex;
@@ -852,8 +844,37 @@ body::after {
 .nav-links a:hover { color: var(--text); }
 .nav-links a:hover::after { width: 100%; left: 0; }
 
-.btn-primary:hover { background: #EBDCBA; transform: translateY(-1px); }
-.btn-ghost:hover { border-color: rgba(220, 203, 166, .42); color: var(--accent-warm); }
+/* ===== 按鈕：加上一個真正的動作，而不只是換顏色 ===== */
+.btn-primary, .btn-ghost {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;          /* 讓偽元素待在按鈕自己的層裡 */
+}
+/* 由左而右掃過的填色。用 scaleX 而非改寬度，才不會觸發版面重算 */
+.btn-primary::before, .btn-ghost::before {
+  content: '';
+  position: absolute; inset: 0;
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform .62s cubic-bezier(.22,1,.36,1);
+}
+.btn-primary::before { background: #FFF4DC; }
+.btn-ghost::before   { background: var(--accent-warm); }
+.btn-primary:hover::before, .btn-ghost:hover::before { transform: scaleX(1); }
+/* 離開時從右側收回，來回是不同方向，手感才不呆板 */
+.btn-primary:not(:hover)::before, .btn-ghost:not(:hover)::before { transform-origin: 100% 50%; }
+
+.btn-primary:hover svg { transform: translateX(6px); }
+
+/* 幽靈鈕被填滿後，字要翻成深色才讀得到 */
+.btn-ghost:hover { color: #14120C; border-color: var(--accent-warm); }
+
+/* 字距在填色掃過時微微張開 */
+.btn-primary, .btn-ghost { transition: letter-spacing .62s cubic-bezier(.22,1,.36,1),
+                                       color .42s cubic-bezier(.22,1,.36,1),
+                                       border-color .55s ease; }
+.btn-primary:hover, .btn-ghost:hover { letter-spacing: 3px; }
 
 
 /* ===== 雙語排版的光學校正 =====

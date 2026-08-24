@@ -209,7 +209,9 @@
 /* ---------- 跑馬燈 ---------- */
 .marquee {
   overflow: hidden;
-  padding: 82px 0;
+  /* 留白要跟著字級走。68px 的字配 82px 留白比例太緊，
+     用 em 綁在字級上，之後改字級也不會再擠回去。 */
+  padding: clamp(96px, 12vw, 190px) 0;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   user-select: none;
@@ -225,7 +227,9 @@
   font-size: clamp(30px, 4.6vw, 68px);
   font-weight: 300;
   color: var(--text-dim);
-  padding: 0 34px;
+  padding: 0 clamp(38px, 3.4vw, 62px);
+  letter-spacing: .04em;
+  line-height: 1.35;          /* 中文字身高，行高太緊會貼到上下邊界 */
   white-space: nowrap;
 }
 .marquee-row span em {
