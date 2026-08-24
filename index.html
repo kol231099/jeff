@@ -8,9 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@200;300;400;500&family=Noto+Serif+TC:wght@200;300;400;500;600;700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=33" />
-<link rel="stylesheet" href="transition.css?v=29" />
-<link rel="stylesheet" href="home.css?v=25" />
+<link rel="stylesheet" href="styles.css?v=34" />
+<link rel="stylesheet" href="transition.css?v=30" />
+<link rel="stylesheet" href="scroll.css?v=2" />
+<link rel="stylesheet" href="home.css?v=26" />
 <script>
 /* 換頁抵達時，在第一個影格之前就蓋住畫面，避免閃爍。
    若 JS 之後出錯，3 秒後自動解除，不會把頁面永遠遮住。 */
@@ -20,6 +21,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
 </script>
 </head>
 <body>
+<div class="scroll-progress" data-progress aria-hidden="true"></div>
   <!-- 背景粒子 + 光暈層 -->
   <canvas id="particles"></canvas>
   <div class="grid-bg"></div>
@@ -87,6 +89,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
         <a href="cocktail.html" class="btn-ghost" style="text-decoration:none;display:inline-flex;align-items:center;" data-i18n="home.cta_cocktail">調酒生成器</a>
       </div>
 
+      <div class="scroll-cue"><i></i><span data-i18n="home.scroll_cue">向下捲動</span></div>
     </div>
 
     <!-- 中央科幻視覺：AI 酒杯全息 -->
@@ -302,7 +305,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
   </main>
 
   <!-- 底部特色列 -->
-  <section class="features" id="features">
+  <section class="features" id="features" data-reveal>
     <div class="feat">
       <div class="feat-icon">🧠</div>
       <div class="feat-title" data-i18n="home.feat1_t">AI 味覺分析</div>
@@ -325,41 +328,56 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
     </div>
   </section>
 
-  <!-- 使用情境 -->
-  <section class="home-section">
-    <div class="home-eyebrow"><span>WHEN TO POUR</span></div>
-    <h2 data-i18n="home.when_t">什麼時候，最適合來一杯？</h2>
-    <p class="home-lead" data-i18n="home.when_lead">不是只有派對才需要酒。PourMatch 替你讀懂每一個微小情緒，把對的酒在對的時間遞到你手裡。</p>
-    <div class="scene-grid">
-      <div class="scene-card" style="--scene-color:#FFB547;">
+  <!-- 使用情境：橫向釘住。垂直捲動被換算成橫向位移 -->
+  <section class="pin" data-pin>
+    <div class="pin-stage">
+      <div class="pin-head" data-reveal>
+        <div class="home-eyebrow"><span>WHEN TO POUR</span></div>
+        <h2 data-i18n="home.when_t">什麼時候，最適合來一杯？</h2>
+      </div>
+      <div class="pin-track" data-pin-track>
+        <article class="pin-panel" data-reveal data-reveal-delay="0">
         <div class="scene-idx">01</div>
         <h3 data-i18n="home.s1_t">失眠的深夜</h3>
         <p data-i18n="home.s1_d">大腦關不掉的那種夜，AI 會推一杯柔軟、甜度剛好、能讓肩膀放下的調酒。</p>
         <span class="scene-tag" data-i18n="home.s1_tag">低酒精 · 助眠系</span>
-      </div>
-      <div class="scene-card" style="--scene-color:#FF4D8D;">
+          <div class="pin-count">01 — 04</div>
+        </article>
+        <article class="pin-panel" data-reveal data-reveal-delay="1">
         <div class="scene-idx">02</div>
         <h3 data-i18n="home.s2_t">想為他/她調一杯</h3>
         <p data-i18n="home.s2_d">輸入對方的個性，AI 替你譯成一杯只屬於兩人的飲品。比情書更難複製。</p>
         <span class="scene-tag" data-i18n="home.s2_tag">禮物模式 · 客製</span>
-      </div>
-      <div class="scene-card" style="--scene-color:#7B5CFF;">
+          <div class="pin-count">02 — 04</div>
+        </article>
+        <article class="pin-panel" data-reveal data-reveal-delay="2">
         <div class="scene-idx">03</div>
         <h3 data-i18n="home.s3_t">朋友臨時來家裡</h3>
         <p data-i18n="home.s3_d">冰箱只有半瓶威士忌？告訴 AI 你有什麼，立刻給你一份能變出來的酒單。</p>
         <span class="scene-tag" data-i18n="home.s3_tag">在家酒吧 · 即興</span>
-      </div>
-      <div class="scene-card" style="--scene-color:#00E5FF;">
+          <div class="pin-count">03 — 04</div>
+        </article>
+        <article class="pin-panel" data-reveal data-reveal-delay="3">
         <div class="scene-idx">04</div>
         <h3 data-i18n="home.s4_t">結束一場硬仗後</h3>
         <p data-i18n="home.s4_d">專案上線、考完試、簡報結束。給自己一杯像獎牌的酒，AI 懂這種儀式感。</p>
         <span class="scene-tag" data-i18n="home.s4_tag">犒賞模式 · 強勁</span>
+          <div class="pin-count">04 — 04</div>
+        </article>
       </div>
     </div>
   </section>
 
+  <!-- 跑馬燈：內容複製一份，位移 -50% 無縫接回 -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-row">
+      <span>煙燻</span><span><em>果香</em></span><span>草本</span><span>辛香</span><span><em>微苦</em></span><span>清爽</span><span>厚實</span><span><em>回甘</em></span>
+      <span>煙燻</span><span><em>果香</em></span><span>草本</span><span>辛香</span><span><em>微苦</em></span><span>清爽</span><span>厚實</span><span><em>回甘</em></span>
+    </div>
+  </div>
+
   <!-- AI 調酒展示牆 -->
-  <section class="home-section">
+  <section class="home-section" data-reveal>
     <div class="home-eyebrow"><span>RECENTLY POURED</span></div>
     <h2 data-i18n-html="home.recent_t">看看 AI 最近<span class="gradient-text">為大家調了什麼</span></h2>
     <p class="home-lead" data-i18n="home.recent_lead">每一杯都是地球上獨一無二的配方。AI 沒重複過，也不會重複你的。</p>
@@ -387,7 +405,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
   </section>
 
   <!-- FAQ -->
-  <section class="home-section">
+  <section class="home-section" data-reveal>
     <div class="home-eyebrow"><span>FAQ</span></div>
     <h2 data-i18n="home.faq_t">大家都在問</h2>
     <p class="home-lead" data-i18n="home.faq_lead">第一次用 PourMatch？這幾題大概會替你解答 80% 的疑問。</p>
@@ -420,7 +438,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
   </section>
 
   <!-- 末段 CTA -->
-  <section class="home-final">
+  <section class="home-final" data-reveal>
     <h2 data-i18n-html="home.final_t">下一杯，<span class="gradient-text">由 AI 替你倒</span></h2>
     <p data-i18n="home.final_sub">60 秒解鎖你的風味 DNA · Google 一鍵登入 · 完全免費</p>
     <div class="cta-row">
@@ -435,6 +453,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="i18n.js?v=12"></script>
   <script src="transition.js?v=17"></script>
+  <script src="scroll.js?v=1"></script>
   <script src="particles.js?v=10"></script>
   <script src="auth.js?v=13"></script>
 </body>

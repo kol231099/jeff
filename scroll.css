@@ -1,0 +1,154 @@
+/* ===== 單頁捲動的版面 ===== */
+
+/* 頂端捲動進度線 */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 1.5px;
+  background: var(--accent-warm);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  z-index: 200;
+  opacity: .75;
+  pointer-events: none;
+}
+
+/* ---------- 進場揭露 ---------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity .95s cubic-bezier(.22,1,.36,1),
+              transform .95s cubic-bezier(.22,1,.36,1);
+  will-change: opacity, transform;
+}
+[data-reveal].is-in { opacity: 1; transform: none; }
+
+/* ---------- 橫向釘住 ---------- */
+.pin {
+  position: relative;
+}
+.pin-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;          /* 橫向溢出由 track 位移處理，不產生捲軸 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.pin-head {
+  width: calc(100% - var(--gutter) * 2);
+  max-width: var(--measure);
+  margin: 0 auto 52px;
+}
+.pin-track {
+  display: flex;
+  gap: 32px;
+  padding-left: max(var(--gutter), calc((100vw - var(--measure)) / 2));
+  padding-right: 20vw;
+  will-change: transform;
+}
+.pin-panel {
+  flex: 0 0 clamp(280px, 27vw, 400px);
+  min-height: 380px;
+  padding: 44px 38px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, .012);
+  transition: border-color .6s cubic-bezier(.22,1,.36,1);
+}
+.pin-panel:hover { border-color: rgba(240, 228, 196, .3); }
+
+/* 手機：關掉釘住，回到正常的直式捲動 */
+.pin.pin-off { height: auto !important; }
+.pin.pin-off .pin-stage {
+  position: static;
+  height: auto;
+  overflow: visible;
+  padding: 90px 0;
+}
+.pin.pin-off .pin-track {
+  flex-direction: column;
+  transform: none !important;
+  padding: 0 var(--gutter);
+}
+.pin.pin-off .pin-panel { flex: none; min-height: 0; }
+
+/* 釘住區的進度計數：01 / 04 */
+.pin-count {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  margin-top: 26px;
+}
+
+/* ---------- 跑馬燈 ---------- */
+.marquee {
+  overflow: hidden;
+  padding: 82px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  user-select: none;
+}
+.marquee-row {
+  display: flex;
+  width: max-content;
+  animation: marquee 46s linear infinite;
+}
+.marquee-row:hover { animation-play-state: paused; }
+.marquee-row span {
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
+  font-size: clamp(30px, 4.6vw, 68px);
+  font-weight: 300;
+  color: var(--text-dim);
+  padding: 0 34px;
+  white-space: nowrap;
+}
+.marquee-row span em {
+  font-style: italic;
+  color: var(--accent-warm);
+}
+/* 內容複製一份，位移 -50% 剛好無縫接回 */
+@keyframes marquee {
+  from { transform: translate3d(0,0,0); }
+  to   { transform: translate3d(-50%,0,0); }
+}
+
+/* ---------- 捲動提示 ---------- */
+.scroll-cue {
+  position: absolute;
+  bottom: 46px; left: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.scroll-cue i {
+  display: block;
+  width: 54px; height: 1px;
+  background: linear-gradient(90deg, var(--accent-gold), transparent);
+  position: relative;
+  overflow: hidden;
+}
+.scroll-cue i::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent-warm);
+  animation: cueSlide 2.6s cubic-bezier(.6,0,.4,1) infinite;
+}
+@keyframes cueSlide {
+  0%   { transform: translateX(-100%); }
+  60%, 100% { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-row, .scroll-cue i::after { animation: none; }
+}
