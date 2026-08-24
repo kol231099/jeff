@@ -145,57 +145,63 @@
       if (!dur || !isFinite(dur)) return null;
       const run = reduce ? 0 : Math.round(dur * SCRUB_PX_PER_SEC);
       sec.style.height = `${innerHeight + run}px`;
-      return { sec, v, dur, run, want: 0, pendingAt: 0, lastRecover: 0 };
+      return { sec, v, dur, run, want: 0, seekAt: 0, seekFrames: 0,
+               frames: 0, lastRevive: 0, revives: 0, rvfc: 0 };
     };
 
     let items = [];
-    const build = () => { items = secs.map(setup).filter(Boolean); update(); };
+    const build = () => {
+      items = secs.map(setup).filter(Boolean);
+      items.forEach(watchFrames);
+      update();
+    };
 
-    // 頁面閒置一段時間後，Safari 會釋放媒體解碼器來省電。此時 currentTime
-    // 的寫入會被接受，但畫面不再更新 —— 看起來就是「卡在某一格不動」。
-    // 這個看門狗負責偵測並把元素重新載回來。
-    const RECOVER_AFTER = 700;    // 要求 seek 後多久沒到位就視為失聯
-    const RECOVER_GAP  = 2500;    // 兩次復原之間的最小間隔，避免反覆重載
+    // 頁面閒置一段時間後，Safari 會釋放媒體「解碼器」來省電 —— 但緩衝資料還在，
+    // 所以 readyState 仍是 4，currentTime 也照樣寫得進去，只是畫面不再重繪。
+    // 用那兩個值判斷是抓不到的（第一版就是這樣失效的）。
+    // 唯一可靠的訊號是「到底有沒有畫出新的影格」，那要問 requestVideoFrameCallback。
+    const STALL_MS   = 450;    // 要求 seek 後這麼久還沒有新影格 → 判定卡住
+    const COOL_MS    = 1200;   // 兩次復原之間的最小間隔
 
-    function recover(st) {
-      const now = performance.now();
-      if (now - st.lastRecover < RECOVER_GAP) return;
-      st.lastRecover = now;
-      st.pendingAt = 0;
-      const target = st.want;
-      try {
-        st.v.load();                       // 重新取得解碼器
-        st.v.addEventListener('loadeddata', () => {
-          try { st.v.currentTime = target; } catch (e) {}
-        }, { once: true });
-      } catch (e) {}
+    const hasRVFC = 'requestVideoFrameCallback' in HTMLVideoElement.prototype;
+
+    function watchFrames(st) {
+      if (!hasRVFC) return;
+      const tick = () => {
+        st.frames++;
+        st.rvfc = st.v.requestVideoFrameCallback(tick);
+      };
+      st.rvfc = st.v.requestVideoFrameCallback(tick);
     }
 
-    let ticking = false;
-    function update() {
+    // 先用最輕的手段喚醒解碼管線：靜音影片可以直接 play()，不需要使用者手勢。
+    // 播一格再暫停就會強制輸出新影格。真的無效才退回重新載入。
+    async function revive(st) {
       const now = performance.now();
-      for (const st of items) {
-        const { sec, v, dur, run } = st;
-        if (!run) continue;
-        const p = Math.min(1, Math.max(0, -sec.getBoundingClientRect().top / run));
-        const t = p * dur;
-        st.want = t;
+      if (now - st.lastRevive < COOL_MS) return;
+      st.lastRevive = now;
+      st.seekAt = 0;
 
-        // 差距太小就不寫入：每格都 seek 會讓 Safari 卡頓
-        if (Math.abs(v.currentTime - t) > 1 / 48) {
-          try { v.currentTime = t; } catch (e) {}
-          if (!st.pendingAt) st.pendingAt = now;
-        } else {
-          st.pendingAt = 0;
-        }
+      const target = st.want;
+      try {
+        await st.v.play();
+        st.v.pause();
+        st.v.currentTime = target;
+        st.revives++;
+      } catch (e) {
+        st.revives = 99;                 // play() 被拒 → 直接走重載
+      }
 
-        // 要求了 seek 卻遲遲沒到位，而且解碼器已經沒資料 → 重新載入
-        if (st.pendingAt && now - st.pendingAt > RECOVER_AFTER &&
-            Math.abs(v.currentTime - t) > 0.12 && v.readyState < 2) {
-          recover(st);
-        }
-
-        sec.style.setProperty('--scrub', p.toFixed(4));
+      // 輕手段連兩次都沒救回來，才付重新載入的代價
+      if (st.revives >= 3) {
+        st.revives = 0;
+        try {
+          st.v.load();
+          st.v.addEventListener('loadeddata', () => {
+            try { st.v.currentTime = st.want; } catch (e) {}
+            watchFrames(st);
+          }, { once: true });
+        } catch (e) {}
       }
     }
 
@@ -206,10 +212,10 @@
     }, { passive: true });
     addEventListener('resize', build);
 
-    // 分頁切回來時，媒體多半已經被釋放，先確認狀態
+    // 分頁切回來時，解碼器多半已經被回收，直接喚醒一次
     addEventListener('visibilitychange', () => {
       if (document.hidden) return;
-      for (const st of items) if (st.v.readyState < 2) recover(st);
+      for (const st of items) { st.lastRevive = 0; revive(st); }
     });
 
     // 影片要先知道長度才能換算行程
@@ -220,16 +226,16 @@
       else v.addEventListener('loadedmetadata', build, { once: true });
       // 有些瀏覽器不先觸碰就不解碼第一格
       v.addEventListener('loadeddata', () => { try { v.currentTime = 0.001; } catch (e) {} }, { once: true });
-      // 解碼器被回收或串流中斷時主動復原
-      for (const ev of ['emptied', 'stalled', 'error', 'suspend']) {
+      // 串流中斷或解碼出錯時主動喚醒
+      for (const ev of ['emptied', 'stalled', 'error']) {
         v.addEventListener(ev, () => {
           const st = items.find(x => x.v === v);
-          if (st && v.readyState < 2) recover(st);
+          if (st) revive(st);
         });
       }
       v.addEventListener('seeked', () => {
         const st = items.find(x => x.v === v);
-        if (st) st.pendingAt = 0;
+        if (st) { st.seekAt = 0; st.revives = 0; }
       });
     }
   }
