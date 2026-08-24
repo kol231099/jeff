@@ -395,22 +395,25 @@
   max-width: 330px;
   justify-self: end;
 }
+/* 雙線：外框與內線之間留一圈底色 */
 .faq-media-frame {
   position: relative;
-  /* 不加外框、底色與陰影，讓影片直接落在頁面上 */
-  border-radius: 14px;
-  overflow: hidden;
-  /* Safari 在圓角容器裡裁切影片時邊緣會露出直角，
-     這一行會強制它獨立成一層合成，圓角才會確實生效 */
+  border-radius: 4px;
+  padding: 7px;
+  box-shadow: 0 0 0 1px rgba(233, 228, 218, .16);   /* 外框 */
+  /* 這裡不能用 overflow: hidden —— 那會把外框與內距一起裁掉。
+     圓角改由影片自己負責。 */
   isolation: isolate;
-  -webkit-transform: translateZ(0);
 }
 .faq-media-frame video {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 9;    /* 影片原生比例，不裁切主體 */
   object-fit: cover;
-  border-radius: inherit;  /* 影片本身也帶圓角，不倚賴容器裁切 */
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px rgba(233, 228, 218, .1);    /* 內線 */
+  /* Safari 會讓影片的直角從圓角容器透出來，自己帶圓角比較保險 */
+  -webkit-transform: translateZ(0);
 }
 
 /* 窄螢幕改成上下堆疊，影片不再吸附 */
