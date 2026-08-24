@@ -57,9 +57,11 @@
           const d = ((b.left + b.width / 2) - cx) / cx;      // -1 左緣 → 0 中心 → 1 右緣
           const k = Math.max(-1.4, Math.min(1.4, d));
           el.style.transform =
-            `perspective(1400px) rotateY(${-k * 26}deg) scale(${1 - Math.abs(k) * 0.16}) translateZ(${-Math.abs(k) * 130}px)`;
-          el.style.opacity = (1 - Math.abs(k) * 0.5).toFixed(3);
-          el.style.setProperty('--focus', (1 - Math.min(1, Math.abs(k) * 1.6)).toFixed(3));
+            `perspective(1500px) rotateY(${-k * 22}deg) scale(${1 - Math.abs(k) * 0.12}) translateZ(${-Math.abs(k) * 110}px)`;
+          // 衰減收斂：原本降到 50% 不透明 + 62% 亮度，內容直接讀不到。
+          // 深度感由旋轉與縮放承擔就夠了。
+          el.style.opacity = (1 - Math.abs(k) * 0.2).toFixed(3);
+          el.style.setProperty('--focus', (1 - Math.min(1, Math.abs(k) * 1.15)).toFixed(3));
         }
 
         // 背景巨型字反向慢速位移，做出景深
