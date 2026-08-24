@@ -71,14 +71,11 @@
   z-index: 1;
   perspective: 1400px;
   display: flex;
-  /* 往右推：第一項擺在軌道最右端，捲動時軌道向右移動，
-     依序露出左邊的項目。左右內距跟著對調。 */
-  flex-direction: row-reverse;
   align-items: stretch;
   gap: clamp(40px, 5vw, 96px);
   height: 100%;
-  padding-right: max(var(--gutter), calc((100vw - var(--measure)) / 2));
-  padding-left: 34vw;    /* 尾段留白：最後一項要能走到畫面中央 */
+  padding-left: max(var(--gutter), calc((100vw - var(--measure)) / 2));
+  padding-right: 34vw;   /* 尾段留白：最後一項要能走到畫面中央 */
   will-change: transform;
 }
 
@@ -175,9 +172,8 @@
 /* 進度計量：釘住期間顯示走到哪 */
 .lane-meter {
   position: absolute;
-  right: max(var(--gutter), calc((100vw - var(--measure)) / 2));
+  left: max(var(--gutter), calc((100vw - var(--measure)) / 2));
   bottom: 6vh;
-  flex-direction: row-reverse;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -195,11 +191,11 @@
 .lane-meter i b {
   position: absolute;
   /* inset 只釘三邊、又沒給寬度的話，元素寬度會是 0，
-     transform-origin 的 100% 也就永遠算成 0px —— 這條進度條原本根本沒顯示。 */
+     transform-origin 也就永遠算成 0px —— 這條進度條原本根本沒顯示。 */
   inset: 0;
   background: var(--accent-warm);
   transform: scaleX(var(--pin-progress, 0));
-  transform-origin: 100% 50%;   /* 從右往左長，跟動線一致 */
+  transform-origin: 0 50%;
 }
 
 /* 釘住區的進度計數：01 / 04 */
