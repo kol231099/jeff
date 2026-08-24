@@ -12,7 +12,11 @@
   el.type = 'button';
   el.setAttribute('aria-label', '背景音樂');
   el.innerHTML = '<i></i><i></i><i></i><span class="ambient-label"></span>';
-  document.body.appendChild(el);
+  // 放進導覽列、接在使用者頭像之後。auth.js 會用 outerHTML 換掉登入鈕，
+  // 所以掛在 navbar 尾端而不是那顆按鈕旁邊，才不會被一起換掉。
+  const nav = document.querySelector('.navbar');
+  if (nav) { nav.appendChild(el); el.classList.add('ambient-in-nav'); }
+  else document.body.appendChild(el);
 
   const audio = new Audio();
   audio.loop = true;

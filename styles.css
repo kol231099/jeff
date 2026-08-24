@@ -927,22 +927,20 @@ html[lang="zh-Hant"] .badge { letter-spacing: 2.6px; }
 .site-foot a:hover { color: var(--accent-warm); }
 
 /* ===== 背景音樂開關 ===== */
+/* 在導覽列裡：接在使用者頭像右邊，不要自己一顆浮在角落 */
 .ambient {
-  position: fixed;
-  right: var(--gutter);
-  bottom: 24px;
-  z-index: 150;
   display: flex; align-items: center; gap: 3px;
-  padding: 11px 16px;
-  background: rgba(12, 10, 17, .78);
-  backdrop-filter: blur(18px) saturate(1.2);
-  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  margin-left: 14px;
+  padding: 9px 13px;
+  background: rgba(255, 255, 255, .04);
   border: 1px solid var(--border);
   border-radius: 999px;
   cursor: pointer;
   font: inherit;
+  flex: none;
   transition: border-color .45s ease, background .45s ease;
 }
+.ambient:hover { background: rgba(255, 255, 255, .07); }
 .ambient:hover { border-color: rgba(233, 228, 218, .2); }
 
 /* 三根小柱：停著時是靜止的短線，播放時才起伏 */
@@ -963,16 +961,16 @@ html[lang="zh-Hant"] .badge { letter-spacing: 2.6px; }
 }
 
 .ambient-label {
-  margin-left: 9px;
-  font-size: 10px; letter-spacing: 2.2px; text-transform: uppercase;
+  margin-left: 8px;
+  font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase;
   color: var(--text-dim);
   transition: color .45s ease;
 }
 .ambient.playing .ambient-label { color: var(--accent-warm); }
 
-@media (max-width: 640px) {
-  .ambient { right: 16px; bottom: 16px; padding: 10px 13px; }
-  .ambient-label { display: none; }   /* 手機只留三根柱子 */
+@media (max-width: 1024px) {
+  .ambient { margin-left: 10px; padding: 8px 11px; }
+  .ambient-label { display: none; }   /* 空間不夠時只留三根柱子 */
 }
 @media (prefers-reduced-motion: reduce) {
   .ambient.playing i { animation: none; transform: scaleY(1.2); }
