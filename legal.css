@@ -1,0 +1,75 @@
+/* ===== 法律文件頁 ===== */
+.legal {
+  width: calc(100% - var(--gutter) * 2);
+  max-width: 780px;                 /* 條款要好讀，行長要短 */
+  margin: 0 auto;
+  padding: 190px 0 140px;
+  position: relative;
+  z-index: 2;
+}
+.legal-eyebrow {
+  font-size: 10.5px; letter-spacing: 3.4px; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 20px;
+}
+.legal h1 {
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
+  font-size: clamp(38px, 5.4vw, 64px);
+  font-weight: 400; line-height: 1.1; margin: 0 0 14px;
+  color: var(--text);
+}
+.legal-updated { font-size: 12px; color: var(--text-dim); margin-bottom: 16px; }
+
+/* 不是法律意見的聲明，要顯眼 */
+.legal-note {
+  border: 1px solid rgba(233, 228, 218, .14);
+  background: #15121B;
+  border-radius: 3px;
+  padding: 18px 20px;
+  font-size: 12.5px; line-height: 1.9; color: #B5AFA2;
+  margin: 0 0 52px;
+}
+.legal-note b { color: var(--accent-warm); font-weight: 500; }
+
+.legal h2 {
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
+  font-size: clamp(23px, 2.6vw, 31px);
+  font-weight: 500; color: var(--text);
+  margin: 54px 0 16px; padding-top: 26px;
+  border-top: 1px solid var(--border);
+}
+.legal h2:first-of-type { border-top: 0; padding-top: 0; }
+.legal h3 {
+  font-size: 14px; font-weight: 500; color: var(--accent-warm);
+  margin: 28px 0 10px; letter-spacing: .3px;
+}
+.legal p, .legal li {
+  font-size: 14px; line-height: 2.05; color: #B5AFA2;
+  margin: 0 0 14px;
+}
+.legal ul, .legal ol { padding-left: 20px; margin: 0 0 18px; }
+.legal li { margin-bottom: 8px; }
+.legal strong { color: var(--text); font-weight: 500; }
+.legal a { color: var(--accent-warm); }
+
+/* 資料表 */
+.legal-table { width: 100%; border-collapse: collapse; margin: 8px 0 22px; font-size: 13px; }
+.legal-table th, .legal-table td {
+  text-align: left; padding: 12px 14px;
+  border-bottom: 1px solid var(--border); vertical-align: top;
+}
+.legal-table th { color: var(--text); font-weight: 500; white-space: nowrap; }
+.legal-table td { color: #B5AFA2; line-height: 1.8; }
+.legal-table tr:last-child th, .legal-table tr:last-child td { border-bottom: 0; }
+.legal-table-wrap { overflow-x: auto; }
+
+.legal-contact {
+  margin-top: 60px; padding: 22px 24px;
+  border: 1px solid var(--border); border-radius: 3px;
+  background: rgba(255,255,255,.014);
+}
+
+/* 依 html 的 lang 顯示對應語言，法律文字直接寫在原始碼裡才讀得到 */
+html[lang="zh-Hant"] .lg-en { display: none; }
+html[lang="en"] .lg-zh { display: none; }
+
+@media (max-width: 640px) { .legal { padding: 150px 0 100px; } }

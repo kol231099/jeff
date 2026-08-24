@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="i18n-title" content="title.terms" />
+<title>服務條款 · PourMatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@200;300;400;500&family=Noto+Serif+TC:wght@200;300;400;500;600;700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=40" />
+<link rel="stylesheet" href="transition.css?v=29" />
+<link rel="stylesheet" href="social.css?v=25" />
+<link rel="stylesheet" href="legal.css?v=1" />
+<script>
+/* 換頁抵達時，在第一個影格之前就蓋住畫面，避免閃爍。
+   若 JS 之後出錯，3 秒後自動解除，不會把頁面永遠遮住。 */
+(function(){try{if(sessionStorage.getItem('pourmatch_transition')){
+document.documentElement.classList.add('pour-arriving');
+setTimeout(function(){document.documentElement.classList.remove('pour-arriving');},3000);}}catch(e){}})();
+</script>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="logo" style="text-decoration:none;">
+      <div class="logo-mark">
+        <svg viewBox="0 0 40 40" width="32" height="32">
+          <defs>
+            <linearGradient id="lgA" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFB547"/>
+              <stop offset="50%" stop-color="#FF4D8D"/>
+              <stop offset="100%" stop-color="#7B5CFF"/>
+            </linearGradient>
+          </defs>
+          <path d="M10 6h20l-3 14a7 7 0 0 1-7 6 7 7 0 0 1-7-6L10 6z" fill="url(#lgA)" opacity="0.9"/>
+          <line x1="20" y1="26" x2="20" y2="34" stroke="url(#lgA)" stroke-width="2"/>
+          <line x1="14" y1="34" x2="26" y2="34" stroke="url(#lgA)" stroke-width="2"/>
+        </svg>
+      </div>
+      <span class="logo-text">PourMatch</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" data-i18n="nav.home">首頁</a></li>
+      <li><a href="quiz.html" data-i18n="nav.quiz">品味測驗</a></li>
+      <li><a href="cocktail.html" data-i18n="nav.cocktail">調酒生成器</a></li>
+      <li><a href="community.html" data-i18n="nav.community">社群</a></li>
+      <li><a href="match.html" data-i18n="nav.match">AI 配對</a></li>
+      <li><a href="about.html" data-i18n="nav.about">關於</a></li>
+    </ul>
+    <button class="btn-login">
+      <svg width="18" height="18" viewBox="0 0 48 48">
+        <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+        <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+        <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+        <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+      </svg>
+      <span data-i18n="nav.login">使用 Google 登入</span>
+    </button>
+  </nav>
+
+  <main class="legal">
+    <div class="legal-eyebrow"><span class="lg-zh">服務條款</span><span class="lg-en">Terms of Service</span></div>
+    <h1><span class="lg-zh">使用這個網站的約定</span><span class="lg-en">The deal for using this site</span></h1>
+    <div class="legal-updated"><span class="lg-zh">最後更新：2026 年 8 月 24 日</span><span class="lg-en">Last updated: 24 August 2026</span></div>
+
+    <div class="legal-note">
+      <span class="lg-zh"><b>這份文件由 AI 撰寫，不是法律意見。</b>它依照本站的實際功能寫成，但正式營運前請律師審閱——尤其是酒精相關的責任限制與線下見面的免責部分。</span>
+      <span class="lg-en"><b>This document was drafted by AI and is not legal advice.</b> It follows what the site actually does, but have a lawyer review it before operating commercially — especially the alcohol liability and offline-meeting sections.</span>
+    </div>
+
+    <h2><span class="lg-zh">一、年齡與資格</span><span class="lg-en">1. Who may use this</span></h2>
+    <p><span class="lg-zh">使用本服務即表示你聲明<strong>已達所在地法定飲酒年齡</strong>（台灣為 18 歲）。若未達該年齡，請勿使用。我們保留在合理懷疑時停用帳號的權利。</span><span class="lg-en">By using this service you confirm you have reached the <strong>legal drinking age where you live</strong> (18 in Taiwan). If you have not, please do not use it. We may suspend accounts where we reasonably believe this is not the case.</span></p>
+
+    <h2><span class="lg-zh">二、關於酒精的重要聲明</span><span class="lg-en">2. About alcohol — please read</span></h2>
+    <ul>
+      <li><span class="lg-zh">AI 產生的配方<strong>僅供參考，不是專業建議</strong>。請自行確認材料是否適合你，特別是過敏原。</span><span class="lg-en">AI-generated recipes are <strong>suggestions, not professional advice</strong>. Check the ingredients suit you — allergens above all.</span></li>
+      <li><span class="lg-zh">我們<strong>不鼓勵過量飲酒</strong>。請依自身狀況節制。</span><span class="lg-en">We <strong>do not encourage excessive drinking</strong>. Please drink within your own limits.</span></li>
+      <li><span class="lg-zh"><strong>酒後不開車。</strong></span><span class="lg-en"><strong>Never drive after drinking.</strong></span></li>
+      <li><span class="lg-zh">懷孕、服藥中、或有健康疑慮者，請先諮詢醫師。</span><span class="lg-en">If you are pregnant, taking medication, or have any health concern, consult a doctor first.</span></li>
+      <li><span class="lg-zh">你依配方調製、飲用或提供他人飲用所生的一切後果，由你自行負責。</span><span class="lg-en">What you make, drink, or serve to others from these recipes is your responsibility.</span></li>
+    </ul>
+
+    <h2><span class="lg-zh">三、配對與線下見面</span><span class="lg-en">3. Matching and meeting people</span></h2>
+    <p><span class="lg-zh">本服務只依味覺偏好的重疊程度做推薦。<strong>我們不進行任何身分驗證、背景查核或真實性審查</strong>——你在此遇到的人可能不是他們自稱的樣子。</span><span class="lg-en">We recommend people purely on how far your taste preferences overlap. <strong>We do not verify identity, run background checks, or confirm anyone is who they claim to be.</strong></span></p>
+    <p><span class="lg-zh">若你決定與在此認識的人見面：請選擇公共場所、告訴信任的人你的行程、留意自己的飲品、隨時可以離開。<strong>你與其他使用者之間的互動與見面，風險由你自行承擔。</strong></span><span class="lg-en">If you choose to meet someone from here: pick a public place, tell someone you trust where you will be, keep an eye on your drink, and leave whenever you want. <strong>Your interactions and meetings with other users are at your own risk.</strong></span></p>
+
+    <h2><span class="lg-zh">四、你發佈的內容</span><span class="lg-en">4. What you post</span></h2>
+    <p><span class="lg-zh">你發佈的內容仍屬於你。你授權我們在本服務中顯示、儲存與傳送這些內容，以便提供功能。你保證擁有發佈這些內容的權利。</span><span class="lg-en">What you post remains yours. You grant us permission to store, display and transmit it within the service so the features can work. You confirm you have the right to post it.</span></p>
+    <p><span class="lg-zh">禁止內容包括但不限於：騷擾、仇恨言論、性剝削、他人個資、垃圾訊息、違法內容、鼓勵危險飲酒行為（如拚酒、勸酒），以及向未成年人推銷酒精。</span><span class="lg-en">Not allowed, among other things: harassment, hate speech, sexual exploitation, other people's personal data, spam, anything unlawful, content encouraging dangerous drinking such as chugging games or pressuring others, and marketing alcohol to minors.</span></p>
+
+    <h2><span class="lg-zh">五、公平使用</span><span class="lg-en">5. Fair use</span></h2>
+    <p><span class="lg-zh">AI 功能的每次呼叫都由我們負擔成本。請勿以自動化方式大量呼叫、將本站作為其他服務的 AI 代理、或試圖繞過使用限制。違反者將被停用。</span><span class="lg-en">Every AI request costs us money. Do not call these endpoints in bulk, use the site as an AI proxy for something else, or work around usage limits. Accounts that do will be suspended.</span></p>
+
+    <h2><span class="lg-zh">六、服務現況</span><span class="lg-en">6. The state of this service</span></h2>
+    <p><span class="lg-zh">我們必須誠實：本服務目前由極小規模的團隊營運，<strong>以「現狀」提供，不保證可用性、正確性或資料不遺失</strong>。我們可能隨時修改或終止功能。請勿將此處視為唯一的資料保存處。</span><span class="lg-en">In fairness: this is run by a very small team and is provided <strong>as is, with no guarantee of uptime, accuracy, or that data will not be lost</strong>. Features may change or stop. Please do not treat this as the only place your data lives.</span></p>
+
+    <h2><span class="lg-zh">七、責任限制</span><span class="lg-en">7. Limitation of liability</span></h2>
+    <p><span class="lg-zh">在法律允許的最大範圍內，我們不對因使用本服務而產生的間接、附帶或衍生性損害負責，包括但不限於飲酒相關的健康後果、與其他使用者互動所生的糾紛，以及資料遺失。</span><span class="lg-en">To the fullest extent the law allows, we are not liable for indirect, incidental or consequential damage arising from your use of the service — including drinking-related health outcomes, disputes arising from contact with other users, and loss of data.</span></p>
+
+    <h2><span class="lg-zh">八、終止</span><span class="lg-en">8. Ending things</span></h2>
+    <p><span class="lg-zh">你可以隨時停止使用並要求刪除帳號。我們也可在你違反本條款時停用帳號。</span><span class="lg-en">You can stop using the service and ask us to delete your account at any time. We may suspend accounts that break these terms.</span></p>
+
+    <h2><span class="lg-zh">九、準據法</span><span class="lg-en">9. Governing law</span></h2>
+    <p><span class="lg-zh">本條款以中華民國（台灣）法律為準據法。</span><span class="lg-en">These terms are governed by the laws of Taiwan (R.O.C.).</span></p>
+
+    <div class="legal-contact">
+      <p style="margin:0"><span class="lg-zh"><strong>聯絡方式</strong><br/>關於本條款的問題，請寄至站方信箱。（請在此填入你的聯絡電子郵件。）</span><span class="lg-en"><strong>Contact</strong><br/>Questions about these terms — email us. (Insert your contact address here.)</span></p>
+    </div>
+
+  </main>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="i18n.js?v=16"></script>
+  <script src="scroll.js?v=16"></script>
+  <script src="transition.js?v=17"></script>
+  <script src="auth.js?v=13"></script>
+
+  <script src="scroll.js?v=16"></script>
+
+  <footer class="site-foot">
+    <span>© 2026 PourMatch</span>
+    <a href="privacy.html" data-i18n="nav.privacy">隱私權政策</a>
+    <a href="terms.html" data-i18n="nav.terms">服務條款</a>
+  </footer>
+</body>
+</html>

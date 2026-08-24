@@ -912,3 +912,16 @@ html[lang="zh-Hant"] .badge { letter-spacing: 2.6px; }
 @media (prefers-reduced-motion: reduce) {
   .navbar { transition: none; }
 }
+
+/* 頁尾 */
+.site-foot {
+  position: relative; z-index: 2;
+  display: flex; flex-wrap: wrap; gap: 26px; align-items: center;
+  width: calc(100% - var(--gutter) * 2); max-width: var(--measure);
+  margin: 0 auto; padding: 46px 0 40px;
+  border-top: 1px solid var(--border);
+  font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase;
+  color: var(--text-dim);
+}
+.site-foot a { color: var(--text-dim); text-decoration: none; transition: color .4s ease; }
+.site-foot a:hover { color: var(--accent-warm); }
