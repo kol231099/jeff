@@ -930,7 +930,7 @@ html[lang="zh-Hant"] .badge { letter-spacing: 2.6px; }
 /* 在導覽列裡：接在使用者頭像右邊，不要自己一顆浮在角落 */
 .ambient {
   display: flex; align-items: center; gap: 3px;
-  margin-left: 14px;
+  margin-right: 14px;   /* 在頭像左邊，所以留白給右側 */
   padding: 9px 13px;
   background: rgba(255, 255, 255, .04);
   border: 1px solid var(--border);
@@ -969,7 +969,7 @@ html[lang="zh-Hant"] .badge { letter-spacing: 2.6px; }
 .ambient.playing .ambient-label { color: var(--accent-warm); }
 
 @media (max-width: 1024px) {
-  .ambient { margin-left: 10px; padding: 8px 11px; }
+  .ambient { margin-right: 10px; padding: 8px 11px; }
   .ambient-label { display: none; }   /* 空間不夠時只留三根柱子 */
 }
 @media (prefers-reduced-motion: reduce) {

@@ -12,10 +12,13 @@
   el.type = 'button';
   el.setAttribute('aria-label', '背景音樂');
   el.innerHTML = '<i></i><i></i><i></i><span class="ambient-label"></span>';
-  // 放進導覽列、接在使用者頭像之後。auth.js 會用 outerHTML 換掉登入鈕，
-  // 所以掛在 navbar 尾端而不是那顆按鈕旁邊，才不會被一起換掉。
+  // 放進導覽列，插在登入鈕／使用者頭像的「前面」，讓頭像維持在最右邊。
+  // auth.js 之後會用 outerHTML 把登入鈕換成頭像，但那只影響它自己，
+  // 不會動到前面的兄弟節點，所以插在前面是安全的。
   const nav = document.querySelector('.navbar');
-  if (nav) { nav.appendChild(el); el.classList.add('ambient-in-nav'); }
+  const anchor = nav && nav.querySelector('.btn-login, .user-chip');
+  if (anchor) nav.insertBefore(el, anchor);
+  else if (nav) nav.appendChild(el);
   else document.body.appendChild(el);
 
   const audio = new Audio();
