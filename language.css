@@ -31,14 +31,18 @@
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  padding: 8px 18px;
   margin-bottom: 26px;
-  border: 1px solid rgba(232, 200, 122, 0.35);
-  background: rgba(232, 200, 122, 0.1);
-  border-radius: 100px;
   font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 11px;
   letter-spacing: 3px;
+  color: var(--text-dim);
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  font-size: 11px;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
   color: var(--text-dim);
 }
 .lang-eyebrow .dot {

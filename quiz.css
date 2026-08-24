@@ -518,13 +518,18 @@
 }
 .start-eyebrow {
   display: inline-block;
-  padding: 7px 16px;
   margin-bottom: 22px;
-  border: 1px solid var(--border);
-  border-radius: 100px;
   font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
   font-size: 11px;
   letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  font-size: 11px;
+  letter-spacing: 2.4px;
   text-transform: uppercase;
   color: var(--text-dim);
 }

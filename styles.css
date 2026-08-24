@@ -793,3 +793,6 @@ body::after {
   text-decoration: none;
   color: var(--text-dim);
 }
+
+/* 各頁 eyebrow 裡的呼吸點：不傳達資訊，只是動來動去 */
+.cocktail-badge .dot, .home-eyebrow .dot, .lang-eyebrow .dot, .start-eyebrow .dot { display: none; }
