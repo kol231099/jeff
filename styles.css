@@ -925,3 +925,55 @@ html[lang="zh-Hant"] .badge { letter-spacing: 2.6px; }
 }
 .site-foot a { color: var(--text-dim); text-decoration: none; transition: color .4s ease; }
 .site-foot a:hover { color: var(--accent-warm); }
+
+/* ===== 背景音樂開關 ===== */
+.ambient {
+  position: fixed;
+  right: var(--gutter);
+  bottom: 24px;
+  z-index: 150;
+  display: flex; align-items: center; gap: 3px;
+  padding: 11px 16px;
+  background: rgba(12, 10, 17, .78);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+  transition: border-color .45s ease, background .45s ease;
+}
+.ambient:hover { border-color: rgba(233, 228, 218, .2); }
+
+/* 三根小柱：停著時是靜止的短線，播放時才起伏 */
+.ambient i {
+  display: block;
+  width: 2px; height: 8px;
+  background: var(--text-dim);
+  border-radius: 1px;
+  transform-origin: 50% 100%;
+  transition: background .45s ease;
+}
+.ambient.playing i { background: var(--accent-warm); animation: ambBar 1.15s ease-in-out infinite; }
+.ambient.playing i:nth-child(2) { animation-delay: .18s; }
+.ambient.playing i:nth-child(3) { animation-delay: .36s; }
+@keyframes ambBar {
+  0%, 100% { transform: scaleY(.55); }
+  50%      { transform: scaleY(1.75); }
+}
+
+.ambient-label {
+  margin-left: 9px;
+  font-size: 10px; letter-spacing: 2.2px; text-transform: uppercase;
+  color: var(--text-dim);
+  transition: color .45s ease;
+}
+.ambient.playing .ambient-label { color: var(--accent-warm); }
+
+@media (max-width: 640px) {
+  .ambient { right: 16px; bottom: 16px; padding: 10px 13px; }
+  .ambient-label { display: none; }   /* 手機只留三根柱子 */
+}
+@media (prefers-reduced-motion: reduce) {
+  .ambient.playing i { animation: none; transform: scaleY(1.2); }
+}
