@@ -206,6 +206,36 @@
       }
     }
 
+    let ticking = false;
+    function update() {
+      const now = performance.now();
+      for (const st of items) {
+        const { sec, v, dur, run } = st;
+        if (!run) continue;
+        const p = Math.min(1, Math.max(0, -sec.getBoundingClientRect().top / run));
+        const t = p * dur;
+        st.want = t;
+
+        // 差距太小就不寫入：每一格都 seek 會讓 Safari 卡頓
+        if (Math.abs(v.currentTime - t) > 1 / 48) {
+          try { v.currentTime = t; } catch (e) {}
+          if (!st.seekAt) { st.seekAt = now; st.seekFrames = st.frames; }
+        } else {
+          st.seekAt = 0;
+        }
+
+        // 要求了新位置，但這段時間內一格新影格都沒畫出來 → 解碼器睡著了。
+        // 分頁隱藏時 rVFC 本來就不會觸發，那不是卡住，不能當故障處理，
+        // 否則背景分頁會不停 play/pause 空轉。
+        if (hasRVFC && !document.hidden && st.seekAt &&
+            now - st.seekAt > STALL_MS && st.frames === st.seekFrames) {
+          revive(st);
+        }
+
+        sec.style.setProperty('--scrub', p.toFixed(4));
+      }
+    }
+
     addEventListener('scroll', () => {
       if (ticking) return;
       ticking = true;
