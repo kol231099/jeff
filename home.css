@@ -376,3 +376,45 @@
   margin-bottom: 20px;
   font-variant-numeric: tabular-nums;
 }
+
+/* ===== FAQ 兩欄：左問答、右影片 ===== */
+.faq-wrap {
+  display: grid;
+  grid-template-columns: 580px 1fr;
+  gap: clamp(40px, 5vw, 88px);
+  align-items: start;
+}
+.faq-wrap .faq-list { max-width: none; }   /* 寬度已由欄位決定 */
+
+.faq-media {
+  position: sticky;
+  top: 140px;              /* 讓開膠囊導覽列 */
+}
+.faq-media-frame {
+  position: relative;
+  border: 1px solid rgba(233, 228, 218, .12);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #0E0C13;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .05);
+}
+.faq-media-frame video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;    /* 影片原生比例，不裁切主體 */
+  object-fit: cover;
+}
+.faq-media-cap {
+  position: absolute;
+  left: 14px; bottom: 12px;
+  font-size: 9.5px; letter-spacing: 2.2px; text-transform: uppercase;
+  color: rgba(233, 228, 218, .72);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, .9);
+}
+
+/* 窄螢幕改成上下堆疊，影片不再吸附 */
+@media (max-width: 1100px) {
+  .faq-wrap { grid-template-columns: 1fr; gap: 44px; }
+  .faq-wrap .faq-list { max-width: 580px; }
+  .faq-media { position: static; max-width: 580px; }
+}

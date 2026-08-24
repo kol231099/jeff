@@ -310,7 +310,47 @@
     update();
   }
 
-  /* ---------- 6. 導覽列隨捲動收起 ---------- */
+  /* ---------- 6. 循環播放的影片：進入視線才播 ----------
+     靜音影片可以自動播放，但整頁一開就播是白白耗電與流量。
+     用 IntersectionObserver 控制，離開視線就暫停。 */
+  function initLoopVideos() {
+    const vids = [...document.querySelectorAll('[data-loop-video]')];
+    if (!vids.length) return;
+
+    if (reduce) {
+      // 使用者要求減少動態：只顯示第一格，不播放
+      vids.forEach(v => { v.preload = 'metadata'; v.addEventListener('loadeddata',
+        () => { try { v.currentTime = 0.1; } catch (e) {} }, { once: true }); });
+      return;
+    }
+
+    const io = new IntersectionObserver(entries => {
+      for (const e of entries) {
+        const v = e.target;
+        if (e.isIntersecting) {
+          if (v.preload !== 'auto') v.preload = 'auto';   // 到眼前才下載
+          v.play().catch(() => {});
+        } else {
+          v.pause();
+        }
+      }
+    }, { rootMargin: '200px 0px', threshold: 0.01 });
+
+    vids.forEach(v => io.observe(v));
+
+    // 分頁切走就停，回來若仍在視線內再續播
+    document.addEventListener('visibilitychange', () => {
+      for (const v of vids) {
+        if (document.hidden) v.pause();
+        else {
+          const r = v.getBoundingClientRect();
+          if (r.bottom > 0 && r.top < innerHeight) v.play().catch(() => {});
+        }
+      }
+    });
+  }
+
+  /* ---------- 7. 導覽列隨捲動收起 ---------- */
   function initNav() {
     const nav = document.querySelector('.navbar');
     if (!nav) return;
@@ -346,7 +386,7 @@
     update();
   }
 
-  const start = () => { initPin(); initScrub(); initGuide(); initReveal(); initProgress(); initNav(); };
+  const start = () => { initPin(); initScrub(); initGuide(); initReveal(); initProgress(); initLoopVideos(); initNav(); };
   if (document.readyState === 'loading') addEventListener('DOMContentLoaded', start);
   else start();
 })();

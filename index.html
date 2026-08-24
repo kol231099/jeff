@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="styles.css?v=45" />
 <link rel="stylesheet" href="transition.css?v=31" />
 <link rel="stylesheet" href="scroll.css?v=23" />
-<link rel="stylesheet" href="home.css?v=21" />
+<link rel="stylesheet" href="home.css?v=22" />
 <script>
 /* 換頁抵達時，在第一個影格之前就蓋住畫面，避免閃爍。
    若 JS 之後出錯，3 秒後自動解除，不會把頁面永遠遮住。 */
@@ -569,6 +569,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
     <div class="home-eyebrow" data-reveal><span>FAQ</span></div>
     <h2 data-reveal data-reveal-delay="1" data-i18n="home.faq_t">大家都在問</h2>
     <p class="home-lead" data-reveal data-reveal-delay="2" data-i18n="home.faq_lead">第一次用 PourMatch？這幾題大概會替你解答 80% 的疑問。</p>
+    <div class="faq-wrap">
     <div class="faq-list">
       <details class="faq-item" data-reveal data-reveal-delay="1">
         <summary data-i18n="home.q1">不會喝酒，也能用嗎？</summary>
@@ -595,6 +596,16 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
         <div class="faq-body" data-i18n-html="home.a6">PourMatch 服務僅供 <strong>已達當地合法飲酒年齡</strong> 的使用者。未達標的朋友建議使用 mocktail（無酒精）模式，或先收藏起來，等到了再回來。</div>
       </details>
     </div>
+      <aside class="faq-media" data-reveal data-reveal-delay="2">
+        <div class="faq-media-frame">
+          <video data-loop-video
+                 src="media/studio.mp4?v=1"
+                 muted loop playsinline preload="none"
+                 disablepictureinpicture aria-hidden="true"></video>
+          <span class="faq-media-cap" data-i18n="home.faq_media">AI 調酒師 · 概念影像</span>
+        </div>
+      </aside>
+    </div>
   </section>
 
   <!-- 末段 CTA -->
@@ -611,9 +622,9 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
   </section>
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="i18n.js?v=18"></script>
+  <script src="i18n.js?v=19"></script>
   <script src="transition.js?v=17"></script>
-  <script src="scroll.js?v=23"></script>
+  <script src="scroll.js?v=24"></script>
   <script src="ambient.js?v=4"></script>
   <script src="auth.js?v=13"></script>
 
