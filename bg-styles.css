@@ -1,0 +1,218 @@
+/* ===== 背景風格試裝頁 =====
+   十種風格共用同一組圖層結構，只換顏色與各自的特徵層：
+     .base   底色漸層
+     .light  燈光池（緩慢呼吸）
+     .extra  該風格專屬的質地（雨絲、煙霧、星空、天鵝絨…）
+     .orb    三顆散景光暈，各自不同週期
+     .grain  顆粒 + 暗角，蓋在最上層
+   顆粒是必要的：大面積模糊漸層在 8-bit 螢幕上一定會出現色帶。 */
+
+.stage { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.stage > div { position: absolute; }
+.base  { inset: 0; }
+.light { inset: -12%; animation: breathe 20s ease-in-out infinite; }
+.extra { inset: 0; }
+.grain {
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 95% 82% at 50% 40%, transparent 46%, rgba(3, 2, 10, 0.6) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+  background-size: auto, 160px 160px;
+}
+@keyframes breathe {
+  0%, 100% { opacity: .78; transform: translateX(0) scale(1); }
+  50%      { opacity: 1;   transform: translateX(-1.5%) scale(1.04); }
+}
+
+.orb { border-radius: 50%; will-change: transform; }
+.orb-1 { width: 46vmax; height: 46vmax; max-width: 900px; max-height: 900px;
+         top: -14vmax; left: -10vmax;  filter: blur(110px); animation: driftA 19s ease-in-out infinite; }
+.orb-2 { width: 42vmax; height: 42vmax; max-width: 840px; max-height: 840px;
+         bottom: -12vmax; right: -9vmax; filter: blur(110px); animation: driftB 25s ease-in-out infinite; }
+.orb-3 { width: 36vmax; height: 36vmax; max-width: 740px; max-height: 740px;
+         top: 38%; left: 42%;            filter: blur(120px); animation: driftC 31s ease-in-out infinite; }
+@keyframes driftA { 0%,100% { transform: translate(0,0) scale(1); }    50% { transform: translate(46px,28px) scale(1.08); } }
+@keyframes driftB { 0%,100% { transform: translate(0,0) scale(1); }    45% { transform: translate(-38px,-34px) scale(1.1); } }
+@keyframes driftC { 0%,100% { transform: translate(0,0) scale(.96); }  40% { transform: translate(-30px,24px) scale(1.06); }
+                                                                       72% { transform: translate(24px,-18px) scale(1.02); } }
+
+/* ---------- 1. 午夜酒吧 ---------- */
+[data-bg="1"] .base  { background: linear-gradient(180deg,#100A1E 0%,#0A0616 46%,#05060d 100%); }
+[data-bg="1"] .light { background:
+  radial-gradient(ellipse 120% 55% at 50% -10%, rgba(255,160,80,.30), transparent 60%),
+  radial-gradient(ellipse 90% 60% at 4% 22%,   rgba(123,92,255,.26), transparent 62%),
+  radial-gradient(ellipse 95% 65% at 100% 80%, rgba(255,77,141,.22), transparent 62%),
+  radial-gradient(ellipse 70% 50% at 50% 110%, rgba(88,26,90,.6),    transparent 72%); }
+[data-bg="1"] .extra { background-image:
+  linear-gradient(rgba(255,200,150,.045) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(255,200,150,.045) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 52% at 50% 32%, #000 18%, transparent 78%);
+  mask-image: radial-gradient(ellipse 70% 52% at 50% 32%, #000 18%, transparent 78%); }
+[data-bg="1"] .orb-1 { background: radial-gradient(circle, rgba(123,92,255,.75), rgba(80,48,190,.4) 38%, transparent 66%); opacity:.7; }
+[data-bg="1"] .orb-2 { background: radial-gradient(circle, rgba(255,77,141,.7),  rgba(150,30,80,.38) 40%, transparent 68%); opacity:.62; }
+[data-bg="1"] .orb-3 { background: radial-gradient(circle, rgba(255,181,71,.62), rgba(200,100,40,.3) 42%, transparent 70%); opacity:.5; }
+
+/* ---------- 2. 霓虹雨夜 ---------- */
+[data-bg="2"] .base  { background: linear-gradient(180deg,#03070E 0%,#061019 55%,#020509 100%); }
+[data-bg="2"] .light { background:
+  radial-gradient(ellipse 80% 50% at 18% 4%,   rgba(0,229,255,.24), transparent 62%),
+  radial-gradient(ellipse 75% 55% at 92% 30%,  rgba(255,0,140,.22), transparent 62%),
+  radial-gradient(ellipse 120% 45% at 50% 104%,rgba(0,180,220,.2),  transparent 68%); }
+/* 雨絲 + 濕地面反光 */
+[data-bg="2"] .extra {
+  background-image:
+    repeating-linear-gradient(101deg, transparent 0 26px, rgba(190,235,255,.055) 26px 27px, transparent 27px 54px),
+    linear-gradient(0deg, rgba(0,229,255,.09) 0%, transparent 26%);
+  background-size: 300px 300px, auto;
+  animation: rain 1.1s linear infinite;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 74%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 74%, transparent 100%); }
+@keyframes rain { from { background-position: 0 0, 0 0; } to { background-position: 60px 300px, 0 0; } }
+[data-bg="2"] .orb-1 { background: radial-gradient(circle, rgba(0,229,255,.62), rgba(0,110,170,.34) 40%, transparent 68%); opacity:.62; }
+[data-bg="2"] .orb-2 { background: radial-gradient(circle, rgba(255,0,140,.6),  rgba(140,0,90,.32) 42%, transparent 70%); opacity:.58; }
+[data-bg="2"] .orb-3 { background: radial-gradient(circle, rgba(90,120,255,.5), rgba(30,40,150,.28) 44%, transparent 72%); opacity:.45; }
+
+/* ---------- 3. 威士忌琥珀 ---------- */
+[data-bg="3"] .base  { background: linear-gradient(180deg,#1A0F06 0%,#120A04 50%,#080502 100%); }
+[data-bg="3"] .light { background:
+  radial-gradient(ellipse 110% 55% at 50% -8%,  rgba(255,168,64,.30), transparent 62%),
+  radial-gradient(ellipse 80% 55% at 6% 34%,    rgba(210,110,30,.22), transparent 64%),
+  radial-gradient(ellipse 85% 60% at 98% 82%,   rgba(150,60,20,.26),  transparent 66%); }
+/* 慢慢飄的煙 */
+[data-bg="3"] .extra { background:
+  radial-gradient(ellipse 40% 22% at 24% 62%, rgba(255,200,140,.07), transparent 70%),
+  radial-gradient(ellipse 34% 18% at 72% 44%, rgba(255,190,130,.06), transparent 70%),
+  radial-gradient(ellipse 46% 24% at 52% 84%, rgba(220,160,100,.05), transparent 72%);
+  animation: smoke 26s ease-in-out infinite; }
+@keyframes smoke { 0%,100% { transform: translate(0,0) scale(1); opacity:.85; }
+                   50%     { transform: translate(3%,-2.5%) scale(1.08); opacity:1; } }
+[data-bg="3"] .orb-1 { background: radial-gradient(circle, rgba(255,170,60,.6), rgba(170,90,20,.34) 40%, transparent 68%); opacity:.6; }
+[data-bg="3"] .orb-2 { background: radial-gradient(circle, rgba(200,90,30,.56), rgba(110,40,10,.3) 42%, transparent 70%); opacity:.58; }
+[data-bg="3"] .orb-3 { background: radial-gradient(circle, rgba(255,205,120,.44),rgba(150,80,20,.24) 44%, transparent 72%); opacity:.42; }
+
+/* ---------- 4. 極簡黑金 ---------- */
+[data-bg="4"] .base  { background: linear-gradient(180deg,#080809 0%,#050506 55%,#030304 100%); }
+[data-bg="4"] .light { background:
+  radial-gradient(ellipse 60% 34% at 50% -4%, rgba(214,178,106,.16), transparent 66%),
+  radial-gradient(ellipse 70% 40% at 50% 108%,rgba(214,178,106,.05), transparent 72%); }
+/* 一道細金線，克制就是這個風格的重點 */
+[data-bg="4"] .extra { background:
+  linear-gradient(90deg, transparent 0%, rgba(214,178,106,.28) 28%, rgba(214,178,106,.42) 50%, rgba(214,178,106,.28) 72%, transparent 100%);
+  height: 1px; top: 46%; inset-inline: 0; bottom: auto; opacity: .55; }
+[data-bg="4"] .orb-1 { background: radial-gradient(circle, rgba(214,178,106,.3), transparent 62%); opacity:.34; }
+[data-bg="4"] .orb-2 { background: radial-gradient(circle, rgba(160,140,90,.22), transparent 64%); opacity:.28; }
+[data-bg="4"] .orb-3 { display: none; }
+[data-bg="4"] .grain { background-image:
+  radial-gradient(ellipse 88% 76% at 50% 42%, transparent 40%, rgba(0,0,0,.72) 100%),
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background-size: auto, 160px 160px; }
+
+/* ---------- 5. 絲絨深紅 ---------- */
+[data-bg="5"] .base  { background: linear-gradient(180deg,#1B0410 0%,#12030B 50%,#080206 100%); }
+[data-bg="5"] .light { background:
+  radial-gradient(ellipse 105% 55% at 50% -8%, rgba(226,60,90,.24), transparent 62%),
+  radial-gradient(ellipse 80% 58% at 8% 30%,   rgba(150,20,60,.26), transparent 64%),
+  radial-gradient(ellipse 88% 60% at 96% 84%,  rgba(190,40,110,.22),transparent 66%); }
+/* 絨面：一道柔和的斜向光帶掃過 */
+[data-bg="5"] .extra { background:
+  linear-gradient(115deg, transparent 26%, rgba(255,190,205,.055) 46%, rgba(255,190,205,.09) 52%, rgba(255,190,205,.045) 58%, transparent 76%);
+  animation: sheen 22s ease-in-out infinite; }
+@keyframes sheen { 0%,100% { transform: translateX(-6%); opacity:.7; } 50% { transform: translateX(6%); opacity:1; } }
+[data-bg="5"] .orb-1 { background: radial-gradient(circle, rgba(226,60,90,.6), rgba(120,10,40,.34) 40%, transparent 68%); opacity:.62; }
+[data-bg="5"] .orb-2 { background: radial-gradient(circle, rgba(255,90,150,.52),rgba(130,20,70,.3) 42%, transparent 70%); opacity:.56; }
+[data-bg="5"] .orb-3 { background: radial-gradient(circle, rgba(180,30,80,.46), rgba(90,10,45,.26) 44%, transparent 72%); opacity:.46; }
+
+/* ---------- 6. 藍調午夜 ---------- */
+[data-bg="6"] .base  { background: linear-gradient(180deg,#04101C 0%,#020A14 50%,#01060D 100%); }
+[data-bg="6"] .light { background:
+  radial-gradient(ellipse 70% 48% at 46% -6%,  rgba(120,210,235,.22), transparent 64%),
+  radial-gradient(ellipse 80% 55% at 6% 40%,   rgba(30,110,170,.24),  transparent 64%),
+  radial-gradient(ellipse 85% 58% at 98% 86%,  rgba(60,90,190,.2),    transparent 66%); }
+/* 舞台聚光燈的光錐 + 煙 */
+[data-bg="6"] .extra { background:
+  linear-gradient(178deg, rgba(160,220,245,.1) 0%, rgba(160,220,245,.035) 34%, transparent 62%),
+  radial-gradient(ellipse 42% 20% at 48% 72%, rgba(140,200,230,.06), transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse 58% 100% at 47% 0%, #000 12%, transparent 84%);
+  mask-image: radial-gradient(ellipse 58% 100% at 47% 0%, #000 12%, transparent 84%);
+  animation: smoke 28s ease-in-out infinite; }
+[data-bg="6"] .orb-1 { background: radial-gradient(circle, rgba(60,160,200,.56), rgba(15,60,110,.32) 40%, transparent 68%); opacity:.6; }
+[data-bg="6"] .orb-2 { background: radial-gradient(circle, rgba(70,100,220,.5),  rgba(20,30,110,.3) 42%, transparent 70%); opacity:.54; }
+[data-bg="6"] .orb-3 { background: radial-gradient(circle, rgba(150,225,240,.4), rgba(30,90,130,.22) 44%, transparent 72%); opacity:.4; }
+
+/* ---------- 7. 極光玻璃 ---------- */
+[data-bg="7"] .base  { background: linear-gradient(180deg,#070B18 0%,#050813 55%,#03050D 100%); }
+[data-bg="7"] .light { background:
+  radial-gradient(ellipse 95% 40% at 30% 6%,  rgba(60,235,190,.2),  transparent 64%),
+  radial-gradient(ellipse 90% 42% at 74% 22%, rgba(130,90,255,.22), transparent 64%),
+  radial-gradient(ellipse 100% 46% at 50% 96%,rgba(40,180,220,.16), transparent 68%); }
+/* 極光緞帶：兩道傾斜的柔光帶，錯開節奏飄 */
+[data-bg="7"] .extra { background:
+  linear-gradient(96deg, transparent 12%, rgba(70,240,200,.11) 28%, rgba(120,120,255,.13) 44%, rgba(70,220,255,.09) 58%, transparent 76%),
+  linear-gradient(84deg, transparent 22%, rgba(160,110,255,.08) 42%, rgba(70,240,210,.07) 62%, transparent 82%);
+  background-size: 100% 46%, 100% 38%;
+  background-position: 0 14%, 0 52%;
+  background-repeat: no-repeat;
+  filter: blur(26px);
+  animation: aurora 24s ease-in-out infinite; }
+@keyframes aurora { 0%,100% { transform: translate(-2%,0) scaleY(1); opacity:.8; }
+                    50%     { transform: translate(2%,2%) scaleY(1.14); opacity:1; } }
+[data-bg="7"] .orb-1 { background: radial-gradient(circle, rgba(60,235,190,.5), rgba(10,110,110,.3) 42%, transparent 70%); opacity:.55; }
+[data-bg="7"] .orb-2 { background: radial-gradient(circle, rgba(130,90,255,.52),rgba(50,20,130,.3) 42%, transparent 70%); opacity:.55; }
+[data-bg="7"] .orb-3 { background: radial-gradient(circle, rgba(70,200,255,.4), rgba(15,80,140,.24) 44%, transparent 72%); opacity:.42; }
+
+/* ---------- 8. 銅器暗室 ---------- */
+[data-bg="8"] .base  { background: linear-gradient(180deg,#14100C 0%,#0D0A07 50%,#070504 100%); }
+[data-bg="8"] .light { background:
+  radial-gradient(ellipse 100% 50% at 50% -6%, rgba(214,138,74,.24), transparent 64%),
+  radial-gradient(ellipse 78% 55% at 4% 36%,   rgba(150,88,44,.2),   transparent 66%),
+  radial-gradient(ellipse 82% 58% at 98% 84%,  rgba(120,70,36,.22),  transparent 68%); }
+/* 水泥／灰泥牆的粗顆粒 + 兩側暖邊光 */
+[data-bg="8"] .extra {
+  background-image:
+    linear-gradient(90deg, rgba(214,138,74,.09) 0%, transparent 12%, transparent 88%, rgba(214,138,74,.07) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.28' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23m)' opacity='0.16'/%3E%3C/svg%3E");
+  background-size: auto, 220px 220px; }
+[data-bg="8"] .orb-1 { background: radial-gradient(circle, rgba(214,138,74,.5), rgba(120,64,26,.3) 42%, transparent 70%); opacity:.55; }
+[data-bg="8"] .orb-2 { background: radial-gradient(circle, rgba(180,120,60,.46),rgba(90,50,20,.28) 44%, transparent 72%); opacity:.5; }
+[data-bg="8"] .orb-3 { background: radial-gradient(circle, rgba(230,180,120,.34),rgba(120,70,30,.2) 46%, transparent 74%); opacity:.38; }
+
+/* ---------- 9. 暮光地平線 ---------- */
+[data-bg="9"] .base  { background: linear-gradient(180deg,#08061A 0%,#170A2E 34%,#3A143E 58%,#1C0A1A 78%,#07050C 100%); }
+[data-bg="9"] .light { background:
+  radial-gradient(ellipse 130% 26% at 50% 58%, rgba(255,150,80,.3),  transparent 62%),
+  radial-gradient(ellipse 90% 40% at 12% 12%,  rgba(90,70,220,.22),  transparent 64%),
+  radial-gradient(ellipse 90% 40% at 92% 30%,  rgba(220,70,150,.18), transparent 64%); }
+/* 地平線那道細亮線 */
+[data-bg="9"] .extra { background:
+  linear-gradient(180deg, transparent 56.4%, rgba(255,190,120,.34) 57.6%, rgba(255,190,120,.34) 58%, transparent 59.2%),
+  linear-gradient(180deg, transparent 52%, rgba(255,160,90,.1) 58%, transparent 66%); }
+[data-bg="9"] .orb-1 { background: radial-gradient(circle, rgba(110,80,240,.56),rgba(40,20,120,.32) 40%, transparent 68%); opacity:.6; }
+[data-bg="9"] .orb-2 { background: radial-gradient(circle, rgba(240,90,160,.5), rgba(120,20,70,.3) 42%, transparent 70%); opacity:.54; }
+[data-bg="9"] .orb-3 { background: radial-gradient(circle, rgba(255,170,90,.46),rgba(150,70,20,.26) 44%, transparent 72%); opacity:.46; }
+
+/* ---------- 10. 星夜酒館 ---------- */
+[data-bg="10"] .base  { background: linear-gradient(180deg,#050718 0%,#030510 60%,#01020A 100%); }
+[data-bg="10"] .light { background:
+  radial-gradient(ellipse 85% 48% at 24% 12%, rgba(120,80,230,.22), transparent 64%),
+  radial-gradient(ellipse 80% 46% at 80% 34%, rgba(220,90,160,.16), transparent 64%),
+  radial-gradient(ellipse 110% 40% at 50% 100%,rgba(60,50,160,.2),  transparent 68%); }
+/* 兩層星點：大小與速度不同，做出景深 */
+[data-bg="10"] .extra {
+  background-image:
+    radial-gradient(1.6px 1.6px at 34px 52px, rgba(255,255,255,.95), transparent),
+    radial-gradient(1.2px 1.2px at 128px 96px, rgba(210,225,255,.75), transparent),
+    radial-gradient(1.8px 1.8px at 208px 26px, rgba(255,240,220,.85), transparent),
+    radial-gradient(1px 1px   at 86px 178px, rgba(255,255,255,.6), transparent),
+    radial-gradient(1.3px 1.3px at 236px 152px, rgba(200,220,255,.7), transparent),
+    radial-gradient(1px 1px   at 160px 214px, rgba(255,255,255,.5), transparent);
+  background-size: 280px 280px;
+  animation: twinkle 7s ease-in-out infinite; }
+@keyframes twinkle { 0%,100% { opacity:.55; } 50% { opacity:1; } }
+[data-bg="10"] .orb-1 { background: radial-gradient(circle, rgba(120,80,230,.52),rgba(40,20,110,.3) 42%, transparent 70%); opacity:.55; }
+[data-bg="10"] .orb-2 { background: radial-gradient(circle, rgba(220,90,160,.44),rgba(110,20,70,.26) 44%, transparent 72%); opacity:.48; }
+[data-bg="10"] .orb-3 { background: radial-gradient(circle, rgba(70,90,220,.4),  rgba(20,30,110,.24) 46%, transparent 74%); opacity:.4; }
+
+@media (prefers-reduced-motion: reduce) {
+  .light, .extra, .orb { animation: none !important; }
+}
