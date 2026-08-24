@@ -882,9 +882,11 @@ html[lang="zh-Hant"] .hero-desc {
   font-weight: 300;
   letter-spacing: 0.05em;
   line-height: 2.15;
-  max-width: 34ch;
-  line-break: strict;      /* 不在標點或詞中不當斷開 */
-  text-wrap: pretty;       /* 避免結尾孤字 */
+  /* ch 以「0」的字寬計算，約半個漢字寬 —— 34ch 其實只有 17 字，
+     原文每行 18–21 字，差一點就換行，成語才會被切開。 */
+  max-width: 46ch;
+  line-break: strict;
+  text-wrap: pretty;
 }
 /* 中文的字距不該套用拉丁文的負值 */
 html[lang="zh-Hant"] .badge { letter-spacing: 2.6px; }
