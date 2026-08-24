@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@200;300;400;500&family=Noto+Serif+TC:wght@200;300;400;500;600;700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=36" />
 <link rel="stylesheet" href="transition.css?v=31" />
-<link rel="stylesheet" href="scroll.css?v=6" />
+<link rel="stylesheet" href="scroll.css?v=7" />
 <link rel="stylesheet" href="home.css?v=27" />
 <script>
 /* 換頁抵達時，在第一個影格之前就蓋住畫面，避免閃爍。
@@ -328,136 +328,186 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
     </div>
   </section>
 
-  <!-- 酒款展示：橫向釘住的錯落陳列 -->
-  <section class="pin" data-pin>
+  <!-- 導讀：釘住一段文字，逐句隨捲動點亮。讀者不會什麼都沒看到就滑過去 -->
+  <section class="guide" data-guide>
+    <div class="guide-stage">
+      <div class="guide-inner">
+        <div class="home-eyebrow"><span>HOW IT WORKS</span></div>
+        <p class="guide-text">
+          <span data-i18n="home.g1">先花兩分鐘，回答十二個關於味道的問題。</span>
+          <span data-i18n="home.g2">AI 讀出你的風味 DNA —— 你偏好的甜度、苦韻、酒感與層次。</span>
+          <span data-i18n="home.g3">它替你調出一杯只屬於你的酒，連攪拌幾圈都寫給你。</span>
+          <span data-i18n="home.g4">然後，把味覺重疊度最高的人放到你面前。</span>
+          <span data-i18n="home.g5">雙方都按下想認識，才會開啟聊天室。</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 使用情境：橫向釘住 -->
+  <section class="pin pin-scene" data-pin>
     <div class="pin-stage">
       <div class="pin-head" data-reveal>
-        <div class="home-eyebrow"><span>THE POURS</span></div>
-        <h2 data-i18n="home.lane_t">AI 最近倒出來的</h2>
+        <div class="home-eyebrow"><span>WHEN TO POUR</span></div>
+        <h2 data-i18n="home.when_t">什麼時候，最適合來一杯？</h2>
       </div>
-      <div class="lane-ghost" aria-hidden="true"><span>POUR</span><span>MATCH</span><span>POUR</span></div>
       <div class="lane" data-pin-track>
-        <svg width="0" height="0" aria-hidden="true"><defs>
-      <linearGradient id="lq0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFD9A0"/><stop offset="100%" stop-color="#FF9A5B"/></linearGradient>
-      <linearGradient id="lq1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E8A05B"/><stop offset="100%" stop-color="#8B3E1F"/></linearGradient>
-      <linearGradient id="lq2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FF8FB0"/><stop offset="100%" stop-color="#7B2E52"/></linearGradient>
-      <linearGradient id="lq3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFC46B"/><stop offset="100%" stop-color="#B0562A"/></linearGradient>
-      <linearGradient id="lq4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFF0C8"/><stop offset="100%" stop-color="#E5C98A"/></linearGradient>
-      <linearGradient id="lq5" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#C9D98A"/><stop offset="100%" stop-color="#5E7A3A"/></linearGradient>
-      <linearGradient id="lq6" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E86A8A"/><stop offset="100%" stop-color="#6E1F3A"/></linearGradient>
-      <linearGradient id="lq7" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#A8C4FF"/><stop offset="100%" stop-color="#3A4E9E"/></linearGradient>
-      <linearGradient id="lq8" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F0B267"/><stop offset="100%" stop-color="#7A3B14"/></linearGradient>
-      <linearGradient id="lq9" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFB07C"/><stop offset="100%" stop-color="#8E3A2E"/></linearGradient>
-      <linearGradient id="lq10" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#D98E5B"/><stop offset="100%" stop-color="#4E2312"/></linearGradient>
-        </defs></svg>
-        <figure class="lane-item lane-md lane-top">
-          <figcaption class="lane-cap"><b>Solar Whisper</b><span>柑橘 · 琴酒基底</span></figcaption>
-          <div class="lane-plate">
-            <svg viewBox="0 0 100 116" aria-hidden="true">
-              <g class="gl-fill" fill="url(#lq0)"><path d="M22,22 Q50,60 78,22 Z"/></g>
-              <path d="M16,16 Q50,66 84,16" class="gl-line"/><ellipse cx="50" cy="16" rx="34" ry="4.4" class="gl-line"/><line x1="50" y1="52" x2="50" y2="104" class="gl-line"/><ellipse cx="50" cy="106" rx="19" ry="3.6" class="gl-line"/>
-            </svg>
+        <article class="scene-panel">
+          <div class="scene-idx">01</div>
+          <h3 data-i18n="home.s1_t">失眠的深夜</h3>
+          <p data-i18n="home.s1_d">大腦關不掉的那種夜，AI 會推一杯柔軟、甜度剛好、能讓肩膀放下的調酒。</p>
+          <span class="scene-tag" data-i18n="home.s1_tag">低酒精 · 助眠系</span>
+        </article>
+        <article class="scene-panel">
+          <div class="scene-idx">02</div>
+          <h3 data-i18n="home.s2_t">想為他/她調一杯</h3>
+          <p data-i18n="home.s2_d">輸入對方的個性，AI 替你譯成一杯只屬於兩人的飲品。比情書更難複製。</p>
+          <span class="scene-tag" data-i18n="home.s2_tag">禮物模式 · 客製</span>
+        </article>
+        <article class="scene-panel">
+          <div class="scene-idx">03</div>
+          <h3 data-i18n="home.s3_t">朋友臨時來家裡</h3>
+          <p data-i18n="home.s3_d">冰箱只有半瓶威士忌？告訴 AI 你有什麼，立刻給你一份能變出來的酒單。</p>
+          <span class="scene-tag" data-i18n="home.s3_tag">在家酒吧 · 即興</span>
+        </article>
+        <article class="scene-panel">
+          <div class="scene-idx">04</div>
+          <h3 data-i18n="home.s4_t">結束一場硬仗後</h3>
+          <p data-i18n="home.s4_d">專案上線、考完試、簡報結束。給自己一杯像獎牌的酒，AI 懂這種儀式感。</p>
+          <span class="scene-tag" data-i18n="home.s4_tag">犒賞模式 · 強勁</span>
+        </article>
+      </div>
+      <div class="lane-meter" aria-hidden="true">
+        <span class="lane-meter-num">01</span><i><b></b></i><span class="lane-meter-total">04</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 產品實績：橫向釘住 -->
+  <section class="pin" data-pin>
+    <div class="pin-stage">
+      <svg width="0" height="0" aria-hidden="true"><defs>
+        <linearGradient id="shotLq" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E8A05B"/><stop offset="100%" stop-color="#6E2E12"/></linearGradient>
+      </defs></svg>
+      <div class="pin-head" data-reveal>
+        <div class="home-eyebrow"><span>WHAT YOU GET</span></div>
+        <h2 data-i18n="home.shots_t">實際做完，會拿到這些</h2>
+      </div>
+      <div class="lane" data-pin-track>
+        <figure class="shot shot-tall">
+          <figcaption class="shot-cap"><b>TASTE QUIZ</b><span>風味 DNA 結果</span></figcaption>
+          <div class="shot-frame">
+            <div class="shot-bar"><i></i><i></i><i></i><span>missioncookies.cv</span></div>
+            <div class="shot-body">
+              <div class="sh-dna">
+                <div class="sh-eyebrow">你的風味 DNA</div>
+                <div class="sh-dna-name">夜行的收藏家</div>
+                <p class="sh-dna-text">你不追流行，你追那杯讓你想起某個夜晚的酒。偏好層次分明、尾韻長的組合，討厭甜得敷衍的東西。</p>
+                <div class="sh-traits"><span>煙燻</span><span>回甘</span><span>低調</span><span>慢飲</span></div>
+              </div>
+            </div>
           </div>
         </figure>
-        <figure class="lane-item lane-xl lane-mid">
-          <figcaption class="lane-cap"><b>Midnight Code</b><span>煙燻 · 威士忌基底</span></figcaption>
-          <div class="lane-plate">
-            <svg viewBox="0 0 100 116" aria-hidden="true">
-              <g class="gl-fill" fill="url(#lq1)"><path d="M27,56 L73,56 L71,98 Q50,103 29,98 Z"/></g>
-              <path d="M24,34 L76,34 L72,100 Q50,105 28,100 Z" class="gl-line"/><ellipse cx="50" cy="34" rx="26" ry="4" class="gl-line"/>
-            </svg>
+        <figure class="shot shot-wide">
+          <figcaption class="shot-cap"><b>TASTE QUIZ</b><span>推薦酒單</span></figcaption>
+          <div class="shot-frame">
+            <div class="shot-bar"><i></i><i></i><i></i><span>missioncookies.cv</span></div>
+            <div class="shot-body">
+              <div class="sh-eyebrow">為你量身打造的 6 款</div>
+              <div class="sh-recs">
+                <div class="sh-rec"><i style="--c1:#E8A05B;--c2:#8B3E1F"></i><div><b>Laphroaig 10</b><span>泥煤 · 海鹽 · 藥草</span></div><em>96</em></div>
+                <div class="sh-rec"><i style="--c1:#F0B267;--c2:#7A3B14"></i><div><b>Old Fashioned</b><span>苦精 · 橙皮 · 波本</span></div><em>93</em></div>
+                <div class="sh-rec"><i style="--c1:#D98E5B;--c2:#4E2312"></i><div><b>Rob Roy</b><span>蘇格蘭 · 香艾酒</span></div><em>89</em></div>
+                <div class="sh-rec"><i style="--c1:#C9D98A;--c2:#5E7A3A"></i><div><b>Last Word</b><span>綠夏翠絲 · 萊姆</span></div><em>85</em></div>
+              </div>
+            </div>
           </div>
         </figure>
-        <figure class="lane-item lane-sm lane-bot">
-          <figcaption class="lane-cap"><b>Velvet Lie</b><span>莓果 · 琴酒基底</span></figcaption>
-          <div class="lane-plate">
-            <svg viewBox="0 0 100 116" aria-hidden="true">
-              <g class="gl-fill" fill="url(#lq2)"><path d="M25,20 L75,20 L53,58 L47,58 Z"/></g>
-              <path d="M18,14 L82,14 L54,62 L46,62 Z" class="gl-line"/><ellipse cx="50" cy="14" rx="32" ry="4" class="gl-line"/><line x1="50" y1="62" x2="50" y2="104" class="gl-line"/><ellipse cx="50" cy="106" rx="19" ry="3.6" class="gl-line"/>
-            </svg>
+        <figure class="shot shot-tall">
+          <figcaption class="shot-cap"><b>COCKTAIL LAB</b><span>AI 生成的成品</span></figcaption>
+          <div class="shot-frame">
+            <div class="shot-bar"><i></i><i></i><i></i><span>missioncookies.cv</span></div>
+            <div class="shot-body">
+              <div class="sh-cock">
+                <div class="sh-cock-vis">
+                  <svg viewBox="0 0 100 116"><g fill="url(#shotLq)"><path d="M25,20 L75,20 L53,58 L47,58 Z"/></g>
+                    <path d="M18,14 L82,14 L54,62 L46,62 Z" class="gl-line"/><ellipse cx="50" cy="14" rx="32" ry="4" class="gl-line"/>
+                    <line x1="50" y1="62" x2="50" y2="104" class="gl-line"/><ellipse cx="50" cy="106" rx="19" ry="3.6" class="gl-line"/></svg>
+                </div>
+                <div class="sh-cock-info">
+                  <div class="sh-eyebrow">寫給還沒睡的人</div>
+                  <div class="sh-cock-name">Midnight Code</div>
+                  <div class="sh-cock-meta">馬丁尼杯 · 琥珀偏深</div>
+                  <div class="sh-bars">
+                    <div><span>甜度</span><i><b style="width:22%"></b></i></div>
+                    <div><span>酸度</span><i><b style="width:38%"></b></i></div>
+                    <div><span>苦韻</span><i><b style="width:78%"></b></i></div>
+                    <div><span>酒感</span><i><b style="width:66%"></b></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </figure>
-        <figure class="lane-item lane-lg lane-top">
-          <figcaption class="lane-cap"><b>Ash & Amber</b><span>焦糖 · 蘭姆基底</span></figcaption>
-          <div class="lane-plate">
-            <svg viewBox="0 0 100 116" aria-hidden="true">
-              <g class="gl-fill" fill="url(#lq3)"><path d="M32,42 L68,42 L67,102 Q50,106 33,102 Z"/></g>
-              <path d="M31,14 L69,14 L67,104 Q50,108 33,104 Z" class="gl-line"/><ellipse cx="50" cy="14" rx="19" ry="3.4" class="gl-line"/>
-            </svg>
+        <figure class="shot shot-wide">
+          <figcaption class="shot-cap"><b>COCKTAIL LAB</b><span>完整配方</span></figcaption>
+          <div class="shot-frame">
+            <div class="shot-bar"><i></i><i></i><i></i><span>missioncookies.cv</span></div>
+            <div class="shot-body">
+              <div class="sh-recipe">
+                <div>
+                  <div class="sh-eyebrow">材料</div>
+                  <ul class="sh-ing">
+                    <li><span>裸麥威士忌</span><em>45 ml</em></li>
+                    <li><span>甜香艾酒</span><em>20 ml</em></li>
+                    <li><span>咖啡利口酒</span><em>10 ml</em></li>
+                    <li><span>巧克力苦精</span><em>2 dash</em></li>
+                  </ul>
+                </div>
+                <div>
+                  <div class="sh-eyebrow">調製步驟</div>
+                  <ol class="sh-steps">
+                    <li>攪拌杯放滿冰塊，先冰杯 30 秒。</li>
+                    <li>依序倒入所有材料，攪拌 25 圈。</li>
+                    <li>濾入冰鎮過的馬丁尼杯。</li>
+                    <li>噴附橙皮油，杯緣抹一圈後投入。</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
           </div>
         </figure>
-        <figure class="lane-item lane-sm lane-mid">
-          <figcaption class="lane-cap"><b>Paper Moon</b><span>清爽 · 氣泡</span></figcaption>
-          <div class="lane-plate">
-            <svg viewBox="0 0 100 116" aria-hidden="true">
-              <g class="gl-fill" fill="url(#lq4)"><path d="M37,26 Q36,56 50,67 Q64,56 63,26 Z"/></g>
-              <path d="M38,12 Q36,58 50,70 Q64,58 62,12" class="gl-line"/><ellipse cx="50" cy="12" rx="12" ry="2.6" class="gl-line"/><line x1="50" y1="70" x2="50" y2="104" class="gl-line"/><ellipse cx="50" cy="106" rx="16" ry="3.2" class="gl-line"/>
-            </svg>
-          </div>
-        </figure>
-        <figure class="lane-item lane-md lane-bot">
-          <figcaption class="lane-cap"><b>Rust Garden</b><span>草本 · 龍舌蘭</span></figcaption>
-          <div class="lane-plate">
-            <svg viewBox="0 0 100 116" aria-hidden="true">
-              <g class="gl-fill" fill="url(#lq5)"><path d="M22,22 Q50,60 78,22 Z"/></g>
-              <path d="M16,16 Q50,66 84,16" class="gl-line"/><ellipse cx="50" cy="16" rx="34" ry="4.4" class="gl-line"/><line x1="50" y1="52" x2="50" y2="104" class="gl-line"/><ellipse cx="50" cy="106" rx="19" ry="3.6" class="gl-line"/>
-            </svg>
-          </div>
-        </figure>
-        <figure class="lane-item lane-quote lane-mid">
-          <blockquote data-i18n="home.lane_quote">一杯酒能說的，<br/>比一次自我介紹多得多。</blockquote>
-          <span class="lane-quote-mark">PourMatch</span>
-        </figure>
-        <figure class="lane-item lane-xl lane-top">
-          <figcaption class="lane-cap"><b>Long Story</b><span>回甘 · 紅酒基底</span></figcaption>
-          <div class="lane-plate">
-            <svg viewBox="0 0 100 116" aria-hidden="true">
-              <g class="gl-fill" fill="url(#lq6)"><path d="M25,30 Q23,56 50,63 Q77,56 75,30 Z"/></g>
-              <path d="M26,14 Q22,58 50,66 Q78,58 74,14" class="gl-line"/><ellipse cx="50" cy="14" rx="24" ry="3.8" class="gl-line"/><line x1="50" y1="66" x2="50" y2="104" class="gl-line"/><ellipse cx="50" cy="106" rx="18" ry="3.4" class="gl-line"/>
-            </svg>
-          </div>
-        </figure>
-        <figure class="lane-item lane-md lane-mid">
-          <figcaption class="lane-cap"><b>Blue Hour</b><span>微苦 · 琴酒基底</span></figcaption>
-          <div class="lane-plate">
-            <svg viewBox="0 0 100 116" aria-hidden="true">
-              <g class="gl-fill" fill="url(#lq7)"><path d="M25,20 L75,20 L53,58 L47,58 Z"/></g>
-              <path d="M18,14 L82,14 L54,62 L46,62 Z" class="gl-line"/><ellipse cx="50" cy="14" rx="32" ry="4" class="gl-line"/><line x1="50" y1="62" x2="50" y2="104" class="gl-line"/><ellipse cx="50" cy="106" rx="19" ry="3.6" class="gl-line"/>
-            </svg>
-          </div>
-        </figure>
-        <figure class="lane-item lane-lg lane-bot">
-          <figcaption class="lane-cap"><b>Second Round</b><span>厚實 · 波本</span></figcaption>
-          <div class="lane-plate">
-            <svg viewBox="0 0 100 116" aria-hidden="true">
-              <g class="gl-fill" fill="url(#lq8)"><path d="M27,56 L73,56 L71,98 Q50,103 29,98 Z"/></g>
-              <path d="M24,34 L76,34 L72,100 Q50,105 28,100 Z" class="gl-line"/><ellipse cx="50" cy="34" rx="26" ry="4" class="gl-line"/>
-            </svg>
-          </div>
-        </figure>
-        <figure class="lane-item lane-sm lane-top">
-          <figcaption class="lane-cap"><b>Quiet Riot</b><span>辛香 · 蘭姆基底</span></figcaption>
-          <div class="lane-plate">
-            <svg viewBox="0 0 100 116" aria-hidden="true">
-              <g class="gl-fill" fill="url(#lq9)"><path d="M32,42 L68,42 L67,102 Q50,106 33,102 Z"/></g>
-              <path d="M31,14 L69,14 L67,104 Q50,108 33,104 Z" class="gl-line"/><ellipse cx="50" cy="14" rx="19" ry="3.4" class="gl-line"/>
-            </svg>
-          </div>
-        </figure>
-        <figure class="lane-item lane-md lane-mid">
-          <figcaption class="lane-cap"><b>Last Call</b><span>深沉 · 威士忌</span></figcaption>
-          <div class="lane-plate">
-            <svg viewBox="0 0 100 116" aria-hidden="true">
-              <g class="gl-fill" fill="url(#lq10)"><path d="M25,30 Q23,56 50,63 Q77,56 75,30 Z"/></g>
-              <path d="M26,14 Q22,58 50,66 Q78,58 74,14" class="gl-line"/><ellipse cx="50" cy="14" rx="24" ry="3.8" class="gl-line"/><line x1="50" y1="66" x2="50" y2="104" class="gl-line"/><ellipse cx="50" cy="106" rx="18" ry="3.4" class="gl-line"/>
-            </svg>
+        <figure class="shot shot-tall">
+          <figcaption class="shot-cap"><b>COMMUNITY</b><span>社群動態</span></figcaption>
+          <div class="shot-frame">
+            <div class="shot-bar"><i></i><i></i><i></i><span>missioncookies.cv</span></div>
+            <div class="shot-body">
+              <div class="sh-eyebrow">社群動態</div>
+              <div class="sh-feed">
+                <div class="sh-post">
+                  <div class="sh-post-head"><i>H</i><b>Hazel</b><span>3 小時前</span></div>
+                  <p>測出來是「夜行的收藏家」，準到有點可怕⋯⋯這杯 Midnight Code 我真的照著調了</p>
+                  <div class="sh-post-foot"><span>♥ 128</span><span>💬 34</span><span>分享</span></div>
+                </div>
+                <div class="sh-post">
+                  <div class="sh-post-head"><i>K</i><b>Kai</b><span>5 小時前</span></div>
+                  <p>第一次用進階模式，它連攪拌圈數都寫出來，比我常去那間店的酒單還細</p>
+                  <div class="sh-post-foot"><span>♥ 96</span><span>💬 21</span><span>分享</span></div>
+                </div>
+                <div class="sh-post">
+                  <div class="sh-post-head"><i>M</i><b>Mira</b><span>昨天</span></div>
+                  <p>跟配對到的人聊了兩小時都在講琴酒，這週約在大稻埕</p>
+                  <div class="sh-post-foot"><span>♥ 214</span><span>💬 57</span><span>分享</span></div>
+                </div>
+              </div>
+            </div>
           </div>
         </figure>
       </div>
       <div class="lane-meter" aria-hidden="true">
         <span class="lane-meter-num">01</span>
         <i><b></b></i>
-        <span class="lane-meter-total">11</span>
+        <span class="lane-meter-total">05</span>
       </div>
     </div>
   </section>
@@ -547,7 +597,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="i18n.js?v=13"></script>
   <script src="transition.js?v=17"></script>
-  <script src="scroll.js?v=5"></script>
+  <script src="scroll.js?v=9"></script>
   <script src="particles.js?v=10"></script>
   <script src="auth.js?v=13"></script>
 </body>

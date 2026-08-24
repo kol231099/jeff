@@ -45,7 +45,8 @@
         // 靠近中心的被推到眼前並打亮，兩側的向後傾斜退開。
         const cx = innerWidth / 2;
         for (const el of track.children) {
-          if (!el.classList || !el.classList.contains('lane-item')) continue;
+          if (!el.classList) continue;
+          if (!el.classList.contains('lane-item') && !el.classList.contains('shot') && !el.classList.contains('scene-panel')) continue;
           const b = el.getBoundingClientRect();
           if (b.right < -400 || b.left > innerWidth + 400) { el.style.opacity = ''; continue; }
           const d = ((b.left + b.width / 2) - cx) / cx;      // -1 左緣 → 0 中心 → 1 右緣
@@ -118,7 +119,46 @@
     update();
   }
 
-  /* ---------- 4. 導覽列隨捲動收起 ---------- */
+  /* ---------- 4. 導讀：逐句點亮 ---------- */
+  function initGuide() {
+    const secs = [...document.querySelectorAll('[data-guide]')];
+    if (!secs.length) return;
+
+    const setup = sec => {
+      const lines = [...sec.querySelectorAll('.guide-text span')];
+      if (!lines.length) return null;
+      // 每句給一個視窗高的捲動距離，讀者被迫看完才過得去
+      const run = reduce ? 0 : innerHeight * lines.length * 0.72;
+      sec.style.height = `${innerHeight + run}px`;
+      if (reduce) lines.forEach(l => l.classList.add('lit'));
+      return { sec, lines, run };
+    };
+    let items = secs.map(setup).filter(Boolean);
+
+    const update = () => {
+      for (const { sec, lines, run } of items) {
+        if (!run) continue;
+        const p = Math.min(1, Math.max(0, -sec.getBoundingClientRect().top / run));
+        // 進度換算成「讀到第幾句」，含句內的部分進度
+        const exact = p * lines.length;
+        lines.forEach((el, i) => {
+          const f = Math.min(1, Math.max(0, exact - i));
+          el.classList.toggle('lit', f > 0.04);
+          el.style.setProperty('--lit', f.toFixed(3));
+        });
+      }
+    };
+    let ticking = false;
+    addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { update(); ticking = false; });
+    }, { passive: true });
+    addEventListener('resize', () => { items = secs.map(setup).filter(Boolean); update(); });
+    update();
+  }
+
+  /* ---------- 5. 導覽列隨捲動收起 ---------- */
   function initNav() {
     const nav = document.querySelector('.navbar');
     if (!nav) return;
@@ -139,7 +179,7 @@
     update();
   }
 
-  const start = () => { initPin(); initReveal(); initProgress(); initNav(); };
+  const start = () => { initPin(); initGuide(); initReveal(); initProgress(); initNav(); };
   if (document.readyState === 'loading') addEventListener('DOMContentLoaded', start);
   else start();
 })();
