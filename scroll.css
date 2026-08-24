@@ -442,15 +442,22 @@
   object-fit: cover;
   /* 影片本身偏暖亮，壓一點才接得上網站的暗色調 */
   filter: brightness(.82) saturate(.94) contrast(1.04);
+  /* 上下緣讓影片自己淡出，露出頁面背景，接縫就不存在。
+     疊一層半透明色是蓋不掉的：只要不是全不透明，邊緣一定會透出來。 */
+  -webkit-mask-image: linear-gradient(180deg,
+    transparent 0%, rgba(0,0,0,.35) 5%, #000 17%, #000 84%, rgba(0,0,0,.4) 95%, transparent 100%);
+  mask-image: linear-gradient(180deg,
+    transparent 0%, rgba(0,0,0,.35) 5%, #000 17%, #000 84%, rgba(0,0,0,.4) 95%, transparent 100%);
 }
 /* 上下壓暗，讓文字有落點；中段保持透明不擋畫面 */
 .pour-shade {
   position: absolute;
   inset: 0;
+  /* 只為了讓文字站得住，中段完全放行，不遮到倒酒本身 */
   background:
-    linear-gradient(180deg, rgba(7,6,10,.88) 0%, rgba(7,6,10,.18) 28%,
-                    rgba(7,6,10,.22) 62%, rgba(7,6,10,.92) 100%),
-    radial-gradient(ellipse 90% 70% at 50% 50%, transparent 40%, rgba(7,6,10,.5) 100%);
+    linear-gradient(180deg, rgba(7,6,10,.72) 0%, rgba(7,6,10,.1) 26%,
+                    transparent 46%, transparent 62%, rgba(7,6,10,.55) 92%, rgba(7,6,10,.8) 100%);
+  pointer-events: none;
 }
 .pour-copy {
   position: relative;
