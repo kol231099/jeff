@@ -31,11 +31,11 @@ body {
   /* 夜間酒吧的光：上方一盞暖吊燈、左右兩側酒紅與紫的環境光、
      越往下越沉。均勻的深色是機房，不均勻的才是有燈的房間。 */
   background:
-    radial-gradient(ellipse 130% 60% at 50% -12%, rgba(255, 166, 87, 0.14), transparent 58%),
-    radial-gradient(ellipse 80% 55% at 8% 18%, rgba(123, 92, 255, 0.13), transparent 62%),
-    radial-gradient(ellipse 85% 60% at 96% 78%, rgba(255, 77, 141, 0.11), transparent 60%),
-    radial-gradient(ellipse 60% 45% at 50% 108%, rgba(64, 22, 66, 0.5), transparent 70%),
-    linear-gradient(180deg, #0B0716 0%, #070511 46%, #05060d 100%);
+    radial-gradient(ellipse 120% 55% at 50% -10%, rgba(255, 160, 80, 0.3), transparent 60%),
+    radial-gradient(ellipse 90% 60% at 4% 22%, rgba(123, 92, 255, 0.26), transparent 62%),
+    radial-gradient(ellipse 95% 65% at 100% 80%, rgba(255, 77, 141, 0.22), transparent 62%),
+    radial-gradient(ellipse 70% 50% at 50% 110%, rgba(88, 26, 90, 0.6), transparent 72%),
+    linear-gradient(180deg, #100A1E 0%, #0A0616 46%, #05060d 100%);
   position: relative;
 }
 
@@ -47,9 +47,9 @@ body::before {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 34% 30% at 30% 6%, rgba(255, 181, 71, 0.1), transparent 70%),
-    radial-gradient(ellipse 30% 26% at 74% 12%, rgba(255, 120, 130, 0.07), transparent 70%),
-    radial-gradient(ellipse 46% 34% at 55% 92%, rgba(90, 60, 180, 0.09), transparent 72%);
+    radial-gradient(ellipse 38% 32% at 28% 4%, rgba(255, 181, 71, 0.2), transparent 70%),
+    radial-gradient(ellipse 34% 28% at 76% 10%, rgba(255, 120, 130, 0.14), transparent 70%),
+    radial-gradient(ellipse 50% 36% at 55% 94%, rgba(100, 66, 200, 0.18), transparent 72%);
   animation: hazeBreathe 18s ease-in-out infinite;
 }
 @keyframes hazeBreathe {
@@ -66,8 +66,8 @@ body::after {
   z-index: 2;
   pointer-events: none;
   background-image:
-    radial-gradient(ellipse 118% 96% at 50% 42%, transparent 58%, rgba(3, 2, 10, 0.42) 100%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    radial-gradient(ellipse 95% 82% at 50% 40%, transparent 46%, rgba(3, 2, 10, 0.62) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
   background-size: auto, 160px 160px;
   opacity: 0.9;
 }
@@ -86,8 +86,8 @@ body::after {
   z-index: 0;
   /* 若有似無的暖色格線：是質地，不是科技感的主角 */
   background-image:
-    linear-gradient(rgba(255, 200, 150, 0.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 200, 150, 0.028) 1px, transparent 1px);
+    linear-gradient(rgba(255, 200, 150, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 200, 150, 0.045) 1px, transparent 1px);
   background-size: 72px 72px;
   mask-image: radial-gradient(ellipse 70% 52% at 50% 32%, black 18%, transparent 78%);
   -webkit-mask-image: radial-gradient(ellipse 70% 52% at 50% 32%, black 18%, transparent 78%);
@@ -105,27 +105,30 @@ body::after {
 /* 三盞燈各有自己的顏色層次與漂移節奏。
    同步移動的光暈一眼就是動畫；錯開週期之後才像空氣在流動。 */
 .glow-1 {
-  width: 560px; height: 560px;
+  width: 46vmax; height: 46vmax;
+  max-width: 900px; max-height: 900px;
   background: radial-gradient(circle,
     rgba(123, 92, 255, 0.75) 0%, rgba(80, 48, 190, 0.4) 38%, transparent 66%);
-  top: -150px; left: -130px;
-  opacity: 0.5;
+  top: -14vmax; left: -10vmax;
+  opacity: 0.7;
   animation: glowDriftA 19s ease-in-out infinite;
 }
 .glow-2 {
-  width: 520px; height: 520px;
+  width: 42vmax; height: 42vmax;
+  max-width: 840px; max-height: 840px;
   background: radial-gradient(circle,
     rgba(255, 77, 141, 0.7) 0%, rgba(150, 30, 80, 0.38) 40%, transparent 68%);
-  bottom: -120px; right: -110px;
-  opacity: 0.46;
+  bottom: -12vmax; right: -9vmax;
+  opacity: 0.62;
   animation: glowDriftB 25s ease-in-out infinite;
 }
 .glow-3 {
-  width: 460px; height: 460px;
+  width: 36vmax; height: 36vmax;
+  max-width: 740px; max-height: 740px;
   background: radial-gradient(circle,
     rgba(255, 181, 71, 0.62) 0%, rgba(200, 100, 40, 0.3) 42%, transparent 70%);
-  top: 38%; left: 44%;
-  opacity: 0.4;
+  top: 38%; left: 42%;
+  opacity: 0.5;
   animation: glowDriftC 31s ease-in-out infinite;
 }
 
