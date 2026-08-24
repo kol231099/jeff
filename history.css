@@ -151,3 +151,106 @@
   .history-main { padding: 100px 20px 40px; }
   .history-row { flex-direction: column; gap: 8px; }
 }
+
+/* ===== 可展開的檔案卡 ===== */
+/* 刻意不用結果頁的語彙（大酒杯、漸層標題、風味長條）。
+   這裡是檔案：標籤配數值、細線分隔、數字用等寬對齊。 */
+
+.history-head {
+  display: block; width: 100%; text-align: left;
+  background: none; border: 0; padding: 0; cursor: pointer;
+  font: inherit; color: inherit;
+}
+.history-more {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 16px;
+  font-size: 10.5px; letter-spacing: 2.2px; text-transform: uppercase;
+  color: var(--text-dim);
+  transition: color .4s ease;
+}
+.history-more i {
+  width: 7px; height: 7px; display: block;
+  border-right: 1px solid currentColor; border-bottom: 1px solid currentColor;
+  transform: rotate(45deg) translate(-1px, -1px);
+  transition: transform .45s cubic-bezier(.22,1,.36,1);
+}
+.history-item:hover .history-more { color: var(--accent-warm); }
+.history-item.open .history-more i { transform: rotate(-135deg) translate(-2px, -2px); }
+
+.history-detail {
+  overflow: hidden;
+  height: 0;
+  transition: height .55s cubic-bezier(.22,1,.36,1);
+}
+.dt { padding-top: 26px; margin-top: 24px; border-top: 1px solid var(--border); }
+.dt-sec + .dt-sec { margin-top: 34px; padding-top: 28px; border-top: 1px solid var(--border); }
+.dt-sec h4 {
+  margin: 0 0 16px;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--accent-gold); font-weight: 500;
+}
+
+/* 標籤／數值列 —— 檔案的骨架 */
+.dt-list { margin: 0; }
+.dt-row {
+  display: grid; grid-template-columns: minmax(96px, 30%) 1fr; gap: 16px;
+  padding: 10px 0; border-bottom: 1px solid rgba(233,228,218,.05);
+}
+.dt-row:last-child { border-bottom: 0; }
+.dt-row dt { font-size: 12px; color: var(--text-dim); margin: 0; }
+.dt-row dd { font-size: 13px; color: var(--text); margin: 0; }
+
+.dt-lead {
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif;
+  font-size: 24px; font-weight: 500; color: var(--accent-warm); margin: 0 0 10px;
+}
+.dt-body { font-size: 13px; line-height: 2; color: #B5AFA2; margin: 0; }
+
+.dt-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+.dt-chips span {
+  font-size: 10.5px; padding: 5px 11px;
+  border: 1px solid var(--border); border-radius: 2px; color: var(--text);
+}
+.dt-chips.sm span { font-size: 10px; padding: 4px 9px; color: var(--text-dim); }
+
+/* 推薦清單：編號 + 分數用等寬數字靠右，像帳目 */
+.dt-recs { list-style: none; margin: 0; padding: 0; counter-reset: r; }
+.dt-recs > li { padding: 18px 0; border-bottom: 1px solid rgba(233,228,218,.05); }
+.dt-recs > li:last-child { border-bottom: 0; }
+.dt-rec-head { display: flex; align-items: baseline; gap: 12px; }
+.dt-idx {
+  font-family: 'Cormorant Garamond',Georgia,serif; font-style: italic;
+  font-size: 15px; color: var(--text-faint); font-variant-numeric: tabular-nums;
+}
+.dt-rec-head b { font-size: 15px; font-weight: 500; color: var(--text); flex: 1; }
+.dt-rec-head em {
+  font-family: 'Cormorant Garamond',Georgia,serif; font-style: normal;
+  font-size: 21px; color: var(--accent-warm); font-variant-numeric: tabular-nums;
+}
+.dt-rec-meta { font-size: 11px; color: var(--text-dim); margin: 5px 0 0; letter-spacing: .4px; }
+.dt-recs p { font-size: 12.5px; line-height: 1.95; color: #B5AFA2; margin: 10px 0 0; }
+
+.dt-note {
+  display: flex; gap: 10px; margin-top: 10px;
+  font-size: 11.5px; line-height: 1.85; color: #A8A296;
+}
+.dt-note span {
+  flex: none; font-size: 9.5px; letter-spacing: 1.6px; text-transform: uppercase;
+  color: var(--text-faint); padding-top: 3px; min-width: 52px;
+}
+
+/* 風味結構：純數字，不用長條 */
+.dt-figures { display: flex; flex-wrap: wrap; gap: 30px; margin-bottom: 20px; }
+.dt-figures div { display: flex; flex-direction: column; gap: 4px; }
+.dt-figures span { font-size: 10px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--text-dim); }
+.dt-figures b {
+  font-family: 'Cormorant Garamond',Georgia,serif; font-size: 30px; font-weight: 400;
+  color: var(--accent-warm); font-variant-numeric: tabular-nums; line-height: 1;
+}
+
+.dt-steps { margin: 16px 0 0; padding-left: 18px; }
+.dt-steps li { font-size: 12.5px; line-height: 1.95; color: #B5AFA2; margin-bottom: 9px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .history-detail { transition: none; }
+}
