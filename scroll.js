@@ -177,6 +177,7 @@
     // 先用最輕的手段喚醒解碼管線：靜音影片可以直接 play()，不需要使用者手勢。
     // 播一格再暫停就會強制輸出新影格。真的無效才退回重新載入。
     async function revive(st) {
+      if (document.hidden) return;        // 隱藏時喚醒沒有意義，只會空耗
       const now = performance.now();
       if (now - st.lastRevive < COOL_MS) return;
       st.lastRevive = now;
