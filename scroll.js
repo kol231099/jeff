@@ -23,19 +23,22 @@
         return null;
       }
       pin.classList.remove('pin-off');
-      // 需要橫向捲過的距離，換算成等量的垂直捲動距離
+      // 需要橫向捲過的距離
       const dist = Math.max(0, track.scrollWidth - innerWidth + 96);
-      pin.style.height = `${innerHeight + dist}px`;
-      return { pin, track, dist };
+      // 1:1 對應時只釘住 0.78 個視窗高，一閃就過去了。
+      // 把垂直行程拉長成 1.7 倍，橫移走得慢，這一段才成為一個「時刻」。
+      const travel = dist * 1.7;
+      pin.style.height = `${innerHeight + travel}px`;
+      return { pin, track, dist, travel };
     };
 
     let items = pins.map(setup).filter(Boolean);
 
     const update = () => {
-      for (const { pin, track, dist } of items) {
+      for (const { pin, track, dist, travel } of items) {
         const r = pin.getBoundingClientRect();
         // 0 → 1：區塊頂端貼齊視窗頂端起算
-        const p = Math.min(1, Math.max(0, -r.top / dist));
+        const p = travel > 0 ? Math.min(1, Math.max(0, -r.top / travel)) : 0;
         track.style.transform = `translate3d(${-p * dist}px,0,0)`;
         pin.style.setProperty('--pin-progress', p.toFixed(4));
       }
