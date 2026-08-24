@@ -223,7 +223,9 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-width: 880px;
+  /* 問句都不長，880px 讓右半邊全是空白。收到與導言相近的行長，
+     整個區塊的左右邊界才會對齊。 */
+  max-width: 580px;
 }
 .faq-item {
   border: 1px solid rgba(255,255,255,0.08);
