@@ -23,8 +23,8 @@
 .tab:hover { color: var(--text); border-color: rgba(255, 255, 255, 0.2); }
 .tab.active {
   color: var(--text);
-  background: rgba(123, 92, 255, 0.16);
-  border-color: rgba(123, 92, 255, 0.55);
+  background: rgba(232, 200, 122, 0.16);
+  border-color: rgba(232, 200, 122, 0.55);
 }
 .tab-badge {
   display: inline-flex;
@@ -35,7 +35,7 @@
   padding: 0 5px;
   margin-left: 7px;
   border-radius: 100px;
-  background: linear-gradient(135deg, #FFB547, #FF4D8D);
+  background: linear-gradient(135deg, #FFB547, #E8C87A);
   color: #0a0b1a;
   font-size: 11px;
   font-weight: 800;
@@ -121,7 +121,7 @@
 }
 .cand-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #7B5CFF, #FF4D8D, #FFB547);
+  background: linear-gradient(90deg, #E8C87A, #E8C87A, #FFB547);
   border-radius: 100px;
 }
 
@@ -170,12 +170,12 @@
 }
 .btn-pass:hover { color: var(--text); border-color: rgba(255, 255, 255, 0.22); }
 .btn-like {
-  background: linear-gradient(135deg, #FFB547, #FF4D8D, #7B5CFF);
+  background: linear-gradient(135deg, #FFB547, #E8C87A, #E8C87A);
   border: none;
   color: #fff;
-  box-shadow: 0 6px 20px rgba(255, 77, 141, 0.3);
+  box-shadow: 0 6px 20px rgba(232, 200, 122, 0.3);
 }
-.btn-like:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(255, 77, 141, 0.45); }
+.btn-like:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(232, 200, 122, 0.45); }
 .btn-pass:disabled, .btn-like:disabled { opacity: 0.5; cursor: default; transform: none; }
 
 /* 配對成功 */
@@ -234,7 +234,7 @@
   cursor: pointer;
   transition: border-color 0.25s, transform 0.25s;
 }
-.room-item:hover { border-color: rgba(123, 92, 255, 0.5); transform: translateX(3px); }
+.room-item:hover { border-color: rgba(232, 200, 122, 0.5); transform: translateX(3px); }
 .room-meta { flex: 1; min-width: 0; }
 .room-name { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
 .room-preview {
@@ -247,7 +247,7 @@
   display: inline-flex; align-items: center; justify-content: center;
   padding: 0 6px;
   border-radius: 100px;
-  background: linear-gradient(135deg, #FFB547, #FF4D8D);
+  background: linear-gradient(135deg, #FFB547, #E8C87A);
   color: #0a0b1a; font-size: 12px; font-weight: 800;
 }
 
@@ -319,7 +319,7 @@ body.chat-open .tabs { display: none; }
   white-space: pre-wrap;
 }
 .bubble.mine .bubble-body {
-  background: linear-gradient(135deg, #FFB547, #FF4D8D);
+  background: linear-gradient(135deg, #FFB547, #E8C87A);
   color: #1a0b12;
   font-weight: 500;
   border-bottom-right-radius: 6px;
@@ -358,13 +358,13 @@ body.chat-open .tabs { display: none; }
   font-family: inherit;
   font-size: 14.5px;
 }
-.chat-input:focus { outline: none; border-color: rgba(123, 92, 255, 0.6); }
+.chat-input:focus { outline: none; border-color: rgba(232, 200, 122, 0.6); }
 .chat-input::placeholder { color: var(--text-dim); }
 .chat-send {
   padding: 13px 26px;
   border: none;
   border-radius: 100px;
-  background: linear-gradient(135deg, #FFB547, #FF4D8D, #7B5CFF);
+  background: linear-gradient(135deg, #FFB547, #E8C87A, #E8C87A);
   color: #fff;
   font-family: inherit;
   font-size: 14px;
@@ -403,7 +403,7 @@ body.chat-open .tabs { display: none; }
   width: 26px; height: 26px;
   display: inline-flex; align-items: center; justify-content: center;
   border-radius: 50%;
-  background: linear-gradient(135deg, #FFB547, #FF4D8D);
+  background: linear-gradient(135deg, #FFB547, #E8C87A);
   color: #0a0b1a; font-size: 12px; font-weight: 800;
 }
 .group-note { font-size: 13px; opacity: 0.8; }

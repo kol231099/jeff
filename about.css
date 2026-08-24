@@ -109,7 +109,7 @@
 }
 .about-feat:hover {
   transform: translateY(-6px);
-  border-color: rgba(255, 77, 141, 0.4);
+  border-color: rgba(232, 200, 122, 0.4);
   box-shadow: var(--glow-pink);
 }
 .feat-num {
@@ -156,7 +156,7 @@
   transition: all 0.3s;
 }
 .journey-step:hover {
-  border-color: rgba(123, 92, 255, 0.4);
+  border-color: rgba(232, 200, 122, 0.4);
   box-shadow: var(--glow-purple);
 }
 .step-num {
@@ -171,7 +171,7 @@
   font-size: 24px;
   font-weight: 900;
   color: white;
-  box-shadow: 0 8px 24px rgba(255, 77, 141, 0.3);
+  box-shadow: 0 8px 24px rgba(232, 200, 122, 0.3);
 }
 .step-body h4 {
   font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
@@ -206,7 +206,7 @@
 
 .about-cta-band {
   text-align: center;
-  background: linear-gradient(135deg, rgba(255, 181, 71, 0.08), rgba(255, 77, 141, 0.08), rgba(123, 92, 255, 0.08));
+  background: linear-gradient(135deg, rgba(255, 181, 71, 0.08), rgba(232, 200, 122, 0.08), rgba(232, 200, 122, 0.08));
   border: 1.5px solid var(--border);
   border-radius: 28px;
   padding: 60px 30px;
