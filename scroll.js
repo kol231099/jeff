@@ -27,7 +27,7 @@
       const dist = Math.max(0, track.scrollWidth - innerWidth + 96);
       // 1:1 對應時只釘住 0.78 個視窗高，一閃就過去了。
       // 把垂直行程拉長成 1.7 倍，橫移走得慢，這一段才成為一個「時刻」。
-      const travel = dist * 2.1;   // 這段是主秀，走慢一點
+      const travel = dist * 3.2;   // 這段是主秀。太快會來不及看清楚每一杯
       pin.style.height = `${innerHeight + travel}px`;
       return { pin, track, dist, travel };
     };
@@ -41,6 +41,25 @@
         const p = travel > 0 ? Math.min(1, Math.max(0, -r.top / travel)) : 0;
         track.style.transform = `translate3d(${-p * dist}px,0,0)`;
         pin.style.setProperty('--pin-progress', p.toFixed(4));
+        // 炫技的核心：每個項目依「離畫面中心多遠」做 3D 旋轉、縮放與明暗。
+        // 靠近中心的被推到眼前並打亮，兩側的向後傾斜退開。
+        const cx = innerWidth / 2;
+        for (const el of track.children) {
+          if (!el.classList || !el.classList.contains('lane-item')) continue;
+          const b = el.getBoundingClientRect();
+          if (b.right < -400 || b.left > innerWidth + 400) { el.style.opacity = ''; continue; }
+          const d = ((b.left + b.width / 2) - cx) / cx;      // -1 左緣 → 0 中心 → 1 右緣
+          const k = Math.max(-1.4, Math.min(1.4, d));
+          el.style.transform =
+            `perspective(1400px) rotateY(${-k * 26}deg) scale(${1 - Math.abs(k) * 0.16}) translateZ(${-Math.abs(k) * 130}px)`;
+          el.style.opacity = (1 - Math.abs(k) * 0.5).toFixed(3);
+          el.style.setProperty('--focus', (1 - Math.min(1, Math.abs(k) * 1.6)).toFixed(3));
+        }
+
+        // 背景巨型字反向慢速位移，做出景深
+        const ghost = pin.querySelector('.lane-ghost');
+        if (ghost) ghost.style.transform = `translate3d(${-p * dist * 0.32}px,0,0)`;
+
         // 計量的編號跟著進度走
         const num = pin.querySelector('.lane-meter-num');
         if (num) {

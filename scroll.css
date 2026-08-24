@@ -41,7 +41,33 @@
   max-width: var(--measure);
   margin: 0 auto 52px;
 }
+/* 背景巨型字：比陳列慢三倍，做出景深。純裝飾，不參與閱讀 */
+.lane-ghost {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 6vw;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+.lane-ghost span {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(180px, 30vw, 460px);
+  font-weight: 300;
+  line-height: .8;
+  letter-spacing: -.02em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(240, 228, 196, .07);
+}
+
 .lane {
+  position: relative;
+  z-index: 1;
+  perspective: 1400px;
   display: flex;
   align-items: stretch;
   gap: clamp(40px, 5vw, 96px);
@@ -58,7 +84,12 @@
   display: flex;
   flex-direction: column;
   align-self: center;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  transition: filter .5s ease;
 }
+/* 位於畫面中心的那一杯被打亮，兩側沉入暗處 */
+.lane-item { filter: brightness(calc(.62 + var(--focus, 0) * .38)); }
 .lane-xl { width: clamp(300px, 26vw, 420px); }
 .lane-lg { width: clamp(230px, 19vw, 310px); }
 .lane-md { width: clamp(170px, 14vw, 230px); }
@@ -81,6 +112,7 @@
 }
 .lane-plate {
   position: relative;
+  box-shadow: 0 0 calc(var(--focus, 0) * 60px) rgba(240, 228, 196, calc(var(--focus, 0) * .1));
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, .014);
   aspect-ratio: 3 / 4;
@@ -94,7 +126,10 @@
 
 /* 杯型線條與液體 */
 .gl-line { fill: none; stroke: rgba(240, 236, 226, .72); stroke-width: 2.2; stroke-linejoin: round; }
-.gl-fill { opacity: .92; }
+.gl-fill {
+  opacity: calc(.55 + var(--focus, 0) * .45);
+  filter: drop-shadow(0 0 calc(var(--focus, 0) * 26px) rgba(255, 170, 120, calc(var(--focus, 0) * .5)));
+}
 
 /* 引言：打斷陳列的節奏，跟參考站一樣 */
 .lane-quote {

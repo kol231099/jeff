@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@200;300;400;500&family=Noto+Serif+TC:wght@200;300;400;500;600;700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=35" />
 <link rel="stylesheet" href="transition.css?v=31" />
-<link rel="stylesheet" href="scroll.css?v=4" />
+<link rel="stylesheet" href="scroll.css?v=5" />
 <link rel="stylesheet" href="home.css?v=27" />
 <script>
 /* 換頁抵達時，在第一個影格之前就蓋住畫面，避免閃爍。
@@ -335,6 +335,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
         <div class="home-eyebrow"><span>THE POURS</span></div>
         <h2 data-i18n="home.lane_t">AI 最近倒出來的</h2>
       </div>
+      <div class="lane-ghost" aria-hidden="true"><span>POUR</span><span>MATCH</span><span>POUR</span></div>
       <div class="lane" data-pin-track>
         <svg width="0" height="0" aria-hidden="true"><defs>
       <linearGradient id="lq0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFD9A0"/><stop offset="100%" stop-color="#FF9A5B"/></linearGradient>
@@ -546,7 +547,7 @@ setTimeout(function(){document.documentElement.classList.remove('pour-arriving')
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="i18n.js?v=13"></script>
   <script src="transition.js?v=17"></script>
-  <script src="scroll.js?v=3"></script>
+  <script src="scroll.js?v=4"></script>
   <script src="particles.js?v=10"></script>
   <script src="auth.js?v=13"></script>
 </body>
