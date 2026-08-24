@@ -398,13 +398,19 @@
 .faq-media-frame {
   position: relative;
   /* 不加外框、底色與陰影，讓影片直接落在頁面上 */
+  border-radius: 14px;
   overflow: hidden;
+  /* Safari 在圓角容器裡裁切影片時邊緣會露出直角，
+     這一行會強制它獨立成一層合成，圓角才會確實生效 */
+  isolation: isolate;
+  -webkit-transform: translateZ(0);
 }
 .faq-media-frame video {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 9;    /* 影片原生比例，不裁切主體 */
   object-fit: cover;
+  border-radius: inherit;  /* 影片本身也帶圓角，不倚賴容器裁切 */
 }
 
 /* 窄螢幕改成上下堆疊，影片不再吸附 */
