@@ -48,7 +48,6 @@
       on = true;
       el.classList.add('playing');
       fade(VOL);
-      try { localStorage.setItem(KEY, '1'); } catch (e) {}
     } catch (e) {
       // 沒有互動就被擋下：維持關閉狀態，不要顯示成正在播放
       on = false;
@@ -57,11 +56,10 @@
     label();
   }
 
-  function stop(remember = true) {
+  function stop() {
     on = false;
     el.classList.remove('playing');
     fade(0, () => audio.pause());
-    if (remember) { try { localStorage.setItem(KEY, '0'); } catch (e) {} }
     label();
   }
 
@@ -74,18 +72,15 @@
     else audio.play().catch(() => {});
   });
 
-  // 上次開著的話，等第一次互動再續播（此時瀏覽器才會允許）
-  let want = false;
-  try { want = localStorage.getItem(KEY) === '1'; } catch (e) {}
-  if (want) {
-    const resume = () => {
-      document.removeEventListener('pointerdown', resume);
-      document.removeEventListener('keydown', resume);
-      start();
-    };
-    document.addEventListener('pointerdown', resume, { once: true });
-    document.addEventListener('keydown', resume, { once: true });
-  }
+  // 刻意不做自動續播。
+  // 曾經做過「上次開著就在第一次互動時接續」，但那代表使用者只是隨手點了
+  // 頁面上任何地方，音樂就自己響起來 —— 從使用者的角度，那就是網站擅自播放。
+  // 音樂一律由本人按下才開始。
+  try { localStorage.removeItem(KEY); } catch (e) {}
+
+  // 離開頁面時明確停掉，不倚賴瀏覽器回收
+  addEventListener('pagehide', () => { try { audio.pause(); } catch (e) {} });
+  addEventListener('beforeunload', () => { try { audio.pause(); } catch (e) {} });
 
   label();
   addEventListener('pourmatch:langchange', label);
