@@ -619,7 +619,7 @@ body::after {
   padding: 8px 14px;
   background:
     linear-gradient(150deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 60%),
-    rgba(13, 14, 34, 0.86);
+    rgba(12, 10, 17, 0.86);
   backdrop-filter: blur(14px) saturate(1.2);
   -webkit-backdrop-filter: blur(14px) saturate(1.2);
   border: 1px solid rgba(255, 181, 71, 0.3);
@@ -772,7 +772,7 @@ body::after {
 }
 
 @media (max-width: 640px) {
-  .navbar { padding: 10px 14px; }
+  .navbar { padding: 11px 18px; border-radius: 999px; }
   .btn-login span { display: none; }
   .nav-links { gap: 2px; }
   .nav-links a { font-size: 12.5px; }
@@ -805,7 +805,7 @@ body::after {
   .user-menu,
   .profile-card,
   .form-card {
-    background: rgba(13, 14, 34, 0.97) !important;
+    background: rgba(11, 9, 15, 0.97) !important;
   }
 
   /* 關掉常駐無限動畫，省 GPU；AI loading 環是短暫出現，保留 */
