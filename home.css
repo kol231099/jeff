@@ -2,9 +2,12 @@
 
 /* 共用：分隔標題 */
 .home-section {
-  max-width: 1200px;
+  /* 與導覽列、hero 共用同一組版心變數。原本 1200px + 40px 內距
+     與 hero 的 1320px − 48px gutter 對不起來，整個下半部都會偏。 */
+  width: calc(100% - var(--gutter) * 2);
+  max-width: var(--measure);
   margin: 80px auto 0;
-  padding: 0 40px;
+  padding: 0;
 }
 .home-eyebrow {
   display: inline-flex;
@@ -271,7 +274,8 @@
 /* === 末段 CTA === */
 .home-final {
   margin: 100px auto 80px;
-  max-width: 1100px;
+  width: calc(100% - var(--gutter) * 2);
+  max-width: var(--measure);
   padding: 60px 40px;
   border-radius: 28px;
   background:
@@ -309,8 +313,8 @@
   .scene-grid { grid-template-columns: repeat(2, 1fr); }
   .showcase-grid { grid-template-columns: 1fr; }
   .home-section h2, .home-final h2 { font-size: 28px; }
-  .home-section { padding: 0 20px; margin-top: 60px; }
-  .home-final { margin: 70px 16px; padding: 40px 24px; }
+  .home-section { margin-top: 60px; }
+  .home-final { margin: 70px auto; padding: 40px 24px; }
 }
 @media (max-width: 560px) {
   .scene-grid { grid-template-columns: 1fr; }
