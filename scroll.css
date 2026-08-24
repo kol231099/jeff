@@ -39,8 +39,10 @@
 .pin-head {
   width: calc(100% - var(--gutter) * 2);
   max-width: var(--measure);
-  margin: 0 auto 52px;
+  margin: 0 auto 44px;
+  padding-top: 86px;        /* 讓開固定導覽列的高度 */
 }
+.pin-head h2 { margin: 0; }
 /* 背景巨型字：比陳列慢三倍，做出景深。純裝飾，不參與閱讀 */
 .lane-ghost {
   position: absolute;
@@ -90,38 +92,54 @@
 }
 /* 位於畫面中心的那一杯被打亮，兩側沉入暗處 */
 .lane-item { filter: brightness(calc(.62 + var(--focus, 0) * .38)); }
-.lane-xl { width: clamp(300px, 26vw, 420px); }
-.lane-lg { width: clamp(230px, 19vw, 310px); }
-.lane-md { width: clamp(170px, 14vw, 230px); }
-.lane-sm { width: clamp(120px, 10vw, 165px); }
+.lane-xl { width: clamp(280px, 23vw, 360px); }
+.lane-lg { width: clamp(235px, 19vw, 300px); }
+.lane-md { width: clamp(200px, 16vw, 254px); }
+.lane-sm { width: clamp(172px, 13.5vw, 214px); }
 
 /* 垂直錯開，讓視線在捲動時上下起伏 */
-.lane-top { align-self: flex-start; margin-top: 4vh; }
+.lane-top { align-self: flex-start; margin-top: 9vh; }
 .lane-mid { align-self: center; }
-.lane-bot { align-self: flex-end; margin-bottom: 6vh; }
+.lane-bot { align-self: flex-end; margin-bottom: 11vh; }
 
 .lane-cap {
-  font-size: 10px;
-  letter-spacing: 2.2px;
+  margin-bottom: 14px;
+  min-height: 34px;
+}
+.lane-cap b {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2.4px;
   text-transform: uppercase;
+  color: var(--text);
+}
+.lane-cap span {
+  display: block;
+  font-size: 10.5px;
+  letter-spacing: .6px;
   color: var(--text-dim);
-  margin-bottom: 16px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-top: 5px;
 }
 .lane-plate {
   position: relative;
   box-shadow: 0 0 calc(var(--focus, 0) * 60px) rgba(240, 228, 196, calc(var(--focus, 0) * .1));
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, .014);
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 4 / 5;
   display: grid;
   place-items: center;
-  padding: 12%;
+  padding: 8% 14% 10%;
+  overflow: hidden;
   transition: border-color .7s cubic-bezier(.22,1,.36,1);
 }
-.lane-plate svg { width: 100%; height: 100%; overflow: visible; }
+/* 杯子撐滿盤面。原本只佔中間一小塊，四周全空，才會顯得空洞 */
+.lane-plate svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  display: block;
+}
 .lane-item:hover .lane-plate { border-color: rgba(240, 228, 196, .34); }
 
 /* 杯型線條與液體 */
@@ -155,10 +173,10 @@
 .lane-meter {
   position: absolute;
   left: max(var(--gutter), calc((100vw - var(--measure)) / 2));
-  bottom: 5vh;
+  bottom: 6vh;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   font-size: 11px;
   letter-spacing: 2px;
   color: var(--text-dim);

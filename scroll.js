@@ -118,7 +118,28 @@
     update();
   }
 
-  const start = () => { initPin(); initReveal(); initProgress(); };
+  /* ---------- 4. 導覽列隨捲動收起 ---------- */
+  function initNav() {
+    const nav = document.querySelector('.navbar');
+    if (!nav) return;
+    let last = scrollY, ticking = false;
+    const update = () => {
+      const y = scrollY;
+      nav.classList.toggle('nav-solid', y > 8);
+      // 往下且已離開頂端 → 收起；往上 → 立刻回來
+      if (y > last + 4 && y > 140) nav.classList.add('nav-hidden');
+      else if (y < last - 4) nav.classList.remove('nav-hidden');
+      last = y;
+    };
+    addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { update(); ticking = false; });
+    }, { passive: true });
+    update();
+  }
+
+  const start = () => { initPin(); initReveal(); initProgress(); initNav(); };
   if (document.readyState === 'loading') addEventListener('DOMContentLoaded', start);
   else start();
 })();

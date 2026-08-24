@@ -110,6 +110,10 @@ body::after {
   border-radius: 0;
   z-index: 100;
   box-shadow: none;
+  /* 往下捲收起、往上捲回來。固定不動會讓內容捲到它底下打架 */
+  transition: transform .55s cubic-bezier(.22,1,.36,1), opacity .4s ease,
+              background-color .4s ease, backdrop-filter .4s ease;
+  will-change: transform;
 }
 
 .logo {
@@ -900,3 +904,20 @@ html[lang="zh-Hant"] .badge { letter-spacing: 2.6px; }
 /* 版心留白隨螢幕縮放，左線在每個尺寸都成立 */
 @media (max-width: 1024px) { :root { --gutter: 28px; } }
 @media (max-width: 640px)  { :root { --gutter: 20px; } }
+
+
+/* 導覽列的捲動行為 */
+.navbar.nav-hidden {
+  transform: translateX(-50%) translateY(-104%);
+  opacity: 0;
+  pointer-events: none;
+}
+/* 離開頂端後加上背景，避免文字直接疊在內容上 */
+.navbar.nav-solid {
+  background: rgba(9, 8, 13, .82);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+}
+@media (prefers-reduced-motion: reduce) {
+  .navbar { transition: none; }
+}
