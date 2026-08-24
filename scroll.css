@@ -194,10 +194,12 @@
 }
 .lane-meter i b {
   position: absolute;
-  inset: 0 0 0 auto;
+  /* inset 只釘三邊、又沒給寬度的話，元素寬度會是 0，
+     transform-origin 的 100% 也就永遠算成 0px —— 這條進度條原本根本沒顯示。 */
+  inset: 0;
   background: var(--accent-warm);
   transform: scaleX(var(--pin-progress, 0));
-  transform-origin: 100% 50%;   /* 進度也從右往左長，跟動線一致 */
+  transform-origin: 100% 50%;   /* 從右往左長，跟動線一致 */
 }
 
 /* 釘住區的進度計數：01 / 04 */
