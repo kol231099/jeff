@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="styles.css?v=20" />
 <link rel="stylesheet" href="transition.css?v=16" />
 <link rel="stylesheet" href="home.css?v=12" />
-<link rel="stylesheet" href="bg-styles.css?v=2" />
+<link rel="stylesheet" href="bg-styles.css?v=3" />
 <style>
   /* 讓 .stage 完全接管背景：關掉 styles.css 原本那幾層 */
   body { background: #05060d !important; }
@@ -564,11 +564,13 @@ const STYLES = [
   ['銅器暗室',  'Copper Speakeasy',  '灰泥牆的粗顆粒質地配黃銅暖光，兩側帶邊光。復古地下酒吧。'],
   ['暮光地平線','Twilight Horizon',  '靛藍到洋紅再到琥珀的黃昏天空，中間一道地平線亮光。開闊、有敘事感。'],
   ['星夜酒館',  'Celestial',         '深空底色配兩層閃爍星點與星雲染色。夢幻、安靜、適合夜晚使用。'],
+  ['靜謐暗房',  'Hushed',            '參考 chungiyoo.com 的克制：背景不做任何裝飾，只有一處偏離中心的微光與很重的暗角。簡潔、深色、神秘。'],
 ];
 const grid = document.getElementById('grid'), desc = document.getElementById('desc'),
       label = document.getElementById('label'), wrap = document.getElementById('wrap'),
       more = document.getElementById('more');
 const KEY = 'pourmatch_bg_preview';
+const N = STYLES.length;
 
 STYLES.forEach((s, i) => {
   const b = document.createElement('button');
@@ -587,8 +589,8 @@ function apply(n) {
   try { localStorage.setItem(KEY, n); } catch (e) {}
 }
 const cur = () => +document.body.dataset.bg;
-document.getElementById('prev').onclick = () => apply((cur() + 8) % 10 + 1);
-document.getElementById('next').onclick = () => apply(cur() % 10 + 1);
+document.getElementById('prev').onclick = () => apply((cur() + N - 2) % N + 1);
+document.getElementById('next').onclick = () => apply(cur() % N + 1);
 more.onclick = () => {
   const open = wrap.classList.toggle('open');
   more.setAttribute('aria-expanded', open);
@@ -596,15 +598,16 @@ more.onclick = () => {
 };
 
 addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight') apply(cur() % 10 + 1);
-  if (e.key === 'ArrowLeft')  apply((cur() + 8) % 10 + 1);
+  if (e.key === 'ArrowRight') apply(cur() % N + 1);
+  if (e.key === 'ArrowLeft')  apply((cur() + N - 2) % N + 1);
   if (/^[0-9]$/.test(e.key))  apply(e.key === '0' ? 10 : +e.key);
+  if (e.key === '-')          apply(11);
   if (e.key === 'Escape' && wrap.classList.contains('open')) more.click();
 });
 
 let start = 1;
 try { start = +localStorage.getItem(KEY) || 1; } catch (e) {}
-apply(start >= 1 && start <= 10 ? start : 1);
+apply(start >= 1 && start <= N ? start : 1);
 </script>
 </body>
 </html>

@@ -220,3 +220,32 @@
 @media (prefers-reduced-motion: reduce) {
   .light, .extra, .orb { animation: none !important; }
 }
+
+/* ---------- 11. 靜謐暗房 ----------
+   參考 chungiyoo.com 的克制：背景幾乎什麼都不做。
+   沒有網格、沒有彩色光暈、沒有多段漸層 —— 那些是搶戲的東西。
+   神秘感不是靠發光，是靠「大部分區域沉在暗處，只有一處微光」。 */
+[data-bg="11"] .base {
+  background: linear-gradient(178deg, #0C0A12 0%, #09080D 52%, #070609 100%);
+}
+/* 單一光源，低到幾乎看不出是漸層，而且刻意偏離中心、半在框外，
+   讓人判斷不出光從哪來。這是「神秘」真正的來源。 */
+[data-bg="11"] .light {
+  background:
+    radial-gradient(ellipse 78% 52% at 38% -8%, rgba(255, 226, 190, .075), transparent 62%),
+    radial-gradient(ellipse 62% 44% at 88% 96%, rgba(150, 130, 200, .05), transparent 68%);
+  animation: hush 52s ease-in-out infinite;   /* 慢到不會被認出是循環 */
+}
+@keyframes hush {
+  0%, 100% { opacity: .82; transform: translate(0, 0) scale(1); }
+  50%      { opacity: 1;   transform: translate(-1.2%, .8%) scale(1.05); }
+}
+[data-bg="11"] .extra { background: none; }
+[data-bg="11"] .orb-1, [data-bg="11"] .orb-2, [data-bg="11"] .orb-3 { display: none; }
+/* 暗角收得比其他風格都重：四角要真的沉進黑裡，房間才沒有邊界 */
+[data-bg="11"] .grain {
+  background-image:
+    radial-gradient(ellipse 82% 70% at 44% 38%, transparent 34%, rgba(0, 0, 0, .82) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+  background-size: auto, 160px 160px;
+}
