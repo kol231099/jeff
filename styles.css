@@ -1,7 +1,7 @@
 /* ====== 基底變數 ====== */
 :root {
   --measure: 1320px;      /* 全站共用版心 */
-  --gutter: 48px;
+  --gutter: 48px;   /* 由媒體查詢覆寫，見檔案末端 */
   --bg-0: #05060d;
   --bg-1: #0a0b1a;
   --bg-2: #0f1028;
@@ -95,7 +95,7 @@ body::after {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 26px 4px;
+  padding: 26px 0;
   background: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -720,14 +720,14 @@ body::after {
     /* 手機版導覽列是兩行（約 102px），留白要蓋過它 */
     padding-top: 152px;
   }
-  .hero-desc { margin: 0 auto 36px; }
+  .hero-desc { margin: 32px auto 44px; }
   .cta-row { justify-content: center; }
   .stats { justify-content: center; }
   .hero-visual { height: 500px; margin-top: 40px; }
   /* 手機版改成兩行：logo + 頭像在第一行，導覽連結佔滿第二行 */
   .navbar {
     flex-wrap: wrap;
-    padding: 10px 16px;
+    padding: 10px 0;
     gap: 8px 12px;
   }
   .nav-links {
@@ -764,7 +764,7 @@ body::after {
   .btn-login span { display: none; }
   .nav-links { gap: 2px; }
   .nav-links a { font-size: 12.5px; }
-  .hero { padding: 152px 20px 40px; }
+  .hero { padding: 152px 0 40px; }
   .hero-visual { height: 430px; margin-top: 16px; }
   .holo-glass { transform: scale(0.86); height: 440px; }
   .features { grid-template-columns: 1fr; padding: 0 20px; }
@@ -880,3 +880,8 @@ html[lang="zh-Hant"] .hero-desc {
 }
 /* 中文的字距不該套用拉丁文的負值 */
 html[lang="zh-Hant"] .badge { letter-spacing: 2.6px; }
+
+
+/* 版心留白隨螢幕縮放，左線在每個尺寸都成立 */
+@media (max-width: 1024px) { :root { --gutter: 28px; } }
+@media (max-width: 640px)  { :root { --gutter: 20px; } }
