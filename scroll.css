@@ -41,40 +41,107 @@
   max-width: var(--measure);
   margin: 0 auto 52px;
 }
-.pin-track {
+.lane {
   display: flex;
-  gap: 32px;
+  align-items: stretch;
+  gap: clamp(40px, 5vw, 96px);
+  height: 100%;
   padding-left: max(var(--gutter), calc((100vw - var(--measure)) / 2));
-  padding-right: 20vw;
+  padding-right: 26vw;
   will-change: transform;
 }
-.pin-panel {
-  flex: 0 0 clamp(280px, 27vw, 400px);
-  min-height: 380px;
-  padding: 44px 38px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
+
+/* 錯落陳列：尺寸與垂直位置都不一致，整齊排列會失去節奏 */
+.lane-item {
+  flex: 0 0 auto;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  background: rgba(255, 255, 255, .012);
-  transition: border-color .6s cubic-bezier(.22,1,.36,1);
+  align-self: center;
 }
-.pin-panel:hover { border-color: rgba(240, 228, 196, .3); }
+.lane-xl { width: clamp(300px, 26vw, 420px); }
+.lane-lg { width: clamp(230px, 19vw, 310px); }
+.lane-md { width: clamp(170px, 14vw, 230px); }
+.lane-sm { width: clamp(120px, 10vw, 165px); }
 
-/* 手機：關掉釘住，回到正常的直式捲動 */
-.pin.pin-off { height: auto !important; }
-.pin.pin-off .pin-stage {
-  position: static;
-  height: auto;
-  overflow: visible;
-  padding: 90px 0;
+/* 垂直錯開，讓視線在捲動時上下起伏 */
+.lane-top { align-self: flex-start; margin-top: 4vh; }
+.lane-mid { align-self: center; }
+.lane-bot { align-self: flex-end; margin-bottom: 6vh; }
+
+.lane-cap {
+  font-size: 10px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.pin.pin-off .pin-track {
-  flex-direction: column;
-  transform: none !important;
-  padding: 0 var(--gutter);
+.lane-plate {
+  position: relative;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, .014);
+  aspect-ratio: 3 / 4;
+  display: grid;
+  place-items: center;
+  padding: 12%;
+  transition: border-color .7s cubic-bezier(.22,1,.36,1);
 }
-.pin.pin-off .pin-panel { flex: none; min-height: 0; }
+.lane-plate svg { width: 100%; height: 100%; overflow: visible; }
+.lane-item:hover .lane-plate { border-color: rgba(240, 228, 196, .34); }
+
+/* 杯型線條與液體 */
+.gl-line { fill: none; stroke: rgba(240, 236, 226, .72); stroke-width: 2.2; stroke-linejoin: round; }
+.gl-fill { opacity: .92; }
+
+/* 引言：打斷陳列的節奏，跟參考站一樣 */
+.lane-quote {
+  width: clamp(240px, 22vw, 340px);
+  justify-content: center;
+}
+.lane-quote blockquote {
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif;
+  font-size: clamp(21px, 2.1vw, 31px);
+  font-weight: 300;
+  line-height: 1.55;
+  color: var(--text);
+  margin: 0 0 20px;
+}
+.lane-quote-mark {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+}
+
+/* 進度計量：釘住期間顯示走到哪 */
+.lane-meter {
+  position: absolute;
+  left: max(var(--gutter), calc((100vw - var(--measure)) / 2));
+  bottom: 5vh;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+.lane-meter i {
+  display: block;
+  width: 168px; height: 1px;
+  background: var(--border);
+  position: relative;
+}
+.lane-meter i b {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--accent-warm);
+  transform: scaleX(var(--pin-progress, 0));
+  transform-origin: 0 50%;
+}
 
 /* 釘住區的進度計數：01 / 04 */
 .pin-count {

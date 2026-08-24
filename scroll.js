@@ -27,7 +27,7 @@
       const dist = Math.max(0, track.scrollWidth - innerWidth + 96);
       // 1:1 對應時只釘住 0.78 個視窗高，一閃就過去了。
       // 把垂直行程拉長成 1.7 倍，橫移走得慢，這一段才成為一個「時刻」。
-      const travel = dist * 1.7;
+      const travel = dist * 2.1;   // 這段是主秀，走慢一點
       pin.style.height = `${innerHeight + travel}px`;
       return { pin, track, dist, travel };
     };
@@ -41,6 +41,14 @@
         const p = travel > 0 ? Math.min(1, Math.max(0, -r.top / travel)) : 0;
         track.style.transform = `translate3d(${-p * dist}px,0,0)`;
         pin.style.setProperty('--pin-progress', p.toFixed(4));
+        // 計量的編號跟著進度走
+        const num = pin.querySelector('.lane-meter-num');
+        if (num) {
+          const total = +(pin.querySelector('.lane-meter-total')?.textContent || 0);
+          const n = Math.min(total, Math.max(1, Math.round(p * (total - 1)) + 1));
+          const txt = String(n).padStart(2, '0');
+          if (num.textContent !== txt) num.textContent = txt;
+        }
       }
     };
 
