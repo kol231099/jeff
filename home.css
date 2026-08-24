@@ -387,16 +387,14 @@
 .faq-wrap .faq-list { max-width: none; }   /* 寬度已由欄位決定 */
 
 .faq-media {
-  position: sticky;
-  top: 140px;              /* 讓開膠囊導覽列 */
+  /* 不吸附：吸附會讓它在捲動時跟著跑。固定停在欄位底部，與最後一題切齊 */
+  position: static;
+  align-self: end;
 }
 .faq-media-frame {
   position: relative;
-  border: 1px solid rgba(233, 228, 218, .12);
-  border-radius: 4px;
+  /* 不加外框、底色與陰影，讓影片直接落在頁面上 */
   overflow: hidden;
-  background: #0E0C13;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .05);
 }
 .faq-media-frame video {
   display: block;
@@ -416,5 +414,5 @@
 @media (max-width: 1100px) {
   .faq-wrap { grid-template-columns: 1fr; gap: 44px; }
   .faq-wrap .faq-list { max-width: 580px; }
-  .faq-media { position: static; max-width: 580px; }
+  .faq-media { align-self: start; max-width: 580px; }
 }
