@@ -224,13 +224,28 @@
   function initNav() {
     const nav = document.querySelector('.navbar');
     if (!nav) return;
-    let last = scrollY, ticking = false;
+    // 只滑一點點就跳出來很煩。累積往上的距離，超過門檻才現身；
+    // 一往下滑就把累積歸零。
+    const UP_THRESHOLD = 110;
+    let last = scrollY, up = 0, ticking = false;
     const update = () => {
       const y = scrollY;
+      const d = y - last;
       nav.classList.toggle('nav-solid', y > 8);
-      // 往下且已離開頂端 → 收起；往上 → 立刻回來
-      if (y > last + 4 && y > 140) nav.classList.add('nav-hidden');
-      else if (y < last - 4) nav.classList.remove('nav-hidden');
+
+      if (y <= 60) {                    // 回到最上面一定顯示
+        up = 0;
+        nav.classList.remove('nav-hidden');
+      } else if (d > 0) {               // 往下：收起，累積歸零
+        up = 0;
+        if (y > 160) nav.classList.add('nav-hidden');
+      } else if (d < 0) {               // 往上：累積夠了才現身
+        up -= d;
+        if (up > UP_THRESHOLD) {
+          nav.classList.remove('nav-hidden');
+          up = 0;
+        }
+      }
       last = y;
     };
     addEventListener('scroll', () => {

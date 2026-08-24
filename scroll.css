@@ -40,7 +40,7 @@
   width: calc(100% - var(--gutter) * 2);
   max-width: var(--measure);
   margin: 0 auto 44px;
-  padding-top: 86px;        /* 讓開固定導覽列的高度 */
+  padding-top: 104px;       /* 讓開膠囊導覽列的高度與上方留白 */
 }
 .pin-head h2 { margin: 0; }
 /* 背景巨型字：比陳列慢三倍，做出景深。純裝飾，不參與閱讀 */
