@@ -28,9 +28,14 @@ html, body {
   background: var(--bg-0);
   color: var(--text);
   font-family: 'Space Grotesk', 'Noto Sans TC', -apple-system, sans-serif;
-  overflow-x: hidden;
+  overflow-x: hidden;   /* 後備：不支援 clip 的瀏覽器 */
   min-height: 100vh;
   line-height: 1.6;
+}
+/* overflow-x: hidden 會建立捲動容器，讓子孫的 position: sticky 失效 —— 
+   橫向釘住整段會不動。clip 一樣裁切但不建立捲動容器。 */
+@supports (overflow-x: clip) {
+  html, body { overflow-x: clip; }
 }
 
 body {
