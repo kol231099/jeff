@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>邊框比較 · PourMatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@200;300;400;500&family=Noto+Serif+TC:wght@200;300;400;500;600;700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=39" />
+<link rel="stylesheet" href="transition.css?v=29" />
+<link rel="stylesheet" href="social.css?v=25" />
+
+<script>
+/* 換頁抵達時，在第一個影格之前就蓋住畫面，避免閃爍。
+   若 JS 之後出錯，3 秒後自動解除，不會把頁面永遠遮住。 */
+(function(){try{if(sessionStorage.getItem('pourmatch_transition')){
+document.documentElement.classList.add('pour-arriving');
+setTimeout(function(){document.documentElement.classList.remove('pour-arriving');},3000);}}catch(e){}})();
+</script>
+
+<style>
+  body { background:#09080D; }
+  .fr-page { width: calc(100% - 96px); max-width: 1320px; margin: 0 auto; padding: 150px 0 120px; position: relative; z-index: 2; }
+  .fr-page h1 { font-family:'Cormorant Garamond','Noto Serif TC',Georgia,serif; font-size:52px; font-weight:400; margin:0 0 10px; color:#F6F2E9; }
+  .fr-page .lead { font-size:14px; color:#8A857A; margin:0 0 64px; line-height:1.9; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(330px,1fr)); gap:76px 56px; }
+  .opt { margin:0; }
+  .opt figcaption { margin-top:18px; }
+  .opt b { display:block; font-size:12px; font-weight:500; letter-spacing:2px; color:#F0E4C4; margin-bottom:6px; }
+  .opt span { display:block; font-size:12px; line-height:1.85; color:#8A857A; }
+  .fr { width:330px; }
+  .fr img { display:block; width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:inherit; }
+
+  /* 01 無邊框 */
+  .fr-none { border-radius:14px; overflow:hidden; }
+  /* 02 髮絲線 */
+  .fr-hair { border-radius:14px; overflow:hidden; box-shadow:0 0 0 1px rgba(233,228,218,.14); }
+  /* 03 暖金線 */
+  .fr-gold { border-radius:14px; overflow:hidden; box-shadow:0 0 0 1px rgba(240,228,196,.42); }
+  /* 04 襯邊 */
+  .fr-mat { border-radius:6px; padding:14px; background:#15121B; box-shadow:0 0 0 1px rgba(233,228,218,.1); }
+  .fr-mat img { border-radius:2px; }
+  /* 05 四角標記 */
+  .fr-corner { position:relative; border-radius:2px; overflow:visible; }
+  .fr-corner img { border-radius:2px; }
+  .fr-corner::before, .fr-corner::after,
+  .fr-corner > i::before, .fr-corner > i::after {
+    content:''; position:absolute; width:20px; height:20px; border:1px solid rgba(240,228,196,.55);
+  }
+  .fr-corner::before { top:-7px; left:-7px; border-right:0; border-bottom:0; }
+  .fr-corner::after { top:-7px; right:-7px; border-left:0; border-bottom:0; }
+  .fr-corner > i::before { bottom:-7px; left:-7px; border-right:0; border-top:0; }
+  .fr-corner > i::after { bottom:-7px; right:-7px; border-left:0; border-top:0; }
+  /* 06 浮起 */
+  .fr-shadow { border-radius:14px; overflow:hidden; box-shadow:0 26px 60px rgba(0,0,0,.75), 0 4px 14px rgba(0,0,0,.5); }
+  /* 07 雙線 */
+  .fr-double { border-radius:4px; padding:7px; box-shadow:0 0 0 1px rgba(233,228,218,.16); }
+  .fr-double img { border-radius:1px; box-shadow:0 0 0 1px rgba(233,228,218,.1); }
+  /* 08 底線 */
+  .fr-under { border-radius:10px 10px 0 0; overflow:hidden; padding-bottom:12px;
+              border-bottom:1px solid rgba(240,228,196,.4); }
+  .fr-under img { border-radius:10px 10px 0 0; }
+</style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="logo" style="text-decoration:none;">
+      <div class="logo-mark">
+        <svg viewBox="0 0 40 40" width="32" height="32">
+          <defs>
+            <linearGradient id="lgA" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFB547"/>
+              <stop offset="50%" stop-color="#FF4D8D"/>
+              <stop offset="100%" stop-color="#7B5CFF"/>
+            </linearGradient>
+          </defs>
+          <path d="M10 6h20l-3 14a7 7 0 0 1-7 6 7 7 0 0 1-7-6L10 6z" fill="url(#lgA)" opacity="0.9"/>
+          <line x1="20" y1="26" x2="20" y2="34" stroke="url(#lgA)" stroke-width="2"/>
+          <line x1="14" y1="34" x2="26" y2="34" stroke="url(#lgA)" stroke-width="2"/>
+        </svg>
+      </div>
+      <span class="logo-text">PourMatch</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" data-i18n="nav.home">首頁</a></li>
+      <li><a href="quiz.html" data-i18n="nav.quiz">品味測驗</a></li>
+      <li><a href="cocktail.html" data-i18n="nav.cocktail">調酒生成器</a></li>
+      <li><a href="community.html" data-i18n="nav.community">社群</a></li>
+      <li><a href="match.html" data-i18n="nav.match">AI 配對</a></li>
+      <li><a href="about.html" data-i18n="nav.about">關於</a></li>
+    </ul>
+    <button class="btn-login">
+      <svg width="18" height="18" viewBox="0 0 48 48">
+        <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+        <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+        <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+        <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+      </svg>
+      <span data-i18n="nav.login">使用 Google 登入</span>
+    </button>
+  </nav>
+  <main class="fr-page">
+    <h1>邊框比較</h1>
+    <p class="lead">同一張畫面、同樣 330px 寬，套上八種邊框處理。挑好告訴我編號，我套到 FAQ 的影片上。</p>
+    <div class="grid">
+      <figure class="opt">
+        <div class="fr fr-none"><img src="media/studio-poster.jpg?v=1" alt=""></div>
+        <figcaption><b>01 無邊框</b><span>現況。影片直接落在頁面上，只有圓角。</span></figcaption>
+      </figure>
+      <figure class="opt">
+        <div class="fr fr-hair"><img src="media/studio-poster.jpg?v=1" alt=""></div>
+        <figcaption><b>02 髮絲線</b><span>1px 極淡的線。存在感最低，只是把邊界定義出來。</span></figcaption>
+      </figure>
+      <figure class="opt">
+        <div class="fr fr-gold"><img src="media/studio-poster.jpg?v=1" alt=""></div>
+        <figcaption><b>03 暖金線</b><span>1px 香檳色。與網站的重音色一致，較有存在感。</span></figcaption>
+      </figure>
+      <figure class="opt">
+        <div class="fr fr-mat"><img src="media/studio-poster.jpg?v=1" alt=""></div>
+        <figcaption><b>04 襯邊</b><span>邊框往外留一圈底色，像裱框的卡紙。最正式。</span></figcaption>
+      </figure>
+      <figure class="opt">
+        <div class="fr fr-corner"><i></i><img src="media/studio-poster.jpg?v=1" alt=""></div>
+        <figcaption><b>05 四角標記</b><span>只有四個角的 L 形記號。取景框的語彙，最克制也最有個性。</span></figcaption>
+      </figure>
+      <figure class="opt">
+        <div class="fr fr-shadow"><img src="media/studio-poster.jpg?v=1" alt=""></div>
+        <figcaption><b>06 浮起</b><span>不用線，用陰影把它抬離頁面。</span></figcaption>
+      </figure>
+      <figure class="opt">
+        <div class="fr fr-double"><img src="media/studio-poster.jpg?v=1" alt=""></div>
+        <figcaption><b>07 雙線</b><span>外框加內線，中間留白。編輯設計常見。</span></figcaption>
+      </figure>
+      <figure class="opt">
+        <div class="fr fr-under"><img src="media/studio-poster.jpg?v=1" alt=""></div>
+        <figcaption><b>08 底線</b><span>只在下緣一條線。最輕，像圖說的延伸。</span></figcaption>
+      </figure>
+    </div>
+  </main>
+
+  <script src="i18n.js?v=20"></script>
+</body>
+</html>
