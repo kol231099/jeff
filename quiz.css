@@ -110,7 +110,7 @@
 }
 .option-card.selected {
   background: linear-gradient(135deg, rgba(255, 181, 71, 0.15), rgba(255, 77, 141, 0.15), rgba(123, 92, 255, 0.15));
-  border-color: var(--accent-pink);
+  border-color: var(--accent-warm);
   box-shadow: 0 0 24px rgba(255, 77, 141, 0.3);
 }
 .option-card.selected::after {
@@ -236,20 +236,18 @@
   border: 2px solid transparent;
 }
 .core-ring.r1 {
-  border-top-color: var(--accent-gold);
-  border-right-color: var(--accent-pink);
+  border-top-color: var(--accent-warm);
   animation: spin 2s linear infinite;
-  box-shadow: 0 0 30px rgba(255, 77, 141, 0.4);
+  box-shadow: none;
 }
 .core-ring.r2 {
   inset: 20px;
-  border-bottom-color: var(--accent-purple);
-  border-left-color: var(--accent-cyan);
+  border-bottom-color: rgba(232, 200, 122, .45);
   animation: spin 3s linear infinite reverse;
 }
 .core-ring.r3 {
   inset: 40px;
-  border-top-color: var(--accent-cyan);
+  border-top-color: rgba(232, 200, 122, .28);
   animation: spin 1.5s linear infinite;
 }
 .core-center {
@@ -569,7 +567,7 @@
   background: rgba(255, 181, 71, 0.06);
 }
 .len-card.selected {
-  border-color: var(--accent-pink);
+  border-color: var(--accent-warm);
   background: linear-gradient(135deg, rgba(255, 181, 71, 0.12), rgba(255, 77, 141, 0.12), rgba(123, 92, 255, 0.12));
   box-shadow: 0 0 0 1px rgba(255, 77, 141, 0.45), 0 14px 44px rgba(255, 77, 141, 0.22);
 }

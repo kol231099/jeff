@@ -604,7 +604,7 @@ body::after {
   color: var(--accent-gold);
   margin-top: 2px;
 }
-.dl-left .dl-value { color: var(--accent-purple); }
+.dl-left .dl-value { color: var(--accent-warm); }
 
 @keyframes dataFade {
   from { opacity: 0; transform: translateX(-10px); }

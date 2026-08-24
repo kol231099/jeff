@@ -92,7 +92,7 @@
 }
 .lang-card:hover { transform: translateY(-4px); border-color: rgba(255, 181, 71, 0.5); }
 .lang-card.selected {
-  border-color: var(--accent-pink);
+  border-color: var(--accent-warm);
   box-shadow: 0 0 0 1px rgba(255, 77, 141, 0.5), 0 18px 60px rgba(255, 77, 141, 0.28);
   transform: translateY(-4px);
 }

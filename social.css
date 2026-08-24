@@ -64,7 +64,7 @@
 }
 .code-label {
   font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif;
-  font-size: 11px; letter-spacing: 3px; color: var(--accent-cyan);
+  font-size: 11px; letter-spacing: 3px; color: var(--accent-warm);
   margin-bottom: 6px; text-transform: uppercase;
 }
 .code-value {
@@ -130,7 +130,7 @@
 .feed-tab:hover { border-color: rgba(255,181,71,.4); color: var(--text); }
 .feed-tab.active {
   background: linear-gradient(135deg, rgba(255,181,71,.25), rgba(255,77,141,.25));
-  border-color: var(--accent-pink); color: #fff;
+  border-color: var(--accent-warm); color: #fff;
 }
 
 .post {
@@ -157,7 +157,7 @@
   background: rgba(123,92,255,.15);
   border: 1px solid rgba(123,92,255,.3);
   border-radius: 100px;
-  font-size: 11px; color: var(--accent-cyan);
+  font-size: 11px; color: var(--accent-warm);
 }
 
 .post-caption {
@@ -186,7 +186,7 @@
   background: rgba(0,229,255,.08);
   border: 1px solid rgba(0,229,255,.25);
   border-radius: 100px;
-  font-size: 11px; color: var(--accent-cyan);
+  font-size: 11px; color: var(--accent-warm);
 }
 
 .post-actions {
@@ -205,7 +205,7 @@
 .action-btn:hover { border-color: rgba(255,77,141,.4); color: var(--text); }
 .action-btn.liked {
   background: linear-gradient(135deg, rgba(255,77,141,.2), rgba(123,92,255,.2));
-  border-color: var(--accent-pink); color: #fff;
+  border-color: var(--accent-warm); color: #fff;
 }
 
 /* ===== Friends ===== */
@@ -242,16 +242,16 @@
 .friend-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
 .friend-name { font-weight: 700; font-size: 15px; }
 .friend-code {
-  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif; font-size: 11px; color: var(--accent-cyan); letter-spacing: 2px;
+  font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif; font-size: 11px; color: var(--accent-warm); letter-spacing: 2px;
 }
 .btn-remove {
   padding: 8px 14px;
   background: transparent; border: 1.5px solid rgba(255,77,141,.3);
   border-radius: 100px;
-  color: var(--accent-pink); font: inherit; font-size: 12px; cursor: pointer;
+  color: var(--accent-warm); font: inherit; font-size: 12px; cursor: pointer;
   transition: all .2s;
 }
-.btn-remove:hover { background: rgba(255,77,141,.1); border-color: var(--accent-pink); }
+.btn-remove:hover { background: rgba(255,77,141,.1); border-color: var(--accent-warm); }
 
 /* ===== Match ===== */
 .match-grid { display: grid; gap: 18px; }
@@ -380,7 +380,7 @@
 .tab-btn:hover { border-color: rgba(255,181,71,.4); color: var(--text); }
 .tab-btn.active {
   background: linear-gradient(135deg, rgba(255,181,71,.25), rgba(255,77,141,.25));
-  border-color: var(--accent-pink); color: #fff;
+  border-color: var(--accent-warm); color: #fff;
 }
 
 .bio-foot {
@@ -417,7 +417,7 @@
   color: var(--accent-warm);
   margin-bottom: 4px;
 }
-.mini-tagline { font-size: 13px; color: var(--accent-cyan); margin-bottom: 8px; letter-spacing: 1px; }
+.mini-tagline { font-size: 13px; color: var(--accent-warm); margin-bottom: 8px; letter-spacing: 1px; }
 .mini-story { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
 
 /* friends grid */
@@ -435,9 +435,9 @@
 }
 .match-rank {
   font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif; font-size: 12px; letter-spacing: 3px;
-  color: var(--accent-cyan); font-weight: 800;
+  color: var(--accent-warm); font-weight: 800;
 }
-.match-code { font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif; font-size: 11px; color: var(--accent-cyan); letter-spacing: 3px; }
+.match-code { font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif; font-size: 11px; color: var(--accent-warm); letter-spacing: 3px; }
 .match-card .match-comment { border-left: none; padding-left: 0; padding-top: 12px; border-top: 2px solid var(--accent-gold); margin-top: 4px; width: 100%; }
 .match-card .btn-add-friend { margin-top: 8px; }
 
@@ -467,12 +467,12 @@
 .rec-tag {
   padding: 3px 10px; background: rgba(0,229,255,.08);
   border: 1px solid rgba(0,229,255,.25); border-radius: 100px;
-  font-size: 11px; color: var(--accent-cyan);
+  font-size: 11px; color: var(--accent-warm);
 }
 .share-rec-reason { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
 
 .share-cock-name { font-family: 'Cormorant Garamond','Noto Serif TC',Georgia,serif; font-size: 32px; font-weight: 900; }
-.share-cock-tagline { color: var(--accent-cyan); letter-spacing: 1px; margin: 4px 0 14px; }
+.share-cock-tagline { color: var(--accent-warm); letter-spacing: 1px; margin: 4px 0 14px; }
 .share-cock-meta { display: flex; gap: 16px; color: var(--text-dim); font-size: 13px; margin-bottom: 12px; }
 .share-cock-story { font-size: 15px; color: var(--text); line-height: 1.7; margin-bottom: 18px; font-style: italic; }
 .share-flavor-bars { display: grid; gap: 8px; margin-bottom: 18px; }

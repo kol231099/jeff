@@ -48,7 +48,7 @@
 }
 .history-tab.active {
   background: linear-gradient(135deg, rgba(255, 181, 71, 0.25), rgba(255, 77, 141, 0.25));
-  border-color: var(--accent-pink);
+  border-color: var(--accent-warm);
   color: #fff;
   box-shadow: 0 4px 16px rgba(255, 77, 141, 0.3);
 }
