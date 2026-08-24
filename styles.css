@@ -45,7 +45,8 @@ body::before {
   pointer-events: none;
   background:
     radial-gradient(ellipse 78% 52% at 38% -8%, rgba(255, 226, 190, .075), transparent 62%),
-    radial-gradient(ellipse 62% 44% at 88% 96%, rgba(150, 130, 200, .05), transparent 68%);
+    radial-gradient(ellipse 62% 44% at 88% 96%, rgba(150, 130, 200, .05), transparent 68%),
+    radial-gradient(ellipse 84% 72% at 44% 38%, transparent 32%, rgba(0, 0, 0, .8) 100%);
   animation: hush 52s ease-in-out infinite;   /* 慢到不會被認出是循環 */
 }
 @keyframes hush {
@@ -61,9 +62,8 @@ body::after {
   z-index: 2;
   pointer-events: none;
   background-image:
-    radial-gradient(ellipse 82% 70% at 44% 38%, transparent 34%, rgba(0, 0, 0, .82) 100%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
-  background-size: auto, 160px 160px;
+  background-size: 160px 160px;
 }
 
 /* ====== 粒子 / 網格 / 光暈背景 ====== */
@@ -181,7 +181,7 @@ body::after {
   align-items: center;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 210px 4px 140px;
+  padding: 172px 4px 120px;
   min-height: 100vh;
   gap: 90px;
 }
