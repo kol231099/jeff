@@ -98,8 +98,9 @@
   radial-gradient(ellipse 70% 40% at 50% 108%,rgba(214,178,106,.05), transparent 72%); }
 /* 一道細金線，克制就是這個風格的重點 */
 [data-bg="4"] .extra { background:
-  linear-gradient(90deg, transparent 0%, rgba(214,178,106,.28) 28%, rgba(214,178,106,.42) 50%, rgba(214,178,106,.28) 72%, transparent 100%);
-  height: 1px; top: 46%; inset-inline: 0; bottom: auto; opacity: .55; }
+  linear-gradient(90deg, transparent 4%, rgba(214,178,106,.16) 26%, rgba(214,178,106,.34) 50%, rgba(214,178,106,.16) 74%, transparent 96%);
+  height: 1px; top: 80%; inset-inline: 0; bottom: auto; opacity: .5;
+  box-shadow: 0 0 14px rgba(214,178,106,.16); }
 [data-bg="4"] .orb-1 { background: radial-gradient(circle, rgba(214,178,106,.3), transparent 62%); opacity:.34; }
 [data-bg="4"] .orb-2 { background: radial-gradient(circle, rgba(160,140,90,.22), transparent 64%); opacity:.28; }
 [data-bg="4"] .orb-3 { display: none; }
@@ -148,12 +149,12 @@
   radial-gradient(ellipse 100% 46% at 50% 96%,rgba(40,180,220,.16), transparent 68%); }
 /* 極光緞帶：兩道傾斜的柔光帶，錯開節奏飄 */
 [data-bg="7"] .extra { background:
-  linear-gradient(96deg, transparent 12%, rgba(70,240,200,.11) 28%, rgba(120,120,255,.13) 44%, rgba(70,220,255,.09) 58%, transparent 76%),
-  linear-gradient(84deg, transparent 22%, rgba(160,110,255,.08) 42%, rgba(70,240,210,.07) 62%, transparent 82%);
-  background-size: 100% 46%, 100% 38%;
-  background-position: 0 14%, 0 52%;
+  linear-gradient(96deg, transparent 8%, rgba(70,240,200,.3) 26%, rgba(120,130,255,.34) 45%, rgba(70,220,255,.24) 62%, transparent 82%),
+  linear-gradient(84deg, transparent 16%, rgba(170,110,255,.24) 40%, rgba(70,240,210,.2) 64%, transparent 86%);
+  background-size: 100% 42%, 100% 34%;
+  background-position: 0 12%, 0 54%;
   background-repeat: no-repeat;
-  filter: blur(26px);
+  filter: blur(18px);
   animation: aurora 24s ease-in-out infinite; }
 @keyframes aurora { 0%,100% { transform: translate(-2%,0) scaleY(1); opacity:.8; }
                     50%     { transform: translate(2%,2%) scaleY(1.14); opacity:1; } }
@@ -185,8 +186,11 @@
   radial-gradient(ellipse 90% 40% at 92% 30%,  rgba(220,70,150,.18), transparent 64%); }
 /* 地平線那道細亮線 */
 [data-bg="9"] .extra { background:
-  linear-gradient(180deg, transparent 56.4%, rgba(255,190,120,.34) 57.6%, rgba(255,190,120,.34) 58%, transparent 59.2%),
-  linear-gradient(180deg, transparent 52%, rgba(255,160,90,.1) 58%, transparent 66%); }
+  linear-gradient(180deg, transparent 50%, rgba(255,190,120,.16) 57.5%, rgba(255,205,150,.22) 58.4%, rgba(255,190,120,.14) 59.4%, transparent 68%),
+  linear-gradient(180deg, transparent 44%, rgba(255,160,90,.09) 58%, transparent 74%);
+  filter: blur(3px);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 16%, #000 84%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 16%, #000 84%, transparent 100%); }
 [data-bg="9"] .orb-1 { background: radial-gradient(circle, rgba(110,80,240,.56),rgba(40,20,120,.32) 40%, transparent 68%); opacity:.6; }
 [data-bg="9"] .orb-2 { background: radial-gradient(circle, rgba(240,90,160,.5), rgba(120,20,70,.3) 42%, transparent 70%); opacity:.54; }
 [data-bg="9"] .orb-3 { background: radial-gradient(circle, rgba(255,170,90,.46),rgba(150,70,20,.26) 44%, transparent 72%); opacity:.46; }
