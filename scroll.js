@@ -44,7 +44,8 @@
         const r = pin.getBoundingClientRect();
         // 0 → 1：區塊頂端貼齊視窗頂端起算。超過 1 之後進入尾段，橫移維持在底。
         const p = travel > 0 ? Math.min(1, Math.max(0, -r.top / travel)) : 0;
-        track.style.transform = `translate3d(${-p * dist}px,0,0)`;
+        // 往右推：起點在 -dist（軌道右端貼齊視窗），終點 0（露出左端）
+        track.style.transform = `translate3d(${(p - 1) * dist}px,0,0)`;
         pin.style.setProperty('--pin-progress', p.toFixed(4));
         // 炫技的核心：每個項目依「離畫面中心多遠」做 3D 旋轉、縮放與明暗。
         // 靠近中心的被推到眼前並打亮，兩側的向後傾斜退開。
@@ -56,17 +57,17 @@
           if (b.right < -400 || b.left > innerWidth + 400) { el.style.opacity = ''; continue; }
           const d = ((b.left + b.width / 2) - cx) / cx;      // -1 左緣 → 0 中心 → 1 右緣
           const k = Math.max(-1.4, Math.min(1.4, d));
+          // 幅度加大：旋轉、縮放、Z 軸都拉開，中央那一張才會明顯跳出來。
+          // 但透明度與亮度仍克制 —— 那兩項一壓，內容就讀不到了。
           el.style.transform =
-            `perspective(1500px) rotateY(${-k * 22}deg) scale(${1 - Math.abs(k) * 0.12}) translateZ(${-Math.abs(k) * 110}px)`;
-          // 衰減收斂：原本降到 50% 不透明 + 62% 亮度，內容直接讀不到。
-          // 深度感由旋轉與縮放承擔就夠了。
-          el.style.opacity = (1 - Math.abs(k) * 0.2).toFixed(3);
+            `perspective(1200px) rotateY(${-k * 38}deg) scale(${1 - Math.abs(k) * 0.24}) translateZ(${-Math.abs(k) * 260}px)`;
+          el.style.opacity = (1 - Math.abs(k) * 0.24).toFixed(3);
           el.style.setProperty('--focus', (1 - Math.min(1, Math.abs(k) * 1.15)).toFixed(3));
         }
 
         // 背景巨型字反向慢速位移，做出景深
         const ghost = pin.querySelector('.lane-ghost');
-        if (ghost) ghost.style.transform = `translate3d(${-p * dist * 0.32}px,0,0)`;
+        if (ghost) ghost.style.transform = `translate3d(${(p - 1) * dist * 0.32}px,0,0)`;
 
         // 計量的編號跟著進度走
         const num = pin.querySelector('.lane-meter-num');

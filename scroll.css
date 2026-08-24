@@ -71,11 +71,14 @@
   z-index: 1;
   perspective: 1400px;
   display: flex;
+  /* 往右推：第一項擺在軌道最右端，捲動時軌道向右移動，
+     依序露出左邊的項目。左右內距跟著對調。 */
+  flex-direction: row-reverse;
   align-items: stretch;
   gap: clamp(40px, 5vw, 96px);
   height: 100%;
-  padding-left: max(var(--gutter), calc((100vw - var(--measure)) / 2));
-  padding-right: 34vw;   /* 尾段留白：最後一項要能走到畫面中央 */
+  padding-right: max(var(--gutter), calc((100vw - var(--measure)) / 2));
+  padding-left: 34vw;    /* 尾段留白：最後一項要能走到畫面中央 */
   will-change: transform;
 }
 
@@ -98,9 +101,9 @@
 .lane-sm { width: clamp(172px, 13.5vw, 214px); }
 
 /* 垂直錯開，讓視線在捲動時上下起伏 */
-.lane-top { align-self: flex-start; margin-top: 9vh; }
+.lane-top { align-self: flex-start; margin-top: 4vh; }
 .lane-mid { align-self: center; }
-.lane-bot { align-self: flex-end; margin-bottom: 11vh; }
+.lane-bot { align-self: flex-end; margin-bottom: 5vh; }
 
 .lane-cap {
   margin-bottom: 14px;
@@ -172,8 +175,9 @@
 /* 進度計量：釘住期間顯示走到哪 */
 .lane-meter {
   position: absolute;
-  left: max(var(--gutter), calc((100vw - var(--measure)) / 2));
+  right: max(var(--gutter), calc((100vw - var(--measure)) / 2));
   bottom: 6vh;
+  flex-direction: row-reverse;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -190,10 +194,10 @@
 }
 .lane-meter i b {
   position: absolute;
-  inset: 0 auto 0 0;
+  inset: 0 0 0 auto;
   background: var(--accent-warm);
   transform: scaleX(var(--pin-progress, 0));
-  transform-origin: 0 50%;
+  transform-origin: 100% 50%;   /* 進度也從右往左長，跟動線一致 */
 }
 
 /* 釘住區的進度計數：01 / 04 */
@@ -325,8 +329,8 @@
 /* ===== 產品實績畫面 ===== */
 .shot { flex: 0 0 auto; margin: 0; display: flex; flex-direction: column; align-self: center;
         transform-style: preserve-3d; will-change: transform, opacity; }
-.shot-tall { width: clamp(300px, 25vw, 400px); align-self: flex-start; margin-top: 8vh; }
-.shot-wide { width: clamp(360px, 31vw, 500px); align-self: flex-end; margin-bottom: 9vh; }
+.shot-tall { width: clamp(300px, 25vw, 400px); align-self: flex-start; margin-top: 3vh; }
+.shot-wide { width: clamp(360px, 31vw, 500px); align-self: flex-end; margin-bottom: 4vh; }
 .shot-cap { margin-bottom: 15px; }
 .shot-cap b { display: block; font-size: 10.5px; font-weight: 500; letter-spacing: 2.6px;
               text-transform: uppercase; color: var(--accent-gold); }
