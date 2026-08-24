@@ -440,8 +440,9 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* 影片本身偏暖亮，壓一點才接得上網站的暗色調 */
-  filter: brightness(.82) saturate(.94) contrast(1.04);
+  /* 不再調亮度 —— 壓暗會削弱感知銳利度，看起來就像畫質變差。
+     色調的融合交給下方的遮罩層處理。 */
+  filter: none;
   /* 上下緣讓影片自己淡出，露出頁面背景，接縫就不存在。
      疊一層半透明色是蓋不掉的：只要不是全不透明，邊緣一定會透出來。 */
   -webkit-mask-image: linear-gradient(180deg,
@@ -455,8 +456,8 @@
   inset: 0;
   /* 只為了讓文字站得住，中段完全放行，不遮到倒酒本身 */
   background:
-    linear-gradient(180deg, rgba(7,6,10,.72) 0%, rgba(7,6,10,.1) 26%,
-                    transparent 46%, transparent 62%, rgba(7,6,10,.55) 92%, rgba(7,6,10,.8) 100%);
+    linear-gradient(180deg, rgba(7,6,10,.68) 0%, rgba(7,6,10,.06) 24%,
+                    transparent 40%, transparent 68%, rgba(7,6,10,.5) 92%, rgba(7,6,10,.78) 100%);
   pointer-events: none;
 }
 .pour-copy {
